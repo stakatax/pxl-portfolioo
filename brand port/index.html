@@ -1,0 +1,882 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#001768" />
+    <meta
+      name="description"
+      content="PXL — an independent pixel entertainment brand. Explore our world of illustrations, collectibles, 8-bit games, and animated stories. Pix L’s into W’s."
+    />
+    <title>PXL</title>
+    <link rel="icon" href="assets/logo-primary.png" type="image/png" />
+    <link
+      rel="preload"
+      href="assets/jersey10.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="assets/tiny5.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#story">Skip to content</a>
+    <header class="site-header">
+      <a href="#home" aria-label="PXL home"
+        ><img
+          class="brand-logo"
+          src="assets/logo-primary.png"
+          alt="PXL primary logo"
+          width="1147"
+          height="1147"
+      /></a>
+      <nav class="desktop-nav" aria-label="Main navigation">
+        <a href="#story">Our story</a><a href="#universe">The universe</a
+        ><a href="#identity">Identity</a><a href="#campaigns">The feed</a>
+      </nav>
+      <div class="header-actions">
+        <button
+          class="icon-button"
+          id="sound-toggle"
+          aria-pressed="false"
+          aria-label="Enable sound effects"
+          title="Sound effects"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3 9h4l5-5v16l-5-5H3zM17 9l5 6m0-6-5 6" />
+          </svg></button
+        ><button class="motion-button" id="motion-toggle" aria-pressed="false">
+          Motion: on</button
+        ><button
+          class="menu-button"
+          aria-expanded="false"
+          aria-controls="mobile-nav"
+        >
+          Menu <span>+</span>
+        </button>
+      </div>
+    </header>
+    <nav
+      id="mobile-nav"
+      class="mobile-nav"
+      aria-label="Mobile navigation"
+      hidden
+    >
+      <a href="#story">01 / Our story</a
+      ><a href="#universe">02 / The universe</a
+      ><a href="#identity">03 / Identity</a
+      ><a href="#campaigns">04 / The feed</a>
+    </nav>
+    <main>
+      <section class="hero" id="home" aria-labelledby="hero-heading">
+        <div class="hero-sky" aria-hidden="true">
+          <div class="star-field" data-depth="0.12"></div>
+          <div class="pixel-orbit orbit-one"></div>
+          <div class="pixel-orbit orbit-two"></div>
+          <span class="sky-coordinate">PXL_WORLD / 001</span>
+        </div>
+        <div class="hero-copy">
+          <p class="eyebrow">
+            <span class="live-square"></span> A NEW WORLD. ONE PIXEL AT A TIME.
+          </p>
+          <h1 id="hero-heading">
+            SMALL PIXELS.<br /><span>XL POSSIBILITIES.</span>
+          </h1>
+          <p class="hero-description">
+            A little nostalgia. A whole new universe.<br />Games, art &
+            collectibles. All in pixels.
+          </p>
+          <a class="button button-peach" href="#story"
+            >Enter our world <span aria-hidden="true">↘</span></a
+          >
+        </div>
+        <img
+          class="hero-actual-logo"
+          src="assets/logo-primary.png"
+          alt=""
+          width="1147"
+          height="1147"
+        />
+        <div
+          class="world"
+          aria-label="Original PXL pixel landscape with a sunset, mountains, and a friendly robot"
+        >
+          <div class="pixel-sun" data-depth="0.15" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </div>
+          <svg
+            class="landscape mountain-back"
+            data-depth="0.22"
+            viewBox="0 0 1440 500"
+            preserveAspectRatio="xMidYMax slice"
+            aria-hidden="true"
+          >
+            <path
+              fill="#122d7e"
+              d="M0 340h80v-60h70v-65h80v-70h60V80h100v65h60v65h80v70h100v-50h80v-60h80V80h70v65h80v70h80v65h100v-60h80v-65h80v-55h80v55h80v60h80v130H0z"
+            />
+            <path
+              fill="#1b3986"
+              d="M0 380h130v-40h100v-60h70v-55h65v-55h70v55h70v55h70v65h130v-45h80v-65h70v-60h80v60h80v65h90v45h100v-70h80v-45h80v-50h80v300H0z"
+            />
+          </svg>
+          <svg
+            class="landscape mountain-front"
+            data-depth="0.38"
+            viewBox="0 0 1440 400"
+            preserveAspectRatio="xMidYMax slice"
+            aria-hidden="true"
+          >
+            <path
+              fill="#be3621"
+              d="M0 300h70v-60h90v-60h100v-70h130v45h100v65h130v60h100v40h160v-70h100v-65h100v-80h100v50h80v65h90v80h90v130H0z"
+            />
+            <path
+              fill="#8f2b29"
+              d="M0 320h70v-40h90v-50h100v-70h130v40h100v55h130v65h100v40h160v-70h100v-65h100v-70h100v45h80v65h90v55h90v100H0z"
+            />
+            <path
+              fill="#ffb65d"
+              d="M160 180h100v-70h130v20H280v70H160zM1080 105h100v20h-80v80h-20z"
+              opacity=".65"
+            />
+          </svg>
+          <div
+            class="floating-island island-left"
+            data-depth="0.28"
+            aria-hidden="true"
+          >
+            <i></i><span>+</span>
+          </div>
+          <div
+            class="floating-island island-right"
+            data-depth="0.32"
+            aria-hidden="true"
+          >
+            <i></i><span>+</span>
+          </div>
+          <button
+            class="world-coin coin-one"
+            data-coin="1"
+            aria-label="Collect pixel one"
+          >
+            ✦</button
+          ><button
+            class="world-coin coin-two"
+            data-coin="2"
+            aria-label="Collect pixel two"
+          >
+            ✦</button
+          ><button
+            class="world-coin coin-three"
+            data-coin="3"
+            aria-label="Collect pixel three"
+          >
+            ✦
+          </button>
+          <button
+            class="hero-bot"
+            id="hero-bot"
+            aria-label="Make the PXL mascot jump"
+          >
+            <img
+              src="assets/robot.svg"
+              width="240"
+              height="264"
+              alt="Friendly peach pixel robot with navy eyes"
+            /><span class="bot-shadow"></span>
+          </button>
+          <div class="terrain" aria-hidden="true">
+            <span class="terrain-line"></span>
+          </div>
+          <div class="world-sign" aria-hidden="true">
+            NEXT LEVEL<br /><b>THIS WAY →</b>
+          </div>
+        </div>
+        <div class="hero-bottom">
+          <span>INDEPENDENT PIXEL ENTERTAINMENT © 2026</span
+          ><a href="#story"
+            >SCROLL TO EXPLORE <span aria-hidden="true">↓</span></a
+          ><span id="pixel-score" aria-live="polite"
+            >PIXELS FOUND <b>00 / 03</b></span
+          >
+        </div>
+      </section>
+      <div class="ticker" aria-hidden="true">
+        <div>
+          PIX L’S INTO W’S <span>✦</span> BUILT DIFFERENT. BUILT IN PIXELS.
+          <span>✦</span> PIX L’S INTO W’S <span>✦</span> BUILT DIFFERENT. BUILT
+          IN PIXELS. <span>✦</span>
+        </div>
+      </div>
+      <section
+        class="story section-pad"
+        id="story"
+        aria-labelledby="story-heading"
+      >
+        <div class="section-label">
+          <span>01 / THE ORIGIN</span><span>EST. 2026</span>
+        </div>
+        <div class="story-grid">
+          <div>
+            <p class="eyebrow">OLD-SCHOOL SOUL. NEXT-LEVEL IDEAS.</p>
+            <h2 id="story-heading">
+              The future<br />looks a little<br /><span class="outlined"
+                >pixelated.</span
+              >
+            </h2>
+          </div>
+          <div class="story-text">
+            <p class="large-copy">
+              We grew up with little squares that made us feel big things.
+            </p>
+            <p>
+              Founded in 2026, P<sup>XL</sup> brings the spirit of ’80s and ’90s
+              pixel entertainment into today. We’re building a home for original
+              illustrations, collectibles, 8-bit games, and short animated
+              stories.
+            </p>
+            <p>
+              Our name starts with a pixel and thinks extra large. The raised XL
+              is a reminder that small beginnings can unlock entire worlds.
+            </p>
+            <div class="story-tabs" role="tablist" aria-label="Our purpose">
+              <button
+                id="mission-tab"
+                role="tab"
+                aria-selected="true"
+                aria-controls="mission-panel"
+                tabindex="0"
+              >
+                Our mission <span>↗</span></button
+              ><button
+                id="vision-tab"
+                role="tab"
+                aria-selected="false"
+                aria-controls="vision-panel"
+                tabindex="-1"
+              >
+                Our vision <span>↗</span>
+              </button>
+            </div>
+            <div
+              class="purpose-panel"
+              id="mission-panel"
+              role="tabpanel"
+              aria-labelledby="mission-tab"
+            >
+              <span class="tiny-label">THE QUEST</span>
+              <p>
+                Make pixel entertainment accessible to all ages through games,
+                art, collectibles, and animation—preserving its 8-bit roots
+                while exploring what comes next.
+              </p>
+            </div>
+            <div
+              class="purpose-panel"
+              id="vision-panel"
+              role="tabpanel"
+              aria-labelledby="vision-tab"
+              hidden
+            >
+              <span class="tiny-label">THE NEXT LEVEL</span>
+              <p>
+                Bring pixel media into more everyday experiences, from
+                mainstream gaming and short-form stories to physical
+                collectibles, connecting new audiences with a lasting creative
+                culture.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section
+        class="universe section-pad"
+        id="universe"
+        aria-labelledby="universe-heading"
+      >
+        <div class="section-label">
+          <span>02 / SELECT YOUR WORLD</span><span>THREE WAYS TO PLAY</span>
+        </div>
+        <div class="section-heading">
+          <h2 id="universe-heading">
+            Small squares.<br />Big main-character energy.
+          </h2>
+          <p>One visual language.<br />A whole universe of possibilities.</p>
+        </div>
+        <div
+          class="product-tabs"
+          role="tablist"
+          aria-label="Explore products and services"
+        >
+          <button
+            role="tab"
+            id="art-tab"
+            aria-controls="art-panel"
+            aria-selected="true"
+            tabindex="0"
+          >
+            01 / Art & collectibles</button
+          ><button
+            role="tab"
+            id="games-tab"
+            aria-controls="games-panel"
+            aria-selected="false"
+            tabindex="-1"
+          >
+            02 / 8-bit games</button
+          ><button
+            role="tab"
+            id="animation-tab"
+            aria-controls="animation-panel"
+            aria-selected="false"
+            tabindex="-1"
+          >
+            03 / Animation
+          </button>
+        </div>
+        <div
+          class="product-panel"
+          id="art-panel"
+          role="tabpanel"
+          aria-labelledby="art-tab"
+        >
+          <div class="product-art art-collectibles">
+            <span class="tiny-label">PXL OBJECTS / CONCEPT SERIES 001</span>
+            <div class="collectible collectible-one">
+              <img
+                src="assets/robot.svg"
+                alt="Original PXL robot collectible concept"
+                width="240"
+                height="264"
+              /><span>THE EXPLORER</span>
+            </div>
+            <div class="collectible collectible-two">
+              <div class="pixel-flower-art" aria-hidden="true"></div>
+              <span>THE DAYDREAMER</span>
+            </div>
+            <span class="art-caption">DIGITAL ROOTS. SOMETHING TO HOLD.</span>
+          </div>
+          <div class="product-copy">
+            <span class="eyebrow">KEEP A LITTLE PIXEL MAGIC.</span>
+            <h3>From your screen.<br />Into your world.</h3>
+            <p>
+              Original pixel illustrations and collectible concepts that turn
+              tiny details into a little everyday joy.
+            </p>
+            <ul class="plain-list">
+              <li>Pixel character illustrations</li>
+              <li>Art prints & sticker concepts</li>
+              <li>Character collectible concepts</li>
+            </ul>
+            <button class="text-button" data-open="art-details">
+              Explore the concepts <span>↗</span></button
+            ><span class="concept-note"
+              >Illustrative product concepts. No items are for sale.</span
+            >
+          </div>
+        </div>
+        <div
+          class="product-panel"
+          id="games-panel"
+          role="tabpanel"
+          aria-labelledby="games-tab"
+          hidden
+        >
+          <div class="arcade">
+            <div class="arcade-top">
+              <span>PXL / PIXEL CATCH</span
+              ><span id="game-score">SCORE 000</span>
+            </div>
+            <canvas
+              id="game"
+              width="640"
+              height="380"
+              aria-label="Pixel Catch mini-game. Move with arrow keys or the left and right buttons to catch falling pixels."
+            ></canvas>
+            <div class="game-overlay" id="game-overlay">
+              <span class="eyebrow">A TINY TASTE OF OUR WORLD</span>
+              <h3>PIXEL CATCH</h3>
+              <p>Catch peach pixels. Dodge red glitches.</p>
+              <button class="button button-peach" id="game-start">
+                Start game <span>→</span>
+              </button>
+            </div>
+            <div class="game-controls">
+              <button id="game-left" aria-label="Move left">←</button
+              ><span>ARROW KEYS OR TOUCH CONTROLS</span
+              ><button id="game-right" aria-label="Move right">→</button
+              ><button id="game-pause" aria-label="Pause game" disabled>
+                Pause
+              </button>
+            </div>
+            <p id="game-status" class="sr-only" aria-live="polite"></p>
+          </div>
+          <div class="product-copy">
+            <span class="eyebrow">YOUR NEXT W STARTS HERE.</span>
+            <h3>Less pixels.<br />More play.</h3>
+            <p>
+              8-bit worlds with room for fresh ideas. Here’s a small browser
+              demo built for this portfolio—an invitation to play, explore, and
+              try again.
+            </p>
+            <p class="concept-note">
+              Original interactive website demo; not an announced commercial
+              game. A round lasts 30 seconds.
+            </p>
+          </div>
+        </div>
+        <div
+          class="product-panel"
+          id="animation-panel"
+          role="tabpanel"
+          aria-labelledby="animation-tab"
+          hidden
+        >
+          <div class="animation-stage">
+            <span class="tiny-label">PXL MOTION / LOOP STUDY 001</span>
+            <div class="animation-scene">
+              <div class="animation-moon"></div>
+              <div class="animation-floor"></div>
+              <img
+                id="animated-bot"
+                src="assets/robot.svg"
+                alt="PXL robot bouncing through a pixel world"
+                width="240"
+                height="264"
+              />
+              <div class="animation-spark">✦</div>
+            </div>
+            <button
+              class="button button-peach"
+              id="animation-toggle"
+              aria-pressed="false"
+            >
+              Play loop <span>▷</span>
+            </button>
+          </div>
+          <div class="product-copy">
+            <span class="eyebrow">LITTLE FRAMES. BIG FEELINGS.</span>
+            <h3>Stories that<br />move you.</h3>
+            <p>
+              Short-form pixel animation brings expressive characters and
+              playful worlds to life, one small frame at a time.
+            </p>
+            <p class="concept-note">
+              Original motion concept. Select Play loop to preview.
+            </p>
+          </div>
+        </div>
+      </section>
+      <section class="manifesto">
+        <div class="manifesto-grid" aria-hidden="true"></div>
+        <span class="eyebrow">IT’S MORE THAN AN AESTHETIC.</span>
+        <p>WE THINK<br /><span>IN PIXELS.</span></p>
+        <div class="manifesto-bottom">
+          <span>NOSTALGIA IS OUR STARTING POINT.</span
+          ><span>IMAGINATION TAKES IT FROM HERE. ↗</span>
+        </div>
+      </section>
+      <section
+        class="identity section-pad"
+        id="identity"
+        aria-labelledby="identity-heading"
+      >
+        <div class="section-label">
+          <span>03 / THE IDENTITY</span
+          ><span>SMALL DETAILS. XL PERSONALITY.</span>
+        </div>
+        <div class="section-heading">
+          <h2 id="identity-heading">A brand.<br />Down to the pixel.</h2>
+          <p>
+            Our palette. Our type. Our point of view.<br />One unmistakable
+            pixel-first identity.
+          </p>
+        </div>
+        <div class="logo-showcase">
+          <div class="logo-main">
+            <span class="tiny-label">01 / PRIMARY LOGO</span
+            ><button
+              class="asset-button"
+              data-open="primary-details"
+              aria-label="View full-size primary logo"
+            >
+              <img
+                class="actual-logo"
+                src="assets/logo-primary.png"
+                alt="PXL primary logo with the XL nested within the P"
+                width="1147"
+                height="1147"
+                loading="lazy"
+              /></button
+            ><span class="tiny-label">PIXEL × EXTRA LARGE</span>
+          </div>
+          <div class="logo-alt">
+            <span class="tiny-label">02 / SECONDARY LOGO</span
+            ><button
+              class="asset-button"
+              data-open="secondary-details"
+              aria-label="View full-size secondary logo"
+            >
+              <img
+                class="actual-logo"
+                src="assets/logo-secondary.png"
+                alt="PXL horizontal secondary logo with pixel-shaped lettering"
+                width="1806"
+                height="872"
+                loading="lazy"
+              />
+            </button>
+            <p>
+              One pixel-first identity. A compact primary mark and a wider
+              secondary logo, made for different spaces.
+            </p>
+          </div>
+        </div>
+        <div class="process-heading">
+          <h3>Built one bit at a time.</h3>
+          <span class="tiny-label">THE ORIGINAL LOGO DEVELOPMENT</span>
+        </div>
+        <button
+          class="asset-button logo-process-button"
+          data-open="logo-details"
+          aria-label="Enlarge original PXL logo development board"
+        >
+          <img
+            class="logo-process-art"
+            src="assets/logo-process.png"
+            alt="Original logo development board showing block-based sketches, pixel lettering, and the evolution into the PXL primary mark"
+            width="1526"
+            height="1134"
+            loading="lazy"
+          />
+        </button>
+        <ol class="logo-process">
+          <li>
+            <span>01 / EXPLORE</span>
+            <div class="process-glyph">P + XL</div>
+            <p>
+              Explore square shapes, a pixel-built P, and different placements
+              of the XL.
+            </p>
+          </li>
+          <li>
+            <span>02 / REFINE</span>
+            <div class="process-glyph">P<sup>XL</sup></div>
+            <p>
+              Test compact and extended arrangements while keeping the pixel
+              structure recognizable.
+            </p>
+          </li>
+          <li>
+            <span>03 / RESOLVE</span
+            ><img
+              src="assets/logo-primary.png"
+              alt="Final primary logo"
+              width="1147"
+              height="1147"
+              loading="lazy"
+              style="height: 110px; width: 110px; margin: 10px 0"
+            />
+            <p>
+              Bring the mark together with peach, red, and navy dimensional
+              layers.
+            </p>
+          </li>
+        </ol>
+        <div class="palette-heading">
+          <h3>Three colors.<br />Infinite combinations.</h3>
+          <p>Click a swatch to copy its hex code.</p>
+        </div>
+        <div class="palette">
+          <button
+            class="swatch swatch-peach"
+            data-color="#FFB65D"
+            aria-label="Copy peach hex color FFB65D"
+          >
+            <span>01 / PEACH</span><strong>#FFB65D</strong
+            ><span
+              >RGB 255 · 182 · 93 <span aria-hidden="true">↗</span></span
+            ></button
+          ><button
+            class="swatch swatch-red"
+            data-color="#BE3621"
+            aria-label="Copy red hex color BE3621"
+          >
+            <span>02 / RED</span><strong>#BE3621</strong
+            ><span
+              >RGB 190 · 54 · 33 <span aria-hidden="true">↗</span></span
+            ></button
+          ><button
+            class="swatch swatch-navy"
+            data-color="#001768"
+            aria-label="Copy navy hex color 001768"
+          >
+            <span>03 / NAVY</span><strong>#001768</strong
+            ><span>RGB 0 · 23 · 104 <span aria-hidden="true">↗</span></span>
+          </button>
+        </div>
+        <div class="type-heading">
+          <h3>Type with character.</h3>
+          <span class="tiny-label">TRY THE TYPEFACES ↓</span>
+        </div>
+        <div class="type-tester">
+          <label for="type-input">Your words, our world.</label
+          ><input
+            id="type-input"
+            type="text"
+            maxlength="55"
+            value="Pix L’s into W’s"
+            aria-describedby="type-help"
+          /><span id="type-help"
+            >Type something to preview both brand fonts.</span
+          >
+        </div>
+        <div class="type-specimens">
+          <article>
+            <div class="specimen-top">
+              <span>01 / DISPLAY</span><span>REGULAR 400</span>
+            </div>
+            <h4 class="jersey">Jersey 10</h4>
+            <p class="live-type jersey">Pix L’s into W’s</p>
+            <p class="alphabet jersey">
+              Aa Bb Cc Dd Ee Ff Gg Hh Ii Jj Kk Ll Mm<br />0123456789 !?&@
+            </p>
+          </article>
+          <article>
+            <div class="specimen-top">
+              <span>02 / PIXEL ACCENTS</span><span>REGULAR 400</span>
+            </div>
+            <h4 class="tiny">Tiny5</h4>
+            <p class="live-type tiny">Pix L’s into W’s</p>
+            <p class="alphabet tiny">
+              Aa Bb Cc Dd Ee Ff Gg Hh Ii Jj Kk Ll Mm<br />0123456789 !?&@
+            </p>
+          </article>
+        </div>
+      </section>
+      <section
+        class="playground section-pad"
+        aria-labelledby="playground-heading"
+      >
+        <div>
+          <p class="eyebrow">YOUR TURN, PLAYER ONE.</p>
+          <h2 id="playground-heading">Make your<br />mark. Literally.</h2>
+          <p>
+            Every world starts with a single pixel.<br />Draw something. Make it
+            yours.
+          </p>
+          <div class="drawing-tools" role="group" aria-label="Drawing tools">
+            <button
+              class="paint-color selected"
+              data-paint="#FFB65D"
+              style="--paint: #ffb65d"
+              aria-label="Draw in peach"
+              aria-pressed="true"
+            ></button
+            ><button
+              class="paint-color"
+              data-paint="#BE3621"
+              style="--paint: #be3621"
+              aria-label="Draw in red"
+              aria-pressed="false"
+            ></button
+            ><button
+              class="paint-color"
+              data-paint="#001768"
+              style="--paint: #001768"
+              aria-label="Draw in navy"
+              aria-pressed="false"
+            ></button
+            ><button class="tool-button" id="erase" aria-pressed="false">
+              Eraser</button
+            ><button class="tool-button" id="clear-art">Clear</button>
+          </div>
+          <button class="text-button" id="save-art">
+            Save your pixel art <span>↓</span>
+          </button>
+          <p class="concept-note">
+            Draw with a pointer or touch. Keyboard: arrow keys to move, Space to
+            paint.
+          </p>
+        </div>
+        <div class="drawing-frame">
+          <div class="drawing-title">
+            <span>UNTITLED_PIXEL.png</span><span>16 × 16</span>
+          </div>
+          <div
+            id="pixel-grid"
+            role="grid"
+            aria-label="Interactive 16 by 16 pixel art canvas"
+          ></div>
+          <div class="drawing-footer">
+            <span>YOU DON’T NEED PERMISSION TO CREATE.</span
+            ><span aria-hidden="true">✦</span>
+          </div>
+        </div>
+      </section>
+      <section
+        class="campaigns section-pad"
+        id="campaigns"
+        aria-labelledby="campaigns-heading"
+      >
+        <div class="section-label">
+          <span>04 / OUT IN THE WORLD</span><span>THE PXL FEED</span>
+        </div>
+        <div class="section-heading">
+          <h2 id="campaigns-heading">Good things.<br />Coming in pixels.</h2>
+          <p>A first hello.<br />And an invitation to the next level.</p>
+        </div>
+        <div class="campaign-row">
+          <button
+            class="asset-button"
+            data-open="post-details"
+            aria-label="View full-size first brand post"
+          >
+            <img
+              class="campaign-artwork"
+              src="assets/brand-post.png"
+              alt="PXL first brand post: a colorful pixel arcade cabinet displaying Pix L’s into W’s, with game controllers and PXL marks"
+              width="2415"
+              height="2415"
+              loading="lazy"
+            />
+          </button>
+          <div class="campaign-details">
+            <span class="eyebrow">CT#2 / FIRST EVER BRAND POST</span>
+            <h3>A new player<br />has entered.</h3>
+            <p class="tiny-label">SUGGESTED CAPTION</p>
+            <blockquote>
+              Hello, world. We’re P<sup>XL</sup>—where small pixels unlock
+              extra-large possibilities. From 8-bit adventures to art you can
+              keep, we’re bringing a little old-school magic to what’s next.
+              Ready to Pix L’s into W’s?<br /><br />#PXL #PixLsIntoWs #PixelArt
+              #HelloWorld
+            </blockquote>
+            <div class="campaign-meta">
+              <div>
+                <span class="tiny-label">ARTWORK PALETTE / SAMPLED</span>
+                <div class="mini-palette">
+                  <span style="--c: #0d1e48">#0D1E48</span
+                  ><span style="--c: #57f094">#57F094</span
+                  ><span style="--c: #d3c96b">#D3C96B</span
+                  ><span style="--c: #31507a">#31507A</span>
+                </div>
+              </div>
+              <div>
+                <span class="tiny-label">TYPOGRAPHY</span>
+                <p>Tiny5 + Jersey 10<br />Brand typefaces</p>
+              </div>
+            </div>
+            <button class="text-button" data-open="post-details">
+              View larger <span>↗</span>
+            </button>
+          </div>
+        </div>
+        <div class="campaign-row event-row">
+          <button
+            class="asset-button"
+            data-open="event-details"
+            aria-label="View full-size PXL World promotional poster"
+          >
+            <img
+              class="campaign-artwork"
+              src="assets/event-poster.png"
+              alt="PXL World promotional event poster. November 5, 2026, Event Center, SM City Cabanatuan. Booths, cosplay, exhibition, and new releases."
+              width="2000"
+              height="2500"
+              loading="lazy"
+            />
+          </button>
+          <div class="campaign-details">
+            <span class="eyebrow">CT#3 / PROMOTIONAL EVENT POSTER</span>
+            <h3>PXL World.<br />Play beyond the screen.</h3>
+            <p class="event-date">
+              05 NOV 2026<br />Event Center · SM City Cabanatuan
+            </p>
+            <div class="campaign-meta">
+              <div>
+                <span class="tiny-label">ARTWORK PALETTE / SAMPLED</span>
+                <div class="mini-palette">
+                  <span style="--c: #eaf6fe">#EAF6FE</span
+                  ><span style="--c: #85a0ff">#85A0FF</span
+                  ><span style="--c: #8a3c9b">#8A3C9B</span
+                  ><span style="--c: #d9a8df">#D9A8DF</span>
+                </div>
+              </div>
+              <div>
+                <span class="tiny-label">TYPOGRAPHY</span>
+                <p>Tiny5 + Jersey 10<br />Brand typefaces</p>
+              </div>
+            </div>
+            <button class="text-button" data-open="event-details">
+              View larger <span>↗</span>
+            </button>
+          </div>
+        </div>
+      </section>
+      <section
+        class="team section-pad"
+        id="team"
+        aria-labelledby="team-heading"
+      >
+        <div class="section-label">
+          <span>05 / THE PEOPLE BEHIND THE PIXELS</span
+          ><span>PLAYER SELECT</span>
+        </div>
+        <div class="team-layout">
+          <div>
+            <h2 id="team-heading">Every world<br />needs its makers.</h2>
+            <p>The owners’ names, roles, and real photos belong here.</p>
+            <p class="asset-disclaimer">
+              Owner information hasn’t been supplied yet. Add your actual group
+              members before submission.
+            </p>
+          </div>
+          <div class="team-placeholder">
+            <div class="portrait-placeholder" aria-hidden="true">
+              <span></span>
+            </div>
+            <span class="tiny-label">OWNER PHOTO + NAME</span>
+            <p>Waiting for your team.</p>
+          </div>
+        </div>
+      </section>
+      <footer class="footer section-pad">
+        <div class="section-label">
+          <span>END OF PAGE. START OF SOMETHING XL.</span
+          ><a href="#home">BACK TO TOP ↑</a>
+        </div>
+        <img
+          class="actual-footer-logo"
+          src="assets/logo-primary.png"
+          alt="PXL primary logo"
+          width="1147"
+          height="1147"
+          loading="lazy"
+        />
+        <div class="footer-bottom">
+          <span>PIX L’S INTO W’S</span
+          ><span>INDEPENDENT PIXEL ENTERTAINMENT</span><span>© PXL 2026</span>
+        </div>
+      </footer>
+    </main>
+    <dialog id="detail-dialog" aria-labelledby="dialog-title">
+      <div class="dialog-bar">
+        <span id="dialog-title">PXL / EXPLORER</span
+        ><button id="close-dialog" aria-label="Close dialog">Close ×</button>
+      </div>
+      <div id="dialog-content"></div>
+    </dialog>
+    <div id="toast" role="status" class="toast"></div>
+    <div class="scroll-progress" aria-hidden="true"></div>
+  </body>
+</html>
