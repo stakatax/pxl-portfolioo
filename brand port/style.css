@@ -818,8 +818,9 @@ h1 > span {
 .product-art {
   height: 470px;
   position: relative;
-  background: var(--peach);
-  color: var(--navy);
+  background: var(--deep);
+  color: var(--cream);
+  border: 1px solid var(--line);
   overflow: hidden;
 }
 .product-art > .tiny-label {
@@ -834,9 +835,14 @@ h1 > span {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(#00176811 1px, transparent 1px),
-    linear-gradient(90deg, #00176811 1px, transparent 1px);
+    linear-gradient(#ffb65d14 1px, transparent 1px),
+    linear-gradient(90deg, #ffb65d14 1px, transparent 1px);
   background-size: 40px 40px;
+  pointer-events: none;
+}
+.product-art > .tiny-label,
+.product-art > .art-caption {
+  color: var(--peach);
 }
 .art-caption {
   position: absolute;
@@ -859,7 +865,7 @@ h1 > span {
   width: 180px;
   height: 220px;
   image-rendering: pixelated;
-  filter: drop-shadow(12px 15px 0 #be362144);
+  filter: drop-shadow(12px 15px 0 #000927);
   transition: transform 0.3s;
 }
 .collectible:hover img,
@@ -867,6 +873,7 @@ h1 > span {
   transform: translateY(-10px) rotate(-5deg);
 }
 .collectible span {
+  color: var(--cream);
   font-family: var(--pixel);
   font-size: 13px;
   margin-top: 15px;
@@ -1163,7 +1170,12 @@ h1 > span {
   color: var(--red);
 }
 .logo-alt {
-  background: var(--peach);
+  background: var(--deep);
+  color: var(--cream);
+  border-left: 1px solid var(--line);
+}
+.logo-alt > .tiny-label {
+  color: var(--peach);
 }
 .logo-alt p {
   font-size: 13px;
@@ -2465,6 +2477,8 @@ body.reduce-motion .pixel-orbit {
   }
   .logo-alt {
     min-height: 280px;
+    border-left: 0;
+    border-top: 1px solid var(--line);
   }
   .logo-main .tiny-label,
   .logo-alt .tiny-label {
