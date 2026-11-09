@@ -2790,7 +2790,7 @@ const PROFILES = {
   },
   alric: {
     course: "BSIT 4D",
-    game: "TBA: favorite game",
+    game: "Genshin Impact",
     made: ["The brand", "Tagline and logo", "Poster design idea"],
     quote: "Puke ng baboy",
     contact: "alricseanmacalinao.neust@gmail.com",
