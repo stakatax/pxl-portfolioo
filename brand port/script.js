@@ -3924,3 +3924,312 @@ const pxlInspect = (() => {
     { passive: true },
   );
 })();
+
+// ===== PXL Sound Engine v2: a theme per world + sounds for every interaction =====
+// Everything is synthesized live with the Web Audio API (no audio files).
+// Silent until the visitor turns sound on with the speaker button.
+const pxlSound = (() => {
+  const AC = window.AudioContext || window.webkitAudioContext;
+  if (!AC) return {};
+  let ctx, master, sfxBus, musBus, muffle, echoIn, noiseBuf;
+  const hz = (n) => 440 * 2 ** ((n - 69) / 12);
+
+  function init() {
+    if (ctx) {
+      if (ctx.state === "suspended") ctx.resume();
+      return ctx;
+    }
+    ctx = new AC();
+    const comp = ctx.createDynamicsCompressor();
+    comp.threshold.value = -16;
+    comp.ratio.value = 4;
+    master = ctx.createGain();
+    master.gain.value = 0.9;
+    sfxBus = ctx.createGain();
+    sfxBus.gain.value = 1;
+    musBus = ctx.createGain();
+    musBus.gain.value = 0;
+    muffle = ctx.createBiquadFilter();
+    muffle.type = "lowpass";
+    muffle.frequency.value = 16000;
+    // a small slap-back echo used by the dreamier themes
+    echoIn = ctx.createGain();
+    const delay = ctx.createDelay(1);
+    delay.delayTime.value = 0.27;
+    const fb = ctx.createGain();
+    fb.gain.value = 0.32;
+    const wet = ctx.createGain();
+    wet.gain.value = 0.5;
+    echoIn.connect(delay).connect(fb).connect(delay);
+    delay.connect(wet).connect(musBus);
+    musBus.connect(muffle).connect(master);
+    sfxBus.connect(master);
+    master.connect(comp).connect(ctx.destination);
+    noiseBuf = ctx.createBuffer(1, ctx.sampleRate, ctx.sampleRate);
+    const d = noiseBuf.getChannelData(0);
+    for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+    return ctx;
+  }
+
+  // ---------- voices ----------
+  function blip({ f = 660, f2 = null, type = "square", dur = 0.08, vol = 0.03, at = 0, attack = 0.004, bus, echo = false }) {
+    if (!ctx) return;
+    const t = ctx.currentTime + at;
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.type = type;
+    o.frequency.setValueAtTime(f, t);
+    if (f2) o.frequency.exponentialRampToValueAtTime(Math.max(20, f2), t + dur);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.linearRampToValueAtTime(vol, t + attack);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g).connect(bus || sfxBus);
+    if (echo) g.connect(echoIn);
+    o.start(t);
+    o.stop(t + dur + 0.03);
+  }
+  function hiss({ dur = 0.06, vol = 0.04, at = 0, hp = 4000, lp = 12000, sweep = null, bus }) {
+    if (!ctx) return;
+    const t = ctx.currentTime + at;
+    const s = ctx.createBufferSource();
+    s.buffer = noiseBuf;
+    const h = ctx.createBiquadFilter();
+    h.type = "highpass";
+    h.frequency.value = hp;
+    const l = ctx.createBiquadFilter();
+    l.type = "lowpass";
+    l.frequency.setValueAtTime(lp, t);
+    if (sweep) l.frequency.exponentialRampToValueAtTime(sweep, t + dur);
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(vol, t);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    s.connect(h).connect(l).connect(g).connect(bus || sfxBus);
+    s.start(t, Math.random() * 0.5);
+    s.stop(t + dur + 0.02);
+  }
+
+  // ---------- sound effects ----------
+  const SFX = {
+    hoverLink: () => blip({ f: 1320, type: "triangle", dur: 0.035, vol: 0.022 }),
+    hoverButton: () => { blip({ f: 880, f2: 1180, type: "square", dur: 0.04, vol: 0.012 }); },
+    hoverCard: () => { blip({ f: 520, f2: 780, type: "triangle", dur: 0.09, vol: 0.03 }); hiss({ dur: 0.05, vol: 0.008, hp: 6000 }); },
+    hoverTile: () => { blip({ f: 1568, type: "square", dur: 0.03, vol: 0.01 }); blip({ f: 2093, type: "square", dur: 0.05, vol: 0.01, at: 0.03 }); },
+    clickButton: () => { hiss({ dur: 0.025, vol: 0.05, hp: 2500 }); blip({ f: 660, f2: 990, type: "square", dur: 0.06, vol: 0.026 }); },
+    clickLink: () => { blip({ f: 990, type: "square", dur: 0.04, vol: 0.02 }); blip({ f: 1480, type: "square", dur: 0.06, vol: 0.018, at: 0.04 }); },
+    clickCard: () => { blip({ f: 392, type: "square", dur: 0.06, vol: 0.03 }); blip({ f: 587, type: "square", dur: 0.06, vol: 0.03, at: 0.05 }); blip({ f: 784, type: "square", dur: 0.12, vol: 0.03, at: 0.1 }); },
+    nav: () => { blip({ f: 300, f2: 1600, type: "square", dur: 0.22, vol: 0.022 }); hiss({ dur: 0.22, vol: 0.02, hp: 1500, lp: 3000, sweep: 12000 }); },
+    toggle: (on) => on
+      ? (blip({ f: 523, type: "square", dur: 0.05, vol: 0.025 }), blip({ f: 784, type: "square", dur: 0.08, vol: 0.025, at: 0.05 }))
+      : (blip({ f: 784, type: "square", dur: 0.05, vol: 0.025 }), blip({ f: 392, type: "square", dur: 0.08, vol: 0.025, at: 0.05 })),
+    open: () => { hiss({ dur: 0.28, vol: 0.035, hp: 800, lp: 1500, sweep: 9000 }); [523, 659, 784, 1047].forEach((f, i) => blip({ f, type: "triangle", dur: 0.16, vol: 0.03, at: 0.04 + i * 0.05 })); },
+    close: () => { hiss({ dur: 0.22, vol: 0.03, hp: 600, lp: 9000, sweep: 900 }); blip({ f: 784, f2: 330, type: "triangle", dur: 0.2, vol: 0.035 }); },
+    type: () => { hiss({ dur: 0.018, vol: 0.03, hp: 5000 }); blip({ f: 1800 + Math.random() * 400, type: "square", dur: 0.012, vol: 0.006 }); },
+    powerOn: () => [262, 330, 392, 523, 659, 784, 1047].forEach((f, i) => blip({ f, type: "square", dur: 0.09, vol: 0.022, at: i * 0.045 })),
+    world: (i) => {
+      const scale = [0, 2, 4, 7, 9, 12, 14, 16, 19, 21, 24];
+      const base = 60 + scale[i % scale.length];
+      [0, 4, 7, 12].forEach((s, k) => blip({ f: hz(base + s), type: "square", dur: 0.08, vol: 0.016, at: k * 0.06, echo: true }));
+    },
+  };
+
+  // ---------- music: one original loop per world ----------
+  // lead: 32 eighth-notes (0 = rest). bass: 16 quarter-notes. drums: 16 chars per bar (k kick, s snare, h hat, .)
+  const SONGS = {
+    home: { title: "TITLE SCREEN", bpm: 132, wave: "square", bwave: "triangle", vol: 0.045,
+      lead: [72, 76, 79, 84, 79, 76, 72, 76, 74, 77, 81, 86, 81, 77, 74, 77, 72, 76, 79, 84, 86, 84, 81, 79, 77, 76, 74, 71, 72, 0, 67, 0],
+      bass: [48, 55, 48, 55, 50, 57, 50, 57, 48, 55, 45, 52, 43, 50, 43, 47], drums: "k.h.s.h.k.h.s.hh" },
+    story: { title: "WORLD 1-1 · ADVENTURE", bpm: 120, wave: "square", bwave: "triangle", vol: 0.04,
+      lead: [62, 0, 65, 67, 69, 0, 67, 65, 64, 0, 62, 60, 62, 0, 0, 0, 62, 0, 65, 67, 69, 72, 74, 72, 69, 0, 67, 64, 62, 0, 0, 0],
+      bass: [38, 45, 38, 45, 36, 43, 36, 43, 41, 48, 41, 48, 43, 50, 45, 45], drums: "k...s...k.k.s..." },
+    players: { title: "CHOOSE YOUR CLASS", bpm: 140, wave: "square", bwave: "triangle", vol: 0.04,
+      lead: [67, 71, 74, 79, 74, 71, 67, 71, 69, 72, 76, 81, 76, 72, 69, 72, 71, 74, 79, 83, 79, 74, 71, 74, 72, 76, 79, 84, 83, 81, 79, 0],
+      bass: [43, 50, 43, 50, 45, 52, 45, 52, 47, 54, 47, 54, 48, 55, 50, 50], drums: "k.hhs.h.k.hhs.hh" },
+    universe: { title: "SELECT YOUR WORLD", bpm: 96, wave: "triangle", bwave: "sine", vol: 0.06, echo: true,
+      lead: [69, 72, 76, 79, 76, 72, 0, 0, 65, 69, 72, 76, 72, 69, 0, 0, 67, 71, 74, 79, 74, 71, 0, 0, 64, 67, 71, 76, 74, 71, 67, 0],
+      bass: [45, 0, 45, 0, 41, 0, 41, 0, 43, 0, 43, 0, 40, 0, 40, 0], drums: "....h.......h..." },
+    shop: { title: "ITEM SHOP", bpm: 150, wave: "square", bwave: "triangle", vol: 0.04,
+      lead: [77, 0, 81, 0, 84, 81, 77, 0, 79, 0, 82, 0, 86, 82, 79, 0, 77, 0, 81, 0, 84, 86, 88, 84, 81, 0, 79, 0, 77, 0, 0, 0],
+      bass: [41, 48, 41, 48, 46, 53, 46, 53, 41, 48, 45, 48, 43, 48, 41, 41], drums: "k.h.s.h.k.h.s.h." },
+    rivals: { title: "BOSS RUSH", bpm: 168, wave: "sawtooth", bwave: "square", vol: 0.028,
+      lead: [64, 64, 67, 64, 70, 69, 67, 64, 64, 64, 67, 64, 71, 70, 69, 67, 64, 0, 76, 75, 74, 73, 72, 71, 70, 69, 68, 67, 66, 65, 64, 0],
+      bass: [40, 40, 40, 40, 43, 43, 46, 45, 40, 40, 40, 40, 47, 46, 45, 43], drums: "k.kks.k.k.kks.ss" },
+    bonus: { title: "BONUS STAGE", bpm: 160, wave: "square", bwave: "triangle", vol: 0.038,
+      lead: [72, 76, 79, 76, 72, 76, 79, 84, 74, 77, 81, 77, 74, 77, 81, 86, 76, 79, 83, 79, 76, 79, 83, 88, 84, 83, 81, 79, 77, 76, 74, 72],
+      bass: [48, 48, 50, 50, 52, 52, 53, 53, 48, 48, 50, 50, 55, 55, 43, 43], drums: "khs.khs.khs.khsh" },
+    identity: { title: "BRAND LAB", bpm: 112, wave: "triangle", bwave: "triangle", vol: 0.055, echo: true,
+      lead: [72, 0, 74, 76, 0, 79, 0, 76, 74, 0, 72, 0, 69, 0, 0, 0, 71, 0, 72, 74, 0, 77, 0, 74, 72, 0, 71, 0, 67, 0, 0, 0],
+      bass: [48, 52, 55, 52, 45, 48, 52, 48, 43, 47, 50, 47, 41, 45, 48, 43], drums: "k...s..hk..hs..." },
+    campaigns: { title: "OUT IN THE WORLD", bpm: 126, wave: "square", bwave: "triangle", vol: 0.038,
+      lead: [69, 0, 69, 72, 74, 0, 72, 69, 67, 0, 67, 69, 72, 0, 0, 0, 69, 0, 69, 72, 74, 76, 77, 76, 74, 72, 69, 67, 69, 0, 0, 0],
+      bass: [45, 52, 45, 52, 41, 48, 41, 48, 43, 50, 43, 50, 45, 52, 45, 44], drums: "k.h.s.hkk.h.s.h." },
+    team: { title: "PLAYER SELECT", bpm: 136, wave: "square", bwave: "triangle", vol: 0.04,
+      lead: [76, 79, 83, 0, 81, 79, 76, 0, 74, 76, 79, 0, 78, 76, 74, 0, 72, 76, 79, 84, 83, 79, 76, 72, 74, 0, 79, 0, 76, 0, 0, 0],
+      bass: [40, 47, 40, 47, 38, 45, 38, 45, 36, 43, 36, 43, 38, 45, 43, 43], drums: "k.h.s.h.k.hhs.h." },
+    end: { title: "CREDITS", bpm: 84, wave: "triangle", bwave: "sine", vol: 0.06, echo: true,
+      lead: [72, 0, 0, 76, 79, 0, 0, 0, 77, 0, 0, 74, 76, 0, 0, 0, 72, 0, 0, 69, 71, 0, 72, 74, 72, 0, 0, 0, 0, 0, 0, 0],
+      bass: [48, 0, 55, 0, 45, 0, 52, 0, 41, 0, 48, 0, 43, 0, 47, 0], drums: "k.......s......." },
+  };
+  const order = ["home", "story", "players", "universe", "shop", "rivals", "bonus", "identity", "campaigns", "team", "end"];
+  let song = SONGS.home, pending = null, step = 0, next = 0, timer = null, playing = false, currentKey = "home";
+
+  function drum(ch, t) {
+    const at = t - ctx.currentTime;
+    if (ch === "k") blip({ f: 150, f2: 40, type: "sine", dur: 0.14, vol: 0.22, at, bus: musBus });
+    if (ch === "s") { hiss({ dur: 0.12, vol: 0.09, hp: 1200, lp: 8000, at, bus: musBus }); blip({ f: 220, f2: 140, type: "triangle", dur: 0.06, vol: 0.05, at, bus: musBus }); }
+    if (ch === "h") hiss({ dur: 0.03, vol: 0.035, hp: 7000, at, bus: musBus });
+  }
+  function tick() {
+    const eighth = 60 / song.bpm / 2;
+    while (next < ctx.currentTime + 0.2) {
+      if (pending && step % 16 === 0) {
+        song = pending;
+        pending = null;
+        step = 0;
+      }
+      const at = next - ctx.currentTime;
+      const s = step % 32;
+      const n = song.lead[s];
+      if (n) blip({ f: hz(n), type: song.wave, dur: eighth * 0.9, vol: song.vol, at, attack: 0.006, bus: musBus, echo: song.echo });
+      if (s % 2 === 0) {
+        const b = song.bass[(s / 2) % 16];
+        if (b) blip({ f: hz(b), type: song.bwave, dur: eighth * 1.8, vol: 0.11, at, attack: 0.008, bus: musBus });
+      }
+      const d = song.drums[step % 16];
+      if (d && d !== ".") drum(d, next);
+      next += eighth;
+      step += 1;
+    }
+  }
+  const chip = document.createElement("div");
+  chip.className = "now-playing";
+  chip.setAttribute("aria-live", "polite");
+  document.body.append(chip);
+  let chipTimer;
+  function announce(s) {
+    chip.innerHTML = `<i aria-hidden="true"><b></b><b></b><b></b></i><span>NOW PLAYING</span><strong></strong>`;
+    chip.querySelector("strong").textContent = s.title;
+    chip.classList.add("show");
+    clearTimeout(chipTimer);
+    chipTimer = setTimeout(() => chip.classList.remove("show"), 2600);
+  }
+  function setWorld(key) {
+    if (!SONGS[key] || key === currentKey) return;
+    currentKey = key;
+    if (!playing) return;
+    pending = SONGS[key];
+    SFX.world(order.indexOf(key));
+    announce(SONGS[key]);
+  }
+  function music(on) {
+    if (!on) {
+      playing = false;
+      clearInterval(timer);
+      timer = null;
+      if (ctx) musBus.gain.setTargetAtTime(0, ctx.currentTime, 0.08);
+      chip.classList.remove("show");
+      return;
+    }
+    init();
+    playing = true;
+    song = SONGS[currentKey] || SONGS.home;
+    pending = null;
+    step = 0;
+    next = ctx.currentTime + 0.12;
+    musBus.gain.setTargetAtTime(0.32, ctx.currentTime, 0.1);
+    clearInterval(timer);
+    timer = setInterval(tick, 50);
+    announce(song);
+  }
+  document.addEventListener("visibilitychange", () => {
+    if (!ctx) return;
+    if (document.hidden) ctx.suspend();
+    else if (soundOn) ctx.resume();
+  });
+
+  // ---------- which world are we in? ----------
+  const stops = order.map((id) => document.getElementById(id) || $(`[data-world="${id}"]`)?.closest("section")).map((el, i) => [order[i], el]).filter(([, el]) => el);
+  let worldQueued = false;
+  addEventListener("scroll", () => {
+    if (worldQueued) return;
+    worldQueued = true;
+    requestAnimationFrame(() => {
+      worldQueued = false;
+      let key = "home";
+      for (const [k, el] of stops) if (el.getBoundingClientRect().top <= innerHeight * 0.45) key = k;
+      setWorld(key);
+    });
+  }, { passive: true });
+
+  // ---------- interaction sounds ----------
+  const fine = matchMedia("(hover: hover) and (pointer: fine)");
+  const KIND = [
+    [".shop-item .si-inspect, .player-card, .boss, .class-card, .stage-node, .feed-post", "card"],
+    [".boss-sig li, .id-thumb, .swatch, .cart-swatch, .lab-strip button, .bg-switch button", "tile"],
+    [".world-map a, nav a, .site-nav a", "nav"],
+    ["button, [role='button'], summary, .button, input[type='range'], select", "button"],
+    ["a[href]", "link"],
+  ];
+  function kindOf(el) {
+    for (const [sel, kind] of KIND) {
+      const hit = el.closest(sel);
+      if (hit) return [hit, kind];
+    }
+    return [null, null];
+  }
+  let lastHover = null, lastHoverAt = 0;
+  document.addEventListener("pointerover", (e) => {
+    if (!soundOn || !fine.matches || !ctx) return;
+    const [el, kind] = kindOf(e.target);
+    if (!el || el === lastHover) return;
+    lastHover = el;
+    const now = performance.now();
+    if (now - lastHoverAt < 45) return;
+    lastHoverAt = now;
+    ({ card: SFX.hoverCard, tile: SFX.hoverTile, nav: SFX.hoverLink, button: SFX.hoverButton, link: SFX.hoverLink })[kind]();
+  });
+  document.addEventListener("pointerout", (e) => {
+    if (lastHover && !lastHover.contains(e.relatedTarget)) lastHover = null;
+  });
+  document.addEventListener("pointerdown", (e) => {
+    if (!soundOn || e.button > 0) return;
+    if (e.target.closest("#sound-toggle, canvas, .battle")) return;
+    init();
+    const [el, kind] = kindOf(e.target);
+    if (!el) return;
+    ({ card: SFX.clickCard, tile: SFX.clickLink, nav: SFX.nav, button: SFX.clickButton, link: SFX.clickLink })[kind]();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (!soundOn || !ctx) return;
+    if (e.target.matches?.("input[type='text'], input:not([type]), textarea") && e.key.length === 1) SFX.type();
+  });
+  // dialogs: whoosh open/closed and muffle the music underneath
+  $$("dialog").forEach((d) =>
+    new MutationObserver(() => {
+      if (!ctx) return;
+      const anyOpen = $$("dialog").some((x) => x.open);
+      muffle.frequency.setTargetAtTime(anyOpen ? 900 : 16000, ctx.currentTime, 0.12);
+      if (!soundOn) return;
+      if (d.open) SFX.open();
+      else SFX.close();
+    }).observe(d, { attributes: true, attributeFilter: ["open"] }),
+  );
+  $("#motion-toggle")?.addEventListener("click", () => soundOn && SFX.toggle(!motionOff));
+  $("#sound-toggle").addEventListener("click", () => {
+    if (soundOn) {
+      init();
+      SFX.powerOn();
+    }
+  });
+
+  return { init, blip, hiss, SFX, music, setWorld };
+})();
+
+// Route the site's older beeps through the new engine (richer envelope, mixed with the music).
+tone = function (frequency = 660, duration = 0.08) {
+  if (!soundOn || !pxlSound.blip) return;
+  pxlSound.init();
+  pxlSound.blip({ f: frequency, type: "square", dur: duration, vol: 0.024 });
+};
+pxlMusic = function (on) {
+  pxlSound.music?.(on);
+};
