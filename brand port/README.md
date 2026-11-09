@@ -17,7 +17,7 @@ Open http://127.0.0.1:4173. Stop the preview with Ctrl+C. VS Code's Live Server 
 - Layered parallax throughout the page: the hero landscape, section backgrounds, selected artwork, and footer logo move at different scroll speeds. Text, navigation, and drawing controls remain steady. Mobile travel is reduced; the motion switch and system reduced-motion preference stop all parallax.
 - The main/primary logo appears in the header, footer, hero, and browser icon. Both logo versions remain in the identity presentation.
 - Original pixel scenery, a clickable robot, and three collectible pixels.
-- Mission and vision tabs, product tabs, an original 30-second mini-game, and a motion preview.
+- Mission, vision, and values tabs, a target-audience section, product tabs, an original 30-second mini-game, and a motion preview.
 - Your supplied primary logo, secondary logo, original process board, first brand post, and promotional poster, with full-size viewers.
 - Copyable brand colors and a live Tiny5/Jersey 10 type tester.
 - A keyboard, touch, and pointer accessible pixel-art canvas with PNG download.
@@ -26,7 +26,8 @@ Open http://127.0.0.1:4173. Stop the preview with Ctrl+C. VS Code's Live Server 
 
 ## Before submission
 
-1. Replace the owner placeholder in the `team` section of `index.html` with the actual owners' names, roles, and photos. Add the photos to `assets/` and give each image descriptive alternative text.
+1. Confirm each owner's role in the `team` section of `index.html` (photos and pixel sprites live in `assets/team/`).
+   Add a photo or scan of the hand-drawn logo sketch to the logo development section.
 2. Confirm or replace the suggested caption in the first-brand-post section.
 3. The campaign sections show representative colors sampled directly from the supplied artwork. Replace these with exact design-file values if available. Confirm the actual typefaces used in each artwork if they differ from the supplied brand typefaces, Tiny5 and Jersey 10.
 4. Confirm event details. The supplied poster reads **5 November 2026, Event Center, SM City Cabanatuan**.

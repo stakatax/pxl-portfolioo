@@ -24,11 +24,69 @@
       type="font/ttf"
       crossorigin
     />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.css"
+    />
     <link rel="stylesheet" href="style.css" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+      defer
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"
+      defer
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"
+      defer
+    ></script>
     <script src="script.js" defer></script>
   </head>
   <body>
+    <div class="boot" id="boot" role="status" aria-live="polite" hidden>
+      <div class="boot-cols" aria-hidden="true">
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i
+        ><i></i><i></i>
+      </div>
+      <div class="boot-inner">
+        <p class="boot-coin">INSERT COIN</p>
+        <img
+          class="boot-bot"
+          src="assets/robot.svg"
+          alt=""
+          width="240"
+          height="264"
+        />
+        <div class="boot-bar" aria-hidden="true">
+          <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        </div>
+        <p class="boot-status">
+          <span id="boot-label">LOADING WORLD 1-1</span>
+          <b id="boot-pct">000%</b>
+        </p>
+        <button class="boot-start" id="boot-start" hidden>
+          <span aria-hidden="true">&#9654;</span> PRESS START
+        </button>
+      </div>
+    </div>
+    <div class="world-banner" id="world-banner" aria-hidden="true">
+      <span>NOW ENTERING</span><b id="world-banner-name">WORLD 1-1</b>
+    </div>
     <a class="skip-link" href="#story">Skip to content</a>
+    <nav class="world-map" aria-label="World map">
+      <a href="#home" data-world="home"><i></i><span>START</span></a>
+      <a href="#story" data-world="story"><i></i><span>1-1 ORIGIN</span></a>
+      <a href="#players" data-world="players"><i></i><span>1-2 PLAYERS</span></a>
+      <a href="#universe" data-world="universe"><i></i><span>1-3 UNIVERSE</span></a>
+      <a href="#shop" data-world="shop"><i></i><span>ITEM SHOP</span></a>
+      <a href="#rivals" data-world="rivals"><i></i><span>BOSS RUSH</span></a>
+      <a href="#bonus" data-world="bonus"><i></i><span>BONUS</span></a>
+      <a href="#identity" data-world="identity"><i></i><span>1-4 IDENTITY</span></a>
+      <a href="#campaigns" data-world="campaigns"><i></i><span>1-5 THE FEED</span></a>
+      <a href="#team" data-world="team"><i></i><span>PLAYER SELECT</span></a>
+      <a href="#end" data-world="end"><i></i><span>THE END</span></a>
+    </nav>
     <header class="site-header">
       <a href="#home" aria-label="PXL home"
         ><img
@@ -40,10 +98,17 @@
       /></a>
       <nav class="desktop-nav" aria-label="Main navigation">
         <a href="#story">Our story</a><a href="#universe">The universe</a
-        ><a href="#identity">Identity</a><a href="#campaigns">The feed</a>
+        ><a href="#identity">Identity</a><a href="#campaigns">The feed</a
+        ><a href="#team">The team</a>
       </nav>
       <div class="header-actions">
-        <button
+        <span class="hud-coins" id="hud-coins" aria-live="polite"
+          ><span aria-hidden="true">&#10022;</span>
+          <span class="hud-word">PIXELS</span> <b>00</b>/<b
+            id="hud-total"
+            >06</b
+          ></span
+        ><button
           class="icon-button"
           id="sound-toggle"
           aria-pressed="false"
@@ -73,12 +138,13 @@
       <a href="#story">01 / Our story</a
       ><a href="#universe">02 / The universe</a
       ><a href="#identity">03 / Identity</a
-      ><a href="#campaigns">04 / The feed</a>
+      ><a href="#campaigns">04 / The feed</a
+      ><a href="#team">05 / The team</a>
     </nav>
     <main>
       <section class="hero" id="home" aria-labelledby="hero-heading">
         <div class="hero-sky" aria-hidden="true">
-          <div class="star-field" data-depth="0.12"></div>
+          <div class="star-field"></div>
           <div class="pixel-orbit orbit-one"></div>
           <div class="pixel-orbit orbit-two"></div>
           <span class="sky-coordinate">PXL_WORLD / 001</span>
@@ -109,12 +175,11 @@
           class="world"
           aria-label="Original PXL pixel landscape with a sunset, mountains, and a friendly robot"
         >
-          <div class="pixel-sun" data-depth="0.15" aria-hidden="true">
+          <div class="pixel-sun" aria-hidden="true">
             <span></span><span></span><span></span>
           </div>
           <svg
             class="landscape mountain-back"
-            data-depth="0.22"
             viewBox="0 0 1440 500"
             preserveAspectRatio="xMidYMax slice"
             aria-hidden="true"
@@ -130,7 +195,6 @@
           </svg>
           <svg
             class="landscape mountain-front"
-            data-depth="0.38"
             viewBox="0 0 1440 400"
             preserveAspectRatio="xMidYMax slice"
             aria-hidden="true"
@@ -151,14 +215,12 @@
           </svg>
           <div
             class="floating-island island-left"
-            data-depth="0.28"
             aria-hidden="true"
           >
             <i></i><span>+</span>
           </div>
           <div
             class="floating-island island-right"
-            data-depth="0.32"
             aria-hidden="true"
           >
             <i></i><span>+</span>
@@ -203,8 +265,9 @@
         </div>
         <div class="hero-bottom">
           <span>INDEPENDENT PIXEL ENTERTAINMENT © 2026</span
-          ><a href="#story"
-            >SCROLL TO EXPLORE <span aria-hidden="true">↓</span></a
+          ><a href="#story" class="press-start"
+            ><span class="blink" aria-hidden="true">&#9654;</span> PRESS START
+            &middot; SCROLL</a
           ><span id="pixel-score" aria-live="polite"
             >PIXELS FOUND <b>00 / 03</b></span
           >
@@ -223,7 +286,7 @@
         aria-labelledby="story-heading"
       >
         <div class="section-label">
-          <span>01 / THE ORIGIN</span><span>EST. 2026</span>
+          <span>WORLD 1-1 / THE ORIGIN</span><span>EST. 2026</span>
         </div>
         <div class="story-grid">
           <div>
@@ -235,9 +298,22 @@
             </h2>
           </div>
           <div class="story-text">
-            <p class="large-copy">
-              We grew up with little squares that made us feel big things.
-            </p>
+            <div class="dialogue" data-dialogue>
+              <img
+                class="dialogue-portrait"
+                src="assets/robot.svg"
+                alt=""
+                width="240"
+                height="264"
+              />
+              <div>
+                <span class="dialogue-name">PXL BOT</span>
+                <p class="large-copy dialogue-text">
+                  We grew up with little squares that made us feel big things.
+                </p>
+              </div>
+              <span class="dialogue-next" aria-hidden="true">&#9660;</span>
+            </div>
             <p>
               Founded in 2026, P<sup>XL</sup> brings the spirit of ’80s and ’90s
               pixel entertainment into today. We’re building a home for original
@@ -248,54 +324,115 @@
               Our name starts with a pixel and thinks extra large. The raised XL
               is a reminder that small beginnings can unlock entire worlds.
             </p>
-            <div class="story-tabs" role="tablist" aria-label="Our purpose">
-              <button
-                id="mission-tab"
-                role="tab"
-                aria-selected="true"
-                aria-controls="mission-panel"
-                tabindex="0"
-              >
-                Our mission <span>↗</span></button
-              ><button
-                id="vision-tab"
-                role="tab"
-                aria-selected="false"
-                aria-controls="vision-panel"
-                tabindex="-1"
-              >
-                Our vision <span>↗</span>
-              </button>
-            </div>
-            <div
-              class="purpose-panel"
-              id="mission-panel"
-              role="tabpanel"
-              aria-labelledby="mission-tab"
-            >
-              <span class="tiny-label">THE QUEST</span>
+          </div>
+        </div>
+        <div class="run-track" aria-labelledby="purpose-heading">
+          <div class="run-head">
+            <span class="tiny-label">WORLD 1-1 / POWER-UPS</span>
+            <h3 id="purpose-heading">Hit the blocks.<br />Unlock our purpose.</h3>
+          </div>
+          <div class="run-stage" aria-hidden="true">
+            <span class="run-cloud run-cloud-a"></span
+            ><span class="run-cloud run-cloud-b"></span>
+            <span class="run-hill run-hill-a"></span
+            ><span class="run-hill run-hill-b"></span
+            ><span class="run-bush run-bush-a"></span
+            ><span class="run-bush run-bush-b"></span>
+            <span class="run-flag"><i></i></span>
+            <span class="run-clear">COURSE CLEAR!</span>
+            <span class="item-box" data-box="0"><b>?</b></span
+            ><span class="item-box" data-box="1"><b>?</b></span
+            ><span class="item-box" data-box="2"><b>?</b></span>
+            <span class="run-coin" data-coin-pop="0">&#10022;</span
+            ><span class="run-coin" data-coin-pop="1">&#10022;</span
+            ><span class="run-coin" data-coin-pop="2">&#10022;</span>
+            <img
+              class="runner"
+              src="assets/robot.svg"
+              alt=""
+              width="240"
+              height="264"
+            />
+            <span class="run-ground"></span>
+          </div>
+          <div class="power-cards">
+            <article class="power-card" data-card="0">
+              <span class="power-lock" aria-hidden="true">?</span>
+              <span class="tiny-label">POWER-UP 01 / MISSION</span>
+              <h4>The quest</h4>
               <p>
                 Make pixel entertainment accessible to all ages through games,
-                art, collectibles, and animation—preserving its 8-bit roots
+                art, collectibles, and animation, preserving its 8-bit roots
                 while exploring what comes next.
               </p>
-            </div>
-            <div
-              class="purpose-panel"
-              id="vision-panel"
-              role="tabpanel"
-              aria-labelledby="vision-tab"
-              hidden
-            >
-              <span class="tiny-label">THE NEXT LEVEL</span>
+            </article>
+            <article class="power-card" data-card="1">
+              <span class="power-lock" aria-hidden="true">?</span>
+              <span class="tiny-label">POWER-UP 02 / VISION</span>
+              <h4>The next level</h4>
               <p>
                 Bring pixel media into more everyday experiences, from
                 mainstream gaming and short-form stories to physical
                 collectibles, connecting new audiences with a lasting creative
                 culture.
               </p>
-            </div>
+            </article>
+            <article class="power-card" data-card="2">
+              <span class="power-lock" aria-hidden="true">?</span>
+              <span class="tiny-label">POWER-UP 03 / VALUES</span>
+              <h4>The code we play by</h4>
+              <ul class="values-list">
+                <li><b>Nostalgia with a purpose.</b> 8-bit roots, new ideas.</li>
+                <li><b>Play for everyone.</b> All-ages fun anyone can pick up.</li>
+                <li><b>Made pixel by pixel.</b> Every detail placed with care.</li>
+                <li><b>Always the next level.</b> Every L is a W loading.</li>
+              </ul>
+            </article>
           </div>
+        </div>
+        <div class="audience" id="players">
+          <div class="audience-heading">
+            <span class="tiny-label">WORLD 1-2 / CHOOSE YOUR CLASS</span>
+            <h3 id="audience-heading">Built for every<br />kind of player.</h3>
+          </div>
+          <ol class="audience-list">
+            <li class="class-card">
+              <div class="class-top">
+                <svg class="class-emblem" viewBox="0 0 7 7" shape-rendering="crispEdges" aria-hidden="true" focusable="false"><rect x="1" y="0" width="1" height="1" fill="#ffb65d"/><rect x="2" y="0" width="1" height="1" fill="#ffb65d"/><rect x="4" y="0" width="1" height="1" fill="#ffb65d"/><rect x="5" y="0" width="1" height="1" fill="#ffb65d"/><rect x="0" y="1" width="1" height="1" fill="#ffb65d"/><rect x="1" y="1" width="1" height="1" fill="#ffb65d"/><rect x="2" y="1" width="1" height="1" fill="#ffb65d"/><rect x="3" y="1" width="1" height="1" fill="#ffb65d"/><rect x="4" y="1" width="1" height="1" fill="#ffb65d"/><rect x="5" y="1" width="1" height="1" fill="#ffb65d"/><rect x="6" y="1" width="1" height="1" fill="#ffb65d"/><rect x="0" y="2" width="1" height="1" fill="#ffb65d"/><rect x="1" y="2" width="1" height="1" fill="#ffb65d"/><rect x="2" y="2" width="1" height="1" fill="#ffb65d"/><rect x="3" y="2" width="1" height="1" fill="#ffb65d"/><rect x="4" y="2" width="1" height="1" fill="#be3621"/><rect x="5" y="2" width="1" height="1" fill="#ffb65d"/><rect x="6" y="2" width="1" height="1" fill="#ffb65d"/><rect x="0" y="3" width="1" height="1" fill="#ffb65d"/><rect x="1" y="3" width="1" height="1" fill="#ffb65d"/><rect x="2" y="3" width="1" height="1" fill="#ffb65d"/><rect x="3" y="3" width="1" height="1" fill="#ffb65d"/><rect x="4" y="3" width="1" height="1" fill="#ffb65d"/><rect x="5" y="3" width="1" height="1" fill="#ffb65d"/><rect x="6" y="3" width="1" height="1" fill="#ffb65d"/><rect x="1" y="4" width="1" height="1" fill="#ffb65d"/><rect x="2" y="4" width="1" height="1" fill="#ffb65d"/><rect x="3" y="4" width="1" height="1" fill="#ffb65d"/><rect x="4" y="4" width="1" height="1" fill="#ffb65d"/><rect x="5" y="4" width="1" height="1" fill="#ffb65d"/><rect x="2" y="5" width="1" height="1" fill="#ffb65d"/><rect x="3" y="5" width="1" height="1" fill="#ffb65d"/><rect x="4" y="5" width="1" height="1" fill="#ffb65d"/><rect x="3" y="6" width="1" height="1" fill="#ffb65d"/></svg>
+                <span class="class-name">CLASS: ROOKIE</span>
+              </div>
+              <span>01 / AGES 5+</span>
+              <h4>Players of all ages.</h4>
+              <p>
+                Simple, colorful worlds a five-year-old can pick up, with enough depth to keep grown-ups playing.
+              </p>
+              <dl class="class-stats"><div><dt>PICK-UP-AND-PLAY</dt><dd style="--v: 5"><span class="sr-only">5 out of 5</span></dd></div><div><dt>DEPTH</dt><dd style="--v: 3"><span class="sr-only">3 out of 5</span></dd></div></dl>
+            </li>
+            <li class="class-card">
+              <div class="class-top">
+                <svg class="class-emblem" viewBox="0 0 11 5" shape-rendering="crispEdges" aria-hidden="true" focusable="false"><rect x="1" y="0" width="1" height="1" fill="#ffb65d"/><rect x="2" y="0" width="1" height="1" fill="#ffb65d"/><rect x="3" y="0" width="1" height="1" fill="#ffb65d"/><rect x="4" y="0" width="1" height="1" fill="#ffb65d"/><rect x="5" y="0" width="1" height="1" fill="#ffb65d"/><rect x="6" y="0" width="1" height="1" fill="#ffb65d"/><rect x="7" y="0" width="1" height="1" fill="#ffb65d"/><rect x="8" y="0" width="1" height="1" fill="#ffb65d"/><rect x="9" y="0" width="1" height="1" fill="#ffb65d"/><rect x="0" y="1" width="1" height="1" fill="#ffb65d"/><rect x="1" y="1" width="1" height="1" fill="#ffb65d"/><rect x="2" y="1" width="1" height="1" fill="#001768"/><rect x="3" y="1" width="1" height="1" fill="#ffb65d"/><rect x="4" y="1" width="1" height="1" fill="#ffb65d"/><rect x="5" y="1" width="1" height="1" fill="#ffb65d"/><rect x="6" y="1" width="1" height="1" fill="#ffb65d"/><rect x="7" y="1" width="1" height="1" fill="#ffb65d"/><rect x="8" y="1" width="1" height="1" fill="#be3621"/><rect x="9" y="1" width="1" height="1" fill="#ffb65d"/><rect x="10" y="1" width="1" height="1" fill="#ffb65d"/><rect x="0" y="2" width="1" height="1" fill="#ffb65d"/><rect x="1" y="2" width="1" height="1" fill="#001768"/><rect x="2" y="2" width="1" height="1" fill="#001768"/><rect x="3" y="2" width="1" height="1" fill="#001768"/><rect x="4" y="2" width="1" height="1" fill="#ffb65d"/><rect x="5" y="2" width="1" height="1" fill="#ffb65d"/><rect x="6" y="2" width="1" height="1" fill="#ffb65d"/><rect x="7" y="2" width="1" height="1" fill="#be3621"/><rect x="8" y="2" width="1" height="1" fill="#ffb65d"/><rect x="9" y="2" width="1" height="1" fill="#be3621"/><rect x="10" y="2" width="1" height="1" fill="#ffb65d"/><rect x="0" y="3" width="1" height="1" fill="#ffb65d"/><rect x="1" y="3" width="1" height="1" fill="#ffb65d"/><rect x="2" y="3" width="1" height="1" fill="#001768"/><rect x="3" y="3" width="1" height="1" fill="#ffb65d"/><rect x="4" y="3" width="1" height="1" fill="#ffb65d"/><rect x="5" y="3" width="1" height="1" fill="#ffb65d"/><rect x="6" y="3" width="1" height="1" fill="#ffb65d"/><rect x="7" y="3" width="1" height="1" fill="#ffb65d"/><rect x="8" y="3" width="1" height="1" fill="#be3621"/><rect x="9" y="3" width="1" height="1" fill="#ffb65d"/><rect x="10" y="3" width="1" height="1" fill="#ffb65d"/><rect x="1" y="4" width="1" height="1" fill="#ffb65d"/><rect x="2" y="4" width="1" height="1" fill="#ffb65d"/><rect x="3" y="4" width="1" height="1" fill="#ffb65d"/><rect x="7" y="4" width="1" height="1" fill="#ffb65d"/><rect x="8" y="4" width="1" height="1" fill="#ffb65d"/><rect x="9" y="4" width="1" height="1" fill="#ffb65d"/></svg>
+                <span class="class-name">CLASS: EXPLORER</span>
+              </div>
+              <span>02 / PIXEL FANS</span>
+              <h4>Fans of the greats.</h4>
+              <p>
+                If you love Pokémon, Stardew Valley, Terraria, or Soul Knight, you already speak our language.
+              </p>
+              <dl class="class-stats"><div><dt>EXPLORING</dt><dd style="--v: 5"><span class="sr-only">5 out of 5</span></dd></div><div><dt>COLLECTING</dt><dd style="--v: 4"><span class="sr-only">4 out of 5</span></dd></div></dl>
+            </li>
+            <li class="class-card">
+              <div class="class-top">
+                <svg class="class-emblem" viewBox="0 0 8 8" shape-rendering="crispEdges" aria-hidden="true" focusable="false"><rect x="0" y="0" width="1" height="1" fill="#ffb65d"/><rect x="1" y="0" width="1" height="1" fill="#ffb65d"/><rect x="2" y="0" width="1" height="1" fill="#ffb65d"/><rect x="3" y="0" width="1" height="1" fill="#ffb65d"/><rect x="4" y="0" width="1" height="1" fill="#ffb65d"/><rect x="5" y="0" width="1" height="1" fill="#ffb65d"/><rect x="6" y="0" width="1" height="1" fill="#ffb65d"/><rect x="7" y="0" width="1" height="1" fill="#ffb65d"/><rect x="0" y="1" width="1" height="1" fill="#ffb65d"/><rect x="1" y="1" width="1" height="1" fill="#001768"/><rect x="2" y="1" width="1" height="1" fill="#001768"/><rect x="3" y="1" width="1" height="1" fill="#001768"/><rect x="4" y="1" width="1" height="1" fill="#001768"/><rect x="5" y="1" width="1" height="1" fill="#001768"/><rect x="6" y="1" width="1" height="1" fill="#ffb65d"/><rect x="7" y="1" width="1" height="1" fill="#ffb65d"/><rect x="0" y="2" width="1" height="1" fill="#ffb65d"/><rect x="1" y="2" width="1" height="1" fill="#001768"/><rect x="2" y="2" width="1" height="1" fill="#be3621"/><rect x="3" y="2" width="1" height="1" fill="#be3621"/><rect x="4" y="2" width="1" height="1" fill="#be3621"/><rect x="5" y="2" width="1" height="1" fill="#001768"/><rect x="6" y="2" width="1" height="1" fill="#ffb65d"/><rect x="7" y="2" width="1" height="1" fill="#ffb65d"/><rect x="0" y="3" width="1" height="1" fill="#ffb65d"/><rect x="1" y="3" width="1" height="1" fill="#001768"/><rect x="2" y="3" width="1" height="1" fill="#be3621"/><rect x="3" y="3" width="1" height="1" fill="#be3621"/><rect x="4" y="3" width="1" height="1" fill="#be3621"/><rect x="5" y="3" width="1" height="1" fill="#001768"/><rect x="6" y="3" width="1" height="1" fill="#ffb65d"/><rect x="7" y="3" width="1" height="1" fill="#ffb65d"/><rect x="0" y="4" width="1" height="1" fill="#ffb65d"/><rect x="1" y="4" width="1" height="1" fill="#001768"/><rect x="2" y="4" width="1" height="1" fill="#001768"/><rect x="3" y="4" width="1" height="1" fill="#001768"/><rect x="4" y="4" width="1" height="1" fill="#001768"/><rect x="5" y="4" width="1" height="1" fill="#001768"/><rect x="6" y="4" width="1" height="1" fill="#ffb65d"/><rect x="7" y="4" width="1" height="1" fill="#ffb65d"/><rect x="0" y="5" width="1" height="1" fill="#ffb65d"/><rect x="1" y="5" width="1" height="1" fill="#ffb65d"/><rect x="2" y="5" width="1" height="1" fill="#ffb65d"/><rect x="3" y="5" width="1" height="1" fill="#ffb65d"/><rect x="4" y="5" width="1" height="1" fill="#ffb65d"/><rect x="5" y="5" width="1" height="1" fill="#ffb65d"/><rect x="6" y="5" width="1" height="1" fill="#ffb65d"/><rect x="7" y="5" width="1" height="1" fill="#ffb65d"/><rect x="0" y="6" width="1" height="1" fill="#ffb65d"/><rect x="1" y="6" width="1" height="1" fill="#ffb65d"/><rect x="2" y="6" width="1" height="1" fill="#ffb65d"/><rect x="3" y="6" width="1" height="1" fill="#ffb65d"/><rect x="4" y="6" width="1" height="1" fill="#ffb65d"/><rect x="5" y="6" width="1" height="1" fill="#ffb65d"/><rect x="6" y="6" width="1" height="1" fill="#ffb65d"/><rect x="7" y="6" width="1" height="1" fill="#ffb65d"/><rect x="0" y="7" width="1" height="1" fill="#ffb65d"/><rect x="1" y="7" width="1" height="1" fill="#001768"/><rect x="2" y="7" width="1" height="1" fill="#ffb65d"/><rect x="3" y="7" width="1" height="1" fill="#001768"/><rect x="4" y="7" width="1" height="1" fill="#ffb65d"/><rect x="5" y="7" width="1" height="1" fill="#001768"/><rect x="6" y="7" width="1" height="1" fill="#ffb65d"/><rect x="7" y="7" width="1" height="1" fill="#ffb65d"/></svg>
+                <span class="class-name">CLASS: LEGEND</span>
+              </div>
+              <span>03 / THE OG PLAYERS</span>
+              <h4>Raised on little squares.</h4>
+              <p>
+                For people who grew up with early gaming, and for anyone who discovered it later and gets why it still hits.
+              </p>
+              <dl class="class-stats"><div><dt>NOSTALGIA</dt><dd style="--v: 5"><span class="sr-only">5 out of 5</span></dd></div><div><dt>HIGH SCORES</dt><dd style="--v: 4"><span class="sr-only">4 out of 5</span></dd></div></dl>
+            </li>
+          </ol>
         </div>
       </section>
       <section
@@ -303,8 +440,14 @@
         id="universe"
         aria-labelledby="universe-heading"
       >
+        <div class="uni-sky" aria-hidden="true">
+          <span class="planet planet-a"></span>
+          <span class="planet planet-b"><i></i></span>
+          <span class="planet planet-c"></span>
+          <span class="uni-stars"></span>
+        </div>
         <div class="section-label">
-          <span>02 / SELECT YOUR WORLD</span><span>THREE WAYS TO PLAY</span>
+          <span>WORLD 1-3 / SELECT YOUR WORLD</span><span>THREE WAYS TO PLAY</span>
         </div>
         <div class="section-heading">
           <h2 id="universe-heading">
@@ -317,30 +460,34 @@
           role="tablist"
           aria-label="Explore products and services"
         >
-          <button
+          <span class="map-path" aria-hidden="true"></span>
+          <img class="map-bot" src="assets/robot.svg" alt="" width="240" height="264" aria-hidden="true" />
+          <button class="stage-node" data-stage="art"
             role="tab"
             id="art-tab"
             aria-controls="art-panel"
             aria-selected="true"
             tabindex="0"
           >
-            01 / Art & collectibles</button
-          ><button
+            <span class="node-tile"><svg viewBox="0 0 9 7" shape-rendering="crispEdges" aria-hidden="true" focusable="false"><rect x="0" y="0" width="1" height="1" fill="#001768"/><rect x="1" y="0" width="1" height="1" fill="#001768"/><rect x="2" y="0" width="1" height="1" fill="#001768"/><rect x="3" y="0" width="1" height="1" fill="#001768"/><rect x="4" y="0" width="1" height="1" fill="#001768"/><rect x="5" y="0" width="1" height="1" fill="#001768"/><rect x="6" y="0" width="1" height="1" fill="#001768"/><rect x="7" y="0" width="1" height="1" fill="#001768"/><rect x="8" y="0" width="1" height="1" fill="#001768"/><rect x="0" y="1" width="1" height="1" fill="#001768"/><rect x="1" y="1" width="1" height="1" fill="#fff0d6"/><rect x="2" y="1" width="1" height="1" fill="#fff0d6"/><rect x="3" y="1" width="1" height="1" fill="#fff0d6"/><rect x="4" y="1" width="1" height="1" fill="#fff0d6"/><rect x="5" y="1" width="1" height="1" fill="#fff0d6"/><rect x="6" y="1" width="1" height="1" fill="#ffb65d"/><rect x="7" y="1" width="1" height="1" fill="#ffb65d"/><rect x="8" y="1" width="1" height="1" fill="#001768"/><rect x="0" y="2" width="1" height="1" fill="#001768"/><rect x="1" y="2" width="1" height="1" fill="#fff0d6"/><rect x="2" y="2" width="1" height="1" fill="#fff0d6"/><rect x="3" y="2" width="1" height="1" fill="#fff0d6"/><rect x="4" y="2" width="1" height="1" fill="#fff0d6"/><rect x="5" y="2" width="1" height="1" fill="#fff0d6"/><rect x="6" y="2" width="1" height="1" fill="#ffb65d"/><rect x="7" y="2" width="1" height="1" fill="#ffb65d"/><rect x="8" y="2" width="1" height="1" fill="#001768"/><rect x="0" y="3" width="1" height="1" fill="#001768"/><rect x="1" y="3" width="1" height="1" fill="#fff0d6"/><rect x="2" y="3" width="1" height="1" fill="#fff0d6"/><rect x="3" y="3" width="1" height="1" fill="#be3621"/><rect x="4" y="3" width="1" height="1" fill="#fff0d6"/><rect x="5" y="3" width="1" height="1" fill="#fff0d6"/><rect x="6" y="3" width="1" height="1" fill="#fff0d6"/><rect x="7" y="3" width="1" height="1" fill="#fff0d6"/><rect x="8" y="3" width="1" height="1" fill="#001768"/><rect x="0" y="4" width="1" height="1" fill="#001768"/><rect x="1" y="4" width="1" height="1" fill="#fff0d6"/><rect x="2" y="4" width="1" height="1" fill="#be3621"/><rect x="3" y="4" width="1" height="1" fill="#be3621"/><rect x="4" y="4" width="1" height="1" fill="#be3621"/><rect x="5" y="4" width="1" height="1" fill="#fff0d6"/><rect x="6" y="4" width="1" height="1" fill="#fff0d6"/><rect x="7" y="4" width="1" height="1" fill="#be3621"/><rect x="8" y="4" width="1" height="1" fill="#001768"/><rect x="0" y="5" width="1" height="1" fill="#001768"/><rect x="1" y="5" width="1" height="1" fill="#be3621"/><rect x="2" y="5" width="1" height="1" fill="#be3621"/><rect x="3" y="5" width="1" height="1" fill="#be3621"/><rect x="4" y="5" width="1" height="1" fill="#be3621"/><rect x="5" y="5" width="1" height="1" fill="#be3621"/><rect x="6" y="5" width="1" height="1" fill="#be3621"/><rect x="7" y="5" width="1" height="1" fill="#be3621"/><rect x="8" y="5" width="1" height="1" fill="#001768"/><rect x="0" y="6" width="1" height="1" fill="#001768"/><rect x="1" y="6" width="1" height="1" fill="#001768"/><rect x="2" y="6" width="1" height="1" fill="#001768"/><rect x="3" y="6" width="1" height="1" fill="#001768"/><rect x="4" y="6" width="1" height="1" fill="#001768"/><rect x="5" y="6" width="1" height="1" fill="#001768"/><rect x="6" y="6" width="1" height="1" fill="#001768"/><rect x="7" y="6" width="1" height="1" fill="#001768"/><rect x="8" y="6" width="1" height="1" fill="#001768"/></svg></span><span class="node-text"><small>STAGE 1-3A</small><b>Art & collectibles</b></span><span class="node-clear" aria-hidden="true">&#9733; CLEAR</span>
+          </button
+          ><button class="stage-node" data-stage="games"
             role="tab"
             id="games-tab"
             aria-controls="games-panel"
             aria-selected="false"
             tabindex="-1"
           >
-            02 / 8-bit games</button
-          ><button
+            <span class="node-tile"><svg viewBox="0 0 11 7" shape-rendering="crispEdges" aria-hidden="true" focusable="false"><rect x="1" y="0" width="1" height="1" fill="#001768"/><rect x="2" y="0" width="1" height="1" fill="#001768"/><rect x="3" y="0" width="1" height="1" fill="#001768"/><rect x="4" y="0" width="1" height="1" fill="#001768"/><rect x="5" y="0" width="1" height="1" fill="#001768"/><rect x="6" y="0" width="1" height="1" fill="#001768"/><rect x="7" y="0" width="1" height="1" fill="#001768"/><rect x="8" y="0" width="1" height="1" fill="#001768"/><rect x="9" y="0" width="1" height="1" fill="#001768"/><rect x="0" y="1" width="1" height="1" fill="#001768"/><rect x="1" y="1" width="1" height="1" fill="#ffb65d"/><rect x="2" y="1" width="1" height="1" fill="#ffb65d"/><rect x="3" y="1" width="1" height="1" fill="#ffb65d"/><rect x="4" y="1" width="1" height="1" fill="#ffb65d"/><rect x="5" y="1" width="1" height="1" fill="#ffb65d"/><rect x="6" y="1" width="1" height="1" fill="#ffb65d"/><rect x="7" y="1" width="1" height="1" fill="#ffb65d"/><rect x="8" y="1" width="1" height="1" fill="#ffb65d"/><rect x="9" y="1" width="1" height="1" fill="#ffb65d"/><rect x="10" y="1" width="1" height="1" fill="#001768"/><rect x="0" y="2" width="1" height="1" fill="#001768"/><rect x="1" y="2" width="1" height="1" fill="#ffb65d"/><rect x="2" y="2" width="1" height="1" fill="#001768"/><rect x="3" y="2" width="1" height="1" fill="#ffb65d"/><rect x="4" y="2" width="1" height="1" fill="#ffb65d"/><rect x="5" y="2" width="1" height="1" fill="#ffb65d"/><rect x="6" y="2" width="1" height="1" fill="#ffb65d"/><rect x="7" y="2" width="1" height="1" fill="#ffb65d"/><rect x="8" y="2" width="1" height="1" fill="#be3621"/><rect x="9" y="2" width="1" height="1" fill="#ffb65d"/><rect x="10" y="2" width="1" height="1" fill="#001768"/><rect x="0" y="3" width="1" height="1" fill="#001768"/><rect x="1" y="3" width="1" height="1" fill="#001768"/><rect x="2" y="3" width="1" height="1" fill="#001768"/><rect x="3" y="3" width="1" height="1" fill="#001768"/><rect x="4" y="3" width="1" height="1" fill="#ffb65d"/><rect x="5" y="3" width="1" height="1" fill="#ffb65d"/><rect x="6" y="3" width="1" height="1" fill="#ffb65d"/><rect x="7" y="3" width="1" height="1" fill="#be3621"/><rect x="8" y="3" width="1" height="1" fill="#ffb65d"/><rect x="9" y="3" width="1" height="1" fill="#be3621"/><rect x="10" y="3" width="1" height="1" fill="#001768"/><rect x="0" y="4" width="1" height="1" fill="#001768"/><rect x="1" y="4" width="1" height="1" fill="#ffb65d"/><rect x="2" y="4" width="1" height="1" fill="#001768"/><rect x="3" y="4" width="1" height="1" fill="#ffb65d"/><rect x="4" y="4" width="1" height="1" fill="#ffb65d"/><rect x="5" y="4" width="1" height="1" fill="#ffb65d"/><rect x="6" y="4" width="1" height="1" fill="#ffb65d"/><rect x="7" y="4" width="1" height="1" fill="#ffb65d"/><rect x="8" y="4" width="1" height="1" fill="#be3621"/><rect x="9" y="4" width="1" height="1" fill="#ffb65d"/><rect x="10" y="4" width="1" height="1" fill="#001768"/><rect x="0" y="5" width="1" height="1" fill="#001768"/><rect x="1" y="5" width="1" height="1" fill="#ffb65d"/><rect x="2" y="5" width="1" height="1" fill="#ffb65d"/><rect x="3" y="5" width="1" height="1" fill="#ffb65d"/><rect x="4" y="5" width="1" height="1" fill="#001768"/><rect x="5" y="5" width="1" height="1" fill="#001768"/><rect x="6" y="5" width="1" height="1" fill="#001768"/><rect x="7" y="5" width="1" height="1" fill="#ffb65d"/><rect x="8" y="5" width="1" height="1" fill="#ffb65d"/><rect x="9" y="5" width="1" height="1" fill="#ffb65d"/><rect x="10" y="5" width="1" height="1" fill="#001768"/><rect x="1" y="6" width="1" height="1" fill="#001768"/><rect x="2" y="6" width="1" height="1" fill="#001768"/><rect x="3" y="6" width="1" height="1" fill="#001768"/><rect x="7" y="6" width="1" height="1" fill="#001768"/><rect x="8" y="6" width="1" height="1" fill="#001768"/><rect x="9" y="6" width="1" height="1" fill="#001768"/></svg></span><span class="node-text"><small>STAGE 1-3B</small><b>8-bit games</b></span><span class="node-clear" aria-hidden="true">&#9733; CLEAR</span>
+          </button
+          ><button class="stage-node" data-stage="animation"
             role="tab"
             id="animation-tab"
             aria-controls="animation-panel"
             aria-selected="false"
             tabindex="-1"
           >
-            03 / Animation
+            <span class="node-tile"><svg viewBox="0 0 9 6" shape-rendering="crispEdges" aria-hidden="true" focusable="false"><rect x="0" y="0" width="1" height="1" fill="#001768"/><rect x="1" y="0" width="1" height="1" fill="#fff0d6"/><rect x="2" y="0" width="1" height="1" fill="#001768"/><rect x="3" y="0" width="1" height="1" fill="#fff0d6"/><rect x="4" y="0" width="1" height="1" fill="#001768"/><rect x="5" y="0" width="1" height="1" fill="#fff0d6"/><rect x="6" y="0" width="1" height="1" fill="#001768"/><rect x="7" y="0" width="1" height="1" fill="#fff0d6"/><rect x="8" y="0" width="1" height="1" fill="#001768"/><rect x="0" y="1" width="1" height="1" fill="#001768"/><rect x="1" y="1" width="1" height="1" fill="#001768"/><rect x="2" y="1" width="1" height="1" fill="#001768"/><rect x="3" y="1" width="1" height="1" fill="#001768"/><rect x="4" y="1" width="1" height="1" fill="#001768"/><rect x="5" y="1" width="1" height="1" fill="#001768"/><rect x="6" y="1" width="1" height="1" fill="#001768"/><rect x="7" y="1" width="1" height="1" fill="#001768"/><rect x="8" y="1" width="1" height="1" fill="#001768"/><rect x="0" y="2" width="1" height="1" fill="#001768"/><rect x="1" y="2" width="1" height="1" fill="#ffb65d"/><rect x="2" y="2" width="1" height="1" fill="#ffb65d"/><rect x="3" y="2" width="1" height="1" fill="#001768"/><rect x="4" y="2" width="1" height="1" fill="#be3621"/><rect x="5" y="2" width="1" height="1" fill="#be3621"/><rect x="6" y="2" width="1" height="1" fill="#001768"/><rect x="7" y="2" width="1" height="1" fill="#fff0d6"/><rect x="8" y="2" width="1" height="1" fill="#001768"/><rect x="0" y="3" width="1" height="1" fill="#001768"/><rect x="1" y="3" width="1" height="1" fill="#ffb65d"/><rect x="2" y="3" width="1" height="1" fill="#ffb65d"/><rect x="3" y="3" width="1" height="1" fill="#001768"/><rect x="4" y="3" width="1" height="1" fill="#be3621"/><rect x="5" y="3" width="1" height="1" fill="#be3621"/><rect x="6" y="3" width="1" height="1" fill="#001768"/><rect x="7" y="3" width="1" height="1" fill="#fff0d6"/><rect x="8" y="3" width="1" height="1" fill="#001768"/><rect x="0" y="4" width="1" height="1" fill="#001768"/><rect x="1" y="4" width="1" height="1" fill="#001768"/><rect x="2" y="4" width="1" height="1" fill="#001768"/><rect x="3" y="4" width="1" height="1" fill="#001768"/><rect x="4" y="4" width="1" height="1" fill="#001768"/><rect x="5" y="4" width="1" height="1" fill="#001768"/><rect x="6" y="4" width="1" height="1" fill="#001768"/><rect x="7" y="4" width="1" height="1" fill="#001768"/><rect x="8" y="4" width="1" height="1" fill="#001768"/><rect x="0" y="5" width="1" height="1" fill="#001768"/><rect x="1" y="5" width="1" height="1" fill="#fff0d6"/><rect x="2" y="5" width="1" height="1" fill="#001768"/><rect x="3" y="5" width="1" height="1" fill="#fff0d6"/><rect x="4" y="5" width="1" height="1" fill="#001768"/><rect x="5" y="5" width="1" height="1" fill="#fff0d6"/><rect x="6" y="5" width="1" height="1" fill="#001768"/><rect x="7" y="5" width="1" height="1" fill="#fff0d6"/><rect x="8" y="5" width="1" height="1" fill="#001768"/></svg></span><span class="node-text"><small>STAGE 1-3C</small><b>Animation</b></span><span class="node-clear" aria-hidden="true">&#9733; CLEAR</span>
           </button>
         </div>
         <div
@@ -349,12 +496,13 @@
           role="tabpanel"
           aria-labelledby="art-tab"
         >
+          <div class="stage-bar" aria-hidden="true"><span class="sb-dots"><i></i><i></i><i></i></span><span>STAGE 1-3A &middot; ART &amp; COLLECTIBLES</span><span class="sb-world">WORLD 1-3</span></div>
           <div class="product-art art-collectibles">
-            <span class="tiny-label">PXL OBJECTS / CONCEPT SERIES 001</span>
+            <span class="tiny-label">PXL OBJECTS / SERIES 001</span>
             <div class="collectible collectible-one">
               <img
                 src="assets/robot.svg"
-                alt="Original PXL robot collectible concept"
+                alt="The Explorer, a PXL robot collectible"
                 width="240"
                 height="264"
               /><span>THE EXPLORER</span>
@@ -369,19 +517,18 @@
             <span class="eyebrow">KEEP A LITTLE PIXEL MAGIC.</span>
             <h3>From your screen.<br />Into your world.</h3>
             <p>
-              Original pixel illustrations and collectible concepts that turn
-              tiny details into a little everyday joy.
+              Original pixel illustrations and collectibles that turn tiny
+              details into a little everyday joy.
             </p>
-            <ul class="plain-list">
+            <span class="rewards-label">REWARDS</span>
+            <ul class="plain-list rewards">
               <li>Pixel character illustrations</li>
-              <li>Art prints & sticker concepts</li>
-              <li>Character collectible concepts</li>
+              <li>Art prints & stickers</li>
+              <li>Character collectibles</li>
             </ul>
             <button class="text-button" data-open="art-details">
-              Explore the concepts <span>↗</span></button
-            ><span class="concept-note"
-              >Illustrative product concepts. No items are for sale.</span
-            >
+              Explore the collection <span>↗</span>
+            </button>
           </div>
         </div>
         <div
@@ -391,6 +538,7 @@
           aria-labelledby="games-tab"
           hidden
         >
+          <div class="stage-bar" aria-hidden="true"><span class="sb-dots"><i></i><i></i><i></i></span><span>STAGE 1-3B &middot; 8-BIT GAMES</span><span class="sb-world">WORLD 1-3</span></div>
           <div class="arcade">
             <div class="arcade-top">
               <span>PXL / PIXEL CATCH</span
@@ -424,13 +572,12 @@
             <span class="eyebrow">YOUR NEXT W STARTS HERE.</span>
             <h3>Less pixels.<br />More play.</h3>
             <p>
-              8-bit worlds with room for fresh ideas. Here’s a small browser
-              demo built for this portfolio—an invitation to play, explore, and
-              try again.
+              8-bit worlds with room for fresh ideas. Pixel Catch is a tiny
+              taste of how we play: pick it up, take the L, try again, get the
+              W.
             </p>
             <p class="concept-note">
-              Original interactive website demo; not an announced commercial
-              game. A round lasts 30 seconds.
+              One round. 30 seconds. How many can you catch?
             </p>
           </div>
         </div>
@@ -441,6 +588,7 @@
           aria-labelledby="animation-tab"
           hidden
         >
+          <div class="stage-bar" aria-hidden="true"><span class="sb-dots"><i></i><i></i><i></i></span><span>STAGE 1-3C &middot; ANIMATION</span><span class="sb-world">WORLD 1-3</span></div>
           <div class="animation-stage">
             <span class="tiny-label">PXL MOTION / LOOP STUDY 001</span>
             <div class="animation-scene">
@@ -471,15 +619,274 @@
               playful worlds to life, one small frame at a time.
             </p>
             <p class="concept-note">
-              Original motion concept. Select Play loop to preview.
+              Hit Play loop and watch the Explorer go.
             </p>
           </div>
         </div>
       </section>
-      <section class="manifesto">
+      <section class="shop section-pad" id="shop" aria-labelledby="shop-heading">
+        <div class="section-label">
+          <span>WORLD 1-3 / ITEM SHOP</span><span>12 ITEMS IN STOCK</span>
+        </div>
+        <div class="section-heading">
+          <h2 id="shop-heading">Pixels you can<br />actually hold.</h2>
+          <p>Every product line, made real.<br />Tap an item to inspect it.</p>
+        </div>
+        <div class="shop-shelf">
+          <div class="shop-keeper" aria-hidden="true">
+            <img src="assets/robot.svg" alt="" />
+            <p class="sk-bubble" id="sk-bubble">Welcome, player! Everything here is made from our own pixels.</p>
+          </div>
+          <div class="shop-filters" role="group" aria-label="Filter items"><button class="shop-filter on" data-filter="all" aria-pressed="true">ALL</button><button class="shop-filter" data-filter="art" aria-pressed="false">ART &amp; COLLECTIBLES</button><button class="shop-filter" data-filter="games" aria-pressed="false">8-BIT GAMES</button><button class="shop-filter" data-filter="animation" aria-pressed="false">ANIMATION</button><button class="shop-filter" data-filter="merch" aria-pressed="false">MERCH</button></div>
+        </div>
+        <ul class="shop-grid" id="shop-grid">
+            <li class="shop-item" data-cat="art">
+              <button class="si-inspect" data-item="stickers" aria-label="Inspect Die-cut sticker sheet">
+                <span class="si-shot"><span class="si-no">No. 001</span><img src="assets/shop/stickers-1-sm.webp" alt="Die-cut sticker sheet, product photo" width="600" height="600" loading="lazy" decoding="async" /><img src="assets/shop/stickers-2-sm.webp" alt="" width="600" height="600" loading="lazy" decoding="async" /></span>
+              </button>
+              <div class="si-info">
+                <span class="si-cat">ART &amp; COLLECTIBLES</span>
+                <h4>Die-cut sticker sheet</h4>
+                <p>The PXL Bot, our marks and the four spirit animals, ready for laptops, bottles and notebooks.</p>
+                <span class="rarity r-common">&#9670; COMMON</span>
+              </div>
+            </li>
+            <li class="shop-item" data-cat="art">
+              <button class="si-inspect" data-item="print" aria-label="Inspect Framed art print">
+                <span class="si-shot"><span class="si-no">No. 002</span><img src="assets/shop/print-1-sm.webp" alt="Framed art print, product photo" width="600" height="600" loading="lazy" decoding="async" /><img src="assets/shop/print-2-sm.webp" alt="" width="600" height="600" loading="lazy" decoding="async" /></span>
+              </button>
+              <div class="si-info">
+                <span class="si-cat">ART &amp; COLLECTIBLES</span>
+                <h4>Framed art print</h4>
+                <p>Our PXL World poster, logo and spirit animals as gallery-ready prints, matted and framed.</p>
+                <span class="rarity r-rare">&#9670; RARE</span>
+              </div>
+            </li>
+            <li class="shop-item" data-cat="art">
+              <button class="si-inspect" data-item="pin" aria-label="Inspect PXL enamel pin">
+                <span class="si-shot"><span class="si-no">No. 003</span><img src="assets/shop/pin-1-sm.webp" alt="PXL enamel pin, product photo" width="600" height="600" loading="lazy" decoding="async" /><img src="assets/shop/pin-2-sm.webp" alt="" width="600" height="600" loading="lazy" decoding="async" /></span>
+              </button>
+              <div class="si-info">
+                <span class="si-cat">ART &amp; COLLECTIBLES</span>
+                <h4>PXL enamel pin</h4>
+                <p>The primary mark as a hard-enamel pin with gold edges. Looks good on any bag or jacket.</p>
+                <span class="rarity r-rare">&#9670; RARE</span>
+              </div>
+            </li>
+            <li class="shop-item" data-cat="art">
+              <button class="si-inspect" data-item="figure" aria-label="Inspect PXL Bot vinyl figure">
+                <span class="si-shot"><span class="si-no">No. 004</span><img src="assets/shop/figure-1-sm.webp" alt="PXL Bot vinyl figure, product photo" width="600" height="600" loading="lazy" decoding="async" /><img src="assets/shop/figure-2-sm.webp" alt="" width="600" height="600" loading="lazy" decoding="async" /></span>
+              </button>
+              <div class="si-info">
+                <span class="si-cat">ART &amp; COLLECTIBLES</span>
+                <h4>PXL Bot vinyl figure</h4>
+                <p>The Explorer as a vinyl figure in a printed retail box. Series 001.</p>
+                <span class="rarity r-legendary">&#9670; LEGENDARY</span>
+              </div>
+            </li>
+            <li class="shop-item" data-cat="games">
+              <button class="si-inspect" data-item="cart" aria-label="Inspect Pixel Catch cartridge">
+                <span class="si-shot"><span class="si-no">No. 005</span><img src="assets/shop/cart-1-sm.webp" alt="Pixel Catch cartridge, product photo" width="600" height="600" loading="lazy" decoding="async" /><img src="assets/shop/cart-2-sm.webp" alt="" width="600" height="600" loading="lazy" decoding="async" /></span>
+              </button>
+              <div class="si-info">
+                <span class="si-cat">8-BIT GAMES</span>
+                <h4>Pixel Catch cartridge</h4>
+                <p>Our first game on a chunky cartridge, with original label art.</p>
+                <span class="rarity r-rare">&#9670; RARE</span>
+              </div>
+            </li>
+            <li class="shop-item" data-cat="games">
+              <button class="si-inspect" data-item="gamebox" aria-label="Inspect Pixel Catch box art">
+                <span class="si-shot"><span class="si-no">No. 006</span><img src="assets/shop/gamebox-1-sm.webp" alt="Pixel Catch box art, product photo" width="600" height="600" loading="lazy" decoding="async" /><img src="assets/shop/gamebox-2-sm.webp" alt="" width="600" height="600" loading="lazy" decoding="async" /></span>
+              </button>
+              <div class="si-info">
+                <span class="si-cat">8-BIT GAMES</span>
+                <h4>Pixel Catch box art</h4>
+                <p>The retail box: bold title, the Explorer front and centre, and an all-ages badge.</p>
+                <span class="rarity r-legendary">&#9670; LEGENDARY</span>
+              </div>
+            </li>
+            <li class="shop-item" data-cat="games">
+              <button class="si-inspect" data-item="handheld" aria-label="Inspect Handheld edition">
+                <span class="si-shot"><span class="si-no">No. 007</span><img src="assets/shop/handheld-1-sm.webp" alt="Handheld edition, product photo" width="600" height="600" loading="lazy" decoding="async" /><img src="assets/shop/handheld-2-sm.webp" alt="" width="600" height="600" loading="lazy" decoding="async" /></span>
+              </button>
+              <div class="si-info">
+                <span class="si-cat">8-BIT GAMES</span>
+                <h4>Handheld edition</h4>
+                <p>Pixel Catch on the go: catch the peach pixels, dodge the red glitches.</p>
+                <span class="rarity r-epic">&#9670; EPIC</span>
+              </div>
+            </li>
+            <li class="shop-item" data-cat="animation">
+              <button class="si-inspect" data-item="phone" aria-label="Inspect PXL Shorts on your phone">
+                <span class="si-shot"><span class="si-no">No. 008</span><img src="assets/shop/phone-1-sm.webp" alt="PXL Shorts on your phone, product photo" width="600" height="600" loading="lazy" decoding="async" /><img src="assets/shop/phone-2-sm.webp" alt="" width="600" height="600" loading="lazy" decoding="async" /></span>
+              </button>
+              <div class="si-info">
+                <span class="si-cat">ANIMATION</span>
+                <h4>PXL Shorts on your phone</h4>
+                <p>Short pixel episodes built for the feed: one small frame at a time.</p>
+                <span class="rarity r-epic">&#9670; EPIC</span>
+              </div>
+            </li>
+            <li class="shop-item" data-cat="animation">
+              <button class="si-inspect" data-item="episodes" aria-label="Inspect Episode lineup">
+                <span class="si-shot"><span class="si-no">No. 009</span><img src="assets/shop/episodes-1-sm.webp" alt="Episode lineup, product photo" width="600" height="600" loading="lazy" decoding="async" /><img src="assets/shop/episodes-2-sm.webp" alt="" width="600" height="600" loading="lazy" decoding="async" /></span>
+              </button>
+              <div class="si-info">
+                <span class="si-cat">ANIMATION</span>
+                <h4>Episode lineup</h4>
+                <p>Season one at a glance: each short stars the Explorer and a spirit-animal friend.</p>
+                <span class="rarity r-rare">&#9670; RARE</span>
+              </div>
+            </li>
+            <li class="shop-item" data-cat="merch">
+              <button class="si-inspect" data-item="tee" aria-label="Inspect PXL logo tee">
+                <span class="si-shot"><span class="si-no">No. 010</span><img src="assets/shop/tee-1-sm.webp" alt="PXL logo tee, product photo" width="600" height="600" loading="lazy" decoding="async" /><img src="assets/shop/tee-2-sm.webp" alt="" width="600" height="600" loading="lazy" decoding="async" /></span>
+              </button>
+              <div class="si-info">
+                <span class="si-cat">BRAND MERCH</span>
+                <h4>PXL logo tee</h4>
+                <p>Cotton tee with the primary mark and our tagline front and centre.</p>
+                <span class="rarity r-common">&#9670; COMMON</span>
+              </div>
+            </li>
+            <li class="shop-item" data-cat="merch">
+              <button class="si-inspect" data-item="tote" aria-label="Inspect Pix L&rsquo;s into W&rsquo;s tote">
+                <span class="si-shot"><span class="si-no">No. 011</span><img src="assets/shop/tote-1-sm.webp" alt="Pix L&rsquo;s into W&rsquo;s tote, product photo" width="600" height="600" loading="lazy" decoding="async" /><img src="assets/shop/tote-2-sm.webp" alt="" width="600" height="600" loading="lazy" decoding="async" /></span>
+              </button>
+              <div class="si-info">
+                <span class="si-cat">BRAND MERCH</span>
+                <h4>Pix L&rsquo;s into W&rsquo;s tote</h4>
+                <p>A cream canvas tote carrying our tagline in big pixel type.</p>
+                <span class="rarity r-common">&#9670; COMMON</span>
+              </div>
+            </li>
+            <li class="shop-item" data-cat="merch">
+              <button class="si-inspect" data-item="cap" aria-label="Inspect PXL patch cap">
+                <span class="si-shot"><span class="si-no">No. 012</span><img src="assets/shop/cap-1-sm.webp" alt="PXL patch cap, product photo" width="600" height="600" loading="lazy" decoding="async" /><img src="assets/shop/cap-2-sm.webp" alt="" width="600" height="600" loading="lazy" decoding="async" /></span>
+              </button>
+              <div class="si-info">
+                <span class="si-cat">BRAND MERCH</span>
+                <h4>PXL patch cap</h4>
+                <p>Six-panel cap with a stitched secondary-logo patch.</p>
+                <span class="rarity r-rare">&#9670; RARE</span>
+              </div>
+            </li>
+        </ul>
+      </section>
+      <section class="rivals section-pad" id="rivals" aria-labelledby="rivals-heading">
+        <div class="section-label">
+          <span>WORLD 1-3 / BOSS RUSH</span><span>THE GIANTS WE PLAY ALONGSIDE</span>
+        </div>
+        <div class="section-heading">
+          <h2 id="rivals-heading">Four bosses.<br />One small player.</h2>
+          <p>We grew up on these legends.<br />Here&rsquo;s where PXL fits next to them.</p>
+        </div>
+        <ol class="boss-grid">
+          <li class="boss" style="--hp: 100%">
+            <div class="boss-top">
+              <span class="boss-no">BOSS 01</span>
+              <span class="boss-meta">KYOTO, JAPAN &middot; EST. 1889</span>
+            </div>
+            <div class="boss-logo"><img src="assets/rivals/nintendo.svg" alt="Nintendo logo" /></div>
+            <h3 class="boss-name">Nintendo</h3>
+            <div class="boss-hp" aria-hidden="true"><span>HP</span><b><i></i></b><em>GLOBAL GIANT</em></div>
+            <p class="boss-intro">Iconic characters that live everywhere: consoles, games, films, theme parks and figures.</p>
+            <div class="boss-sig"><span class="boss-label">SIGNATURE TITLES</span><ul><li class="sig-logo"><img src="assets/rivals/mario.svg" alt="Super Mario" loading="lazy" /></li><li class="sig-logo"><img src="assets/rivals/pokemon.svg" alt="Pokémon" loading="lazy" /></li><li class="sig-logo"><img src="assets/rivals/zelda.svg" alt="The Legend of Zelda" loading="lazy" /></li></ul></div>
+            <span class="boss-label">KNOWN FOR</span>
+            <ul class="boss-moves"><li>Home and handheld consoles</li><li>Character games played worldwide</li><li>Animated films and theme parks</li><li>Collectible figures and merch</li></ul>
+            <div class="boss-counter">
+              <span>PXL&rsquo;S COUNTER-MOVE</span>
+              <p>Huge worlds need huge budgets. We stay pixel-first and close to home, so new players can meet us at a mall event, not just on a console.</p>
+            </div>
+          </li>
+          <li class="boss" style="--hp: 92%">
+            <div class="boss-top">
+              <span class="boss-no">BOSS 02</span>
+              <span class="boss-meta">TOKYO, JAPAN &middot; EST. 1960</span>
+            </div>
+            <div class="boss-logo"><img src="assets/rivals/sega.svg" alt="SEGA logo" /></div>
+            <h3 class="boss-name">SEGA</h3>
+            <div class="boss-hp" aria-hidden="true"><span>HP</span><b><i></i></b><em>GLOBAL GIANT</em></div>
+            <p class="boss-intro">Arcade-born legends with fast, bold characters that crossed into film and toys.</p>
+            <div class="boss-sig"><span class="boss-label">SIGNATURE TITLES</span><ul><li class="sig-logo"><img src="assets/rivals/sonic.svg" alt="Sonic the Hedgehog" loading="lazy" /></li><li class="sig-text">Yakuza</li><li class="sig-text">Puyo Puyo</li></ul></div>
+            <span class="boss-label">KNOWN FOR</span>
+            <ul class="boss-moves"><li>Arcade and console game heritage</li><li>Fast, character-led franchises</li><li>Live-action and animated films</li><li>Toys, prizes and merch</li></ul>
+            <div class="boss-counter">
+              <span>PXL&rsquo;S COUNTER-MOVE</span>
+              <p>SEGA grew up in the arcade. We bring that arcade spirit back in pixels, then carry it into art, stickers and shorts from day one.</p>
+            </div>
+          </li>
+          <li class="boss" style="--hp: 88%">
+            <div class="boss-top">
+              <span class="boss-no">BOSS 03</span>
+              <span class="boss-meta">TOKYO, JAPAN &middot; EST. 2005</span>
+            </div>
+            <div class="boss-logo"><img src="assets/rivals/bandainamco.svg" alt="Bandai Namco logo" /></div>
+            <h3 class="boss-name">Bandai Namco</h3>
+            <div class="boss-hp" aria-hidden="true"><span>HP</span><b><i></i></b><em>GLOBAL GIANT</em></div>
+            <p class="boss-intro">A giant of toys, model kits, games and anime, built from two classic companies.</p>
+            <div class="boss-sig"><span class="boss-label">SIGNATURE TITLES</span><ul><li class="sig-logo"><img src="assets/rivals/pacman.svg" alt="Pac-Man" loading="lazy" /></li><li class="sig-logo"><img src="assets/rivals/tekken.svg" alt="Tekken" loading="lazy" /></li><li class="sig-text">Gundam</li><li class="sig-text">Tamagotchi</li></ul></div>
+            <span class="boss-label">KNOWN FOR</span>
+            <ul class="boss-moves"><li>Toys, model kits and capsule figures</li><li>Classic arcade and console games</li><li>Anime production and licensing</li><li>Huge collector communities</li></ul>
+            <div class="boss-counter">
+              <span>PXL&rsquo;S COUNTER-MOVE</span>
+              <p>They make collecting a lifestyle. Our collectibles start smaller and personal: original pixel characters with a spirit-animal story behind each one.</p>
+            </div>
+          </li>
+          <li class="boss" style="--hp: 84%">
+            <div class="boss-top">
+              <span class="boss-no">BOSS 04</span>
+              <span class="boss-meta">TOKYO, JAPAN &middot; EST. 1960</span>
+            </div>
+            <div class="boss-logo"><span class="boss-wordmark" role="img" aria-label="Sanrio">Sanrio</span></div>
+            <h3 class="boss-name">Sanrio</h3>
+            <div class="boss-hp" aria-hidden="true"><span>HP</span><b><i></i></b><em>GLOBAL GIANT</em></div>
+            <p class="boss-intro">The master of lovable characters on everything from stationery to cafés.</p>
+            <div class="boss-sig"><span class="boss-label">SIGNATURE TITLES</span><ul><li class="sig-text">Hello Kitty</li><li class="sig-text">My Melody</li><li class="sig-text">Kuromi</li><li class="sig-text">Cinnamoroll</li></ul></div>
+            <span class="boss-label">KNOWN FOR</span>
+            <ul class="boss-moves"><li>Character design as the core brand</li><li>Stationery, plush and lifestyle merch</li><li>Animated series and collaborations</li><li>Fans across every age group</li></ul>
+            <div class="boss-counter">
+              <span>PXL&rsquo;S COUNTER-MOVE</span>
+              <p>Sanrio proves cute travels. We pair that all-ages warmth with gaming nostalgia, so our characters can also be played, not just collected.</p>
+            </div>
+          </li>
+        </ol>
+        <div class="stat-check">
+          <div class="sc-head">
+            <span class="tiny-label">STAT CHECK</span>
+            <span class="sc-key"><b>&#9679;</b> core business <b>&#9680;</b> heritage or partial <b>&#9675;</b> not a focus</span>
+          </div>
+          <div class="sc-scroll">
+            <table>
+              <thead>
+                <tr><th scope="col"><span class="sr-only">Capability</span></th><th scope="col" class="sc-pxl">PXL</th><th scope="col">Nintendo</th><th scope="col">SEGA</th><th scope="col">Bandai Namco</th><th scope="col">Sanrio</th></tr>
+              </thead>
+              <tbody><tr><th scope="row">Games</th><td><span class="dot" title="Core">&#9679;</span><span class="sr-only">Core</span></td><td><span class="dot" title="Core">&#9679;</span><span class="sr-only">Core</span></td><td><span class="dot" title="Core">&#9679;</span><span class="sr-only">Core</span></td><td><span class="dot" title="Core">&#9679;</span><span class="sr-only">Core</span></td><td><span class="dot" title="Heritage or partial">&#9680;</span><span class="sr-only">Heritage or partial</span></td></tr><tr><th scope="row">Toys &amp; collectibles</th><td><span class="dot" title="Core">&#9679;</span><span class="sr-only">Core</span></td><td><span class="dot" title="Core">&#9679;</span><span class="sr-only">Core</span></td><td><span class="dot" title="Core">&#9679;</span><span class="sr-only">Core</span></td><td><span class="dot" title="Core">&#9679;</span><span class="sr-only">Core</span></td><td><span class="dot" title="Core">&#9679;</span><span class="sr-only">Core</span></td></tr><tr><th scope="row">Animation &amp; film</th><td><span class="dot" title="Core">&#9679;</span><span class="sr-only">Core</span></td><td><span class="dot" title="Core">&#9679;</span><span class="sr-only">Core</span></td><td><span class="dot" title="Core">&#9679;</span><span class="sr-only">Core</span></td><td><span class="dot" title="Core">&#9679;</span><span class="sr-only">Core</span></td><td><span class="dot" title="Core">&#9679;</span><span class="sr-only">Core</span></td></tr><tr><th scope="row">Character art &amp; merch</th><td><span class="dot" title="Core">&#9679;</span><span class="sr-only">Core</span></td><td><span class="dot" title="Core">&#9679;</span><span class="sr-only">Core</span></td><td><span class="dot" title="Core">&#9679;</span><span class="sr-only">Core</span></td><td><span class="dot" title="Core">&#9679;</span><span class="sr-only">Core</span></td><td><span class="dot" title="Core">&#9679;</span><span class="sr-only">Core</span></td></tr><tr><th scope="row">Pixel art as the whole identity</th><td><span class="dot" title="Core">&#9679;</span><span class="sr-only">Core</span></td><td><span class="dot" title="Heritage or partial">&#9680;</span><span class="sr-only">Heritage or partial</span></td><td><span class="dot" title="Heritage or partial">&#9680;</span><span class="sr-only">Heritage or partial</span></td><td><span class="dot" title="Heritage or partial">&#9680;</span><span class="sr-only">Heritage or partial</span></td><td><span class="dot" title="Not a focus">&#9675;</span><span class="sr-only">Not a focus</span></td></tr><tr class="tr-text"><th scope="row">Home base</th><td>Cabanatuan, PH</td><td>Kyoto, JP</td><td>Tokyo, JP</td><td>Tokyo, JP</td><td>Tokyo, JP</td></tr><tr class="tr-text"><th scope="row">Size</th><td>Independent</td><td>Global</td><td>Global</td><td>Global</td><td>Global</td></tr></tbody>
+            </table>
+          </div>
+          <p class="sc-note">Based on each company&rsquo;s public, well-known business lines. A friendly comparison, not a ranking.</p>
+          <p class="rights-note">All company and game logos are trademarks of their owners, shown here only to identify them.</p>
+        </div>
+        <div class="our-move">
+          <span class="om-tag">&#9733; OUR SPECIAL MOVE</span>
+          <ul>
+            <li><b>Pixel-first from day one.</b> The giants have pixel heritage. Pixels are our entire identity.</li>
+            <li><b>All four worlds, one small team.</b> Art, collectibles, games and animation share one visual language.</li>
+            <li><b>Close to home.</b> We meet players in person, starting with PXL World at SM City Cabanatuan.</li>
+          </ul>
+        </div>
+      </section>
+      <section class="manifesto" id="bonus">
         <div class="manifesto-grid" aria-hidden="true"></div>
-        <span class="eyebrow">IT’S MORE THAN AN AESTHETIC.</span>
+        <span class="eyebrow">BONUS STAGE / IT’S MORE THAN AN AESTHETIC.</span>
         <p>WE THINK<br /><span>IN PIXELS.</span></p>
+        <div class="bonus-band" aria-hidden="true">
+          <span class="lw-counter">L &rarr; W <b id="lw-count">00</b></span>
+          <div class="bonus-track"><span>PIX <span class="flip-l">L</span>&rsquo;S INTO W&rsquo;S &#10022; PIX <span class="flip-l">L</span>&rsquo;S INTO W&rsquo;S &#10022; PIX <span class="flip-l">L</span>&rsquo;S INTO W&rsquo;S &#10022; PIX <span class="flip-l">L</span>&rsquo;S INTO W&rsquo;S &#10022; PIX <span class="flip-l">L</span>&rsquo;S INTO W&rsquo;S &#10022; PIX <span class="flip-l">L</span>&rsquo;S INTO W&rsquo;S &#10022; </span><span>PIX <span class="flip-l">L</span>&rsquo;S INTO W&rsquo;S &#10022; PIX <span class="flip-l">L</span>&rsquo;S INTO W&rsquo;S &#10022; PIX <span class="flip-l">L</span>&rsquo;S INTO W&rsquo;S &#10022; PIX <span class="flip-l">L</span>&rsquo;S INTO W&rsquo;S &#10022; PIX <span class="flip-l">L</span>&rsquo;S INTO W&rsquo;S &#10022; PIX <span class="flip-l">L</span>&rsquo;S INTO W&rsquo;S &#10022; </span></div>
+          <img class="bonus-rider" src="assets/robot.svg" alt="" width="240" height="264" />
+        </div>
+        <button class="bonus-coin" style="--x: 72%; --y: 16%; --d: 0s" aria-label="Collect bonus pixel 1">&#10022;</button><button class="bonus-coin" style="--x: 86%; --y: 44%; --d: 0.6s" aria-label="Collect bonus pixel 2">&#10022;</button><button class="bonus-coin" style="--x: 58%; --y: 58%; --d: 1.2s" aria-label="Collect bonus pixel 3">&#10022;</button>
         <div class="manifesto-bottom">
           <span>NOSTALGIA IS OUR STARTING POINT.</span
           ><span>IMAGINATION TAKES IT FROM HERE. ↗</span>
@@ -491,7 +898,7 @@
         aria-labelledby="identity-heading"
       >
         <div class="section-label">
-          <span>03 / THE IDENTITY</span
+          <span>WORLD 1-4 / THE IDENTITY</span
           ><span>SMALL DETAILS. XL PERSONALITY.</span>
         </div>
         <div class="section-heading">
@@ -500,6 +907,9 @@
             Our palette. Our type. Our point of view.<br />One unmistakable
             pixel-first identity.
           </p>
+        </div>
+        <div class="lab-strip" aria-hidden="true">
+          <span><i></i> BRAND LAB ONLINE</span><span>3 COLORS</span><span>2 TYPEFACES</span><span>2 MARKS</span><span>&infin; COMBOS</span>
         </div>
         <div class="logo-showcase">
           <div class="logo-main">
@@ -510,14 +920,26 @@
               aria-label="View full-size primary logo"
             >
               <img
-                class="actual-logo"
+                class="actual-logo" data-pxl-reveal
                 src="assets/logo-primary.png"
                 alt="PXL primary logo with the XL nested within the P"
                 width="1147"
                 height="1147"
                 loading="lazy"
               /></button
-            ><span class="tiny-label">PIXEL × EXTRA LARGE</span>
+            ><span class="blueprint" aria-hidden="true"
+              ><i class="bp-h"></i><i class="bp-v"></i><i class="bp-box"></i
+              ><b class="bp-tl">1:1</b><b class="bp-br">10 &times; 10 GRID</b></span
+            >
+            <div class="logo-foot">
+              <span class="tiny-label">PIXEL × EXTRA LARGE</span>
+              <div class="bg-switch" role="group" aria-label="Test the logo on brand backgrounds">
+                <button class="bg-chip" data-bg="#001768" aria-pressed="true" aria-label="Navy background"></button
+                ><button class="bg-chip" data-bg="#be3621" aria-pressed="false" aria-label="Red background"></button
+                ><button class="bg-chip" data-bg="#fff0d6" aria-pressed="false" aria-label="Cream background"></button
+                ><button class="bg-chip" data-bg="#00104b" aria-pressed="false" aria-label="Deep navy background"></button>
+              </div>
+            </div>
           </div>
           <div class="logo-alt">
             <span class="tiny-label">02 / SECONDARY LOGO</span
@@ -527,7 +949,7 @@
               aria-label="View full-size secondary logo"
             >
               <img
-                class="actual-logo"
+                class="actual-logo" data-pxl-reveal
                 src="assets/logo-secondary.png"
                 alt="PXL horizontal secondary logo with pixel-shaped lettering"
                 width="1806"
@@ -543,7 +965,7 @@
         </div>
         <div class="process-heading">
           <h3>Built one bit at a time.</h3>
-          <span class="tiny-label">THE ORIGINAL LOGO DEVELOPMENT</span>
+          <span class="tiny-label">DEV LOG / THE ORIGINAL LOGO DEVELOPMENT</span>
         </div>
         <button
           class="asset-button logo-process-button"
@@ -551,14 +973,17 @@
           aria-label="Enlarge original PXL logo development board"
         >
           <img
-            class="logo-process-art"
-            src="assets/logo-process.png"
-            alt="Original logo development board showing block-based sketches, pixel lettering, and the evolution into the PXL primary mark"
+            class="logo-process-art" data-pxl-reveal
+            src="assets/logo-board.png"
+            alt="Logo development board on navy: block-based P and XL studies, pixel lettering experiments, and the evolution into the final peach primary mark"
             width="1526"
             height="1134"
             loading="lazy"
           />
         </button>
+        <div class="exp-bar" aria-hidden="true">
+          <span>EXP</span><b><i></i></b><em>LV 3 / MAX</em>
+        </div>
         <ol class="logo-process">
           <li>
             <span>01 / EXPLORE</span>
@@ -624,11 +1049,21 @@
             ><span>RGB 0 · 23 · 104 <span aria-hidden="true">↗</span></span>
           </button>
         </div>
+        <div class="combo-lab">
+          <div class="combo-head">
+            <span class="tiny-label">COMBO LAB / TESTED FOR READABILITY</span>
+            <span class="combo-key"><b>AAA</b> 7:1+ <b>AA</b> 4.5:1+ <b>BIG</b> 3:1+ (large text only)</span>
+          </div>
+          <ul class="combo-grid" id="combo-grid"></ul>
+        </div>
         <div class="type-heading">
           <h3>Type with character.</h3>
           <span class="tiny-label">TRY THE TYPEFACES ↓</span>
         </div>
         <div class="type-tester">
+          <span class="hs-top" aria-hidden="true"
+            ><span>HIGH SCORE ENTRY</span><span id="type-count">16/55</span></span
+          >
           <label for="type-input">Your words, our world.</label
           ><input
             id="type-input"
@@ -667,59 +1102,72 @@
         class="playground section-pad"
         aria-labelledby="playground-heading"
       >
-        <div>
-          <p class="eyebrow">YOUR TURN, PLAYER ONE.</p>
-          <h2 id="playground-heading">Make your<br />mark. Literally.</h2>
-          <p>
-            Every world starts with a single pixel.<br />Draw something. Make it
-            yours.
-          </p>
-          <div class="drawing-tools" role="group" aria-label="Drawing tools">
-            <button
-              class="paint-color selected"
-              data-paint="#FFB65D"
-              style="--paint: #ffb65d"
-              aria-label="Draw in peach"
-              aria-pressed="true"
-            ></button
-            ><button
-              class="paint-color"
-              data-paint="#BE3621"
-              style="--paint: #be3621"
-              aria-label="Draw in red"
-              aria-pressed="false"
-            ></button
-            ><button
-              class="paint-color"
-              data-paint="#001768"
-              style="--paint: #001768"
-              aria-label="Draw in navy"
-              aria-pressed="false"
-            ></button
-            ><button class="tool-button" id="erase" aria-pressed="false">
-              Eraser</button
-            ><button class="tool-button" id="clear-art">Clear</button>
+        <div class="studio-intro">
+          <div>
+            <p class="eyebrow">SIDE QUEST / YOUR TURN, PLAYER ONE.</p>
+            <h2 id="playground-heading">Make your<br />mark. Literally.</h2>
+            <p>
+              Every world starts with a single pixel. Draw something, make it
+              yours, and take it home as a sticker.
+            </p>
           </div>
-          <button class="text-button" id="save-art">
-            Save your pixel art <span>↓</span>
-          </button>
-          <p class="concept-note">
-            Draw with a pointer or touch. Keyboard: arrow keys to move, Space to
-            paint.
-          </p>
+          <div class="quest-card">
+            <span class="quest-tag">&#9733; QUEST</span>
+            <p class="quest-text" id="quest-text" aria-live="polite">Draw your spirit animal.</p>
+            <button class="quest-new" id="quest-new">NEW QUEST <span aria-hidden="true">&#8635;</span></button>
+          </div>
         </div>
-        <div class="drawing-frame">
-          <div class="drawing-title">
-            <span>UNTITLED_PIXEL.png</span><span>16 × 16</span>
+        <div class="studio">
+          <div class="studio-bar">
+            <span class="sb-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            <label class="file-name"
+              ><span class="sr-only">File name</span
+              ><input id="art-name" type="text" value="untitled_pixel" maxlength="24" spellcheck="false" /><b>.png</b></label
+            >
+            <span class="studio-size">PXL STUDIO &middot; 16 &times; 16</span>
           </div>
-          <div
-            id="pixel-grid"
-            role="grid"
-            aria-label="Interactive 16 by 16 pixel art canvas"
-          ></div>
-          <div class="drawing-footer">
-            <span>YOU DON’T NEED PERMISSION TO CREATE.</span
-            ><span aria-hidden="true">✦</span>
+          <div class="studio-body">
+            <div class="studio-tools" role="toolbar" aria-label="Drawing tools">
+              <button class="tool on" data-tool="pencil" aria-pressed="true" title="Pencil (B)"><svg class="ti" viewBox="0 0 8 8" shape-rendering="crispEdges" aria-hidden="true" focusable="false"><rect x="6" y="0" width="1" height="1" fill="#001768"/><rect x="7" y="0" width="1" height="1" fill="#001768"/><rect x="5" y="1" width="1" height="1" fill="#001768"/><rect x="6" y="1" width="1" height="1" fill="#be3621"/><rect x="7" y="1" width="1" height="1" fill="#001768"/><rect x="4" y="2" width="1" height="1" fill="#001768"/><rect x="5" y="2" width="1" height="1" fill="#ffb65d"/><rect x="6" y="2" width="1" height="1" fill="#001768"/><rect x="3" y="3" width="1" height="1" fill="#001768"/><rect x="4" y="3" width="1" height="1" fill="#ffb65d"/><rect x="5" y="3" width="1" height="1" fill="#001768"/><rect x="2" y="4" width="1" height="1" fill="#001768"/><rect x="3" y="4" width="1" height="1" fill="#ffb65d"/><rect x="4" y="4" width="1" height="1" fill="#001768"/><rect x="1" y="5" width="1" height="1" fill="#001768"/><rect x="2" y="5" width="1" height="1" fill="#ffb65d"/><rect x="3" y="5" width="1" height="1" fill="#001768"/><rect x="0" y="6" width="1" height="1" fill="#001768"/><rect x="1" y="6" width="1" height="1" fill="#fff0d6"/><rect x="2" y="6" width="1" height="1" fill="#001768"/><rect x="0" y="7" width="1" height="1" fill="#001768"/><rect x="1" y="7" width="1" height="1" fill="#001768"/></svg><span>PENCIL</span></button>
+              <button class="tool" data-tool="eraser" aria-pressed="false" title="Eraser (E)"><svg class="ti" viewBox="0 0 8 8" shape-rendering="crispEdges" aria-hidden="true" focusable="false"><rect x="3" y="0" width="1" height="1" fill="#001768"/><rect x="4" y="0" width="1" height="1" fill="#001768"/><rect x="5" y="0" width="1" height="1" fill="#001768"/><rect x="6" y="0" width="1" height="1" fill="#001768"/><rect x="2" y="1" width="1" height="1" fill="#001768"/><rect x="3" y="1" width="1" height="1" fill="#be3621"/><rect x="4" y="1" width="1" height="1" fill="#be3621"/><rect x="5" y="1" width="1" height="1" fill="#be3621"/><rect x="6" y="1" width="1" height="1" fill="#be3621"/><rect x="7" y="1" width="1" height="1" fill="#001768"/><rect x="1" y="2" width="1" height="1" fill="#001768"/><rect x="2" y="2" width="1" height="1" fill="#be3621"/><rect x="3" y="2" width="1" height="1" fill="#be3621"/><rect x="4" y="2" width="1" height="1" fill="#be3621"/><rect x="5" y="2" width="1" height="1" fill="#be3621"/><rect x="6" y="2" width="1" height="1" fill="#be3621"/><rect x="7" y="2" width="1" height="1" fill="#001768"/><rect x="0" y="3" width="1" height="1" fill="#001768"/><rect x="1" y="3" width="1" height="1" fill="#fff0d6"/><rect x="2" y="3" width="1" height="1" fill="#001768"/><rect x="3" y="3" width="1" height="1" fill="#be3621"/><rect x="4" y="3" width="1" height="1" fill="#be3621"/><rect x="5" y="3" width="1" height="1" fill="#be3621"/><rect x="6" y="3" width="1" height="1" fill="#001768"/><rect x="0" y="4" width="1" height="1" fill="#001768"/><rect x="1" y="4" width="1" height="1" fill="#fff0d6"/><rect x="2" y="4" width="1" height="1" fill="#fff0d6"/><rect x="3" y="4" width="1" height="1" fill="#001768"/><rect x="4" y="4" width="1" height="1" fill="#be3621"/><rect x="5" y="4" width="1" height="1" fill="#001768"/><rect x="0" y="5" width="1" height="1" fill="#001768"/><rect x="1" y="5" width="1" height="1" fill="#fff0d6"/><rect x="2" y="5" width="1" height="1" fill="#fff0d6"/><rect x="3" y="5" width="1" height="1" fill="#fff0d6"/><rect x="4" y="5" width="1" height="1" fill="#001768"/><rect x="1" y="6" width="1" height="1" fill="#001768"/><rect x="2" y="6" width="1" height="1" fill="#001768"/><rect x="3" y="6" width="1" height="1" fill="#001768"/></svg><span>ERASER</span></button>
+              <button class="tool" data-tool="fill" aria-pressed="false" title="Fill (G)"><svg class="ti" viewBox="0 0 8 8" shape-rendering="crispEdges" aria-hidden="true" focusable="false"><rect x="3" y="0" width="1" height="1" fill="#001768"/><rect x="2" y="1" width="1" height="1" fill="#001768"/><rect x="3" y="1" width="1" height="1" fill="#fff0d6"/><rect x="4" y="1" width="1" height="1" fill="#001768"/><rect x="1" y="2" width="1" height="1" fill="#001768"/><rect x="2" y="2" width="1" height="1" fill="#fff0d6"/><rect x="3" y="2" width="1" height="1" fill="#fff0d6"/><rect x="4" y="2" width="1" height="1" fill="#fff0d6"/><rect x="5" y="2" width="1" height="1" fill="#001768"/><rect x="0" y="3" width="1" height="1" fill="#001768"/><rect x="1" y="3" width="1" height="1" fill="#fff0d6"/><rect x="2" y="3" width="1" height="1" fill="#fff0d6"/><rect x="3" y="3" width="1" height="1" fill="#fff0d6"/><rect x="4" y="3" width="1" height="1" fill="#fff0d6"/><rect x="5" y="3" width="1" height="1" fill="#fff0d6"/><rect x="6" y="3" width="1" height="1" fill="#001768"/><rect x="1" y="4" width="1" height="1" fill="#001768"/><rect x="2" y="4" width="1" height="1" fill="#fff0d6"/><rect x="3" y="4" width="1" height="1" fill="#fff0d6"/><rect x="4" y="4" width="1" height="1" fill="#fff0d6"/><rect x="5" y="4" width="1" height="1" fill="#001768"/><rect x="6" y="4" width="1" height="1" fill="#ffb65d"/><rect x="7" y="4" width="1" height="1" fill="#ffb65d"/><rect x="2" y="5" width="1" height="1" fill="#001768"/><rect x="3" y="5" width="1" height="1" fill="#fff0d6"/><rect x="4" y="5" width="1" height="1" fill="#001768"/><rect x="6" y="5" width="1" height="1" fill="#ffb65d"/><rect x="7" y="5" width="1" height="1" fill="#ffb65d"/><rect x="3" y="6" width="1" height="1" fill="#001768"/><rect x="6" y="6" width="1" height="1" fill="#ffb65d"/><rect x="7" y="6" width="1" height="1" fill="#ffb65d"/><rect x="6" y="7" width="1" height="1" fill="#ffb65d"/></svg><span>FILL</span></button>
+              <button class="tool" id="mirror-tool" aria-pressed="false" title="Mirror (M)"><svg class="ti" viewBox="0 0 8 8" shape-rendering="crispEdges" aria-hidden="true" focusable="false"><rect x="0" y="0" width="1" height="1" fill="#001768"/><rect x="1" y="0" width="1" height="1" fill="#001768"/><rect x="2" y="0" width="1" height="1" fill="#001768"/><rect x="5" y="0" width="1" height="1" fill="#001768"/><rect x="6" y="0" width="1" height="1" fill="#001768"/><rect x="7" y="0" width="1" height="1" fill="#001768"/><rect x="0" y="1" width="1" height="1" fill="#001768"/><rect x="1" y="1" width="1" height="1" fill="#ffb65d"/><rect x="2" y="1" width="1" height="1" fill="#001768"/><rect x="5" y="1" width="1" height="1" fill="#001768"/><rect x="6" y="1" width="1" height="1" fill="#ffb65d"/><rect x="7" y="1" width="1" height="1" fill="#001768"/><rect x="0" y="2" width="1" height="1" fill="#001768"/><rect x="1" y="2" width="1" height="1" fill="#ffb65d"/><rect x="2" y="2" width="1" height="1" fill="#ffb65d"/><rect x="3" y="2" width="1" height="1" fill="#001768"/><rect x="4" y="2" width="1" height="1" fill="#001768"/><rect x="5" y="2" width="1" height="1" fill="#ffb65d"/><rect x="6" y="2" width="1" height="1" fill="#ffb65d"/><rect x="7" y="2" width="1" height="1" fill="#001768"/><rect x="0" y="3" width="1" height="1" fill="#001768"/><rect x="1" y="3" width="1" height="1" fill="#ffb65d"/><rect x="2" y="3" width="1" height="1" fill="#ffb65d"/><rect x="3" y="3" width="1" height="1" fill="#001768"/><rect x="5" y="3" width="1" height="1" fill="#001768"/><rect x="6" y="3" width="1" height="1" fill="#ffb65d"/><rect x="7" y="3" width="1" height="1" fill="#001768"/><rect x="0" y="4" width="1" height="1" fill="#001768"/><rect x="1" y="4" width="1" height="1" fill="#ffb65d"/><rect x="2" y="4" width="1" height="1" fill="#001768"/><rect x="5" y="4" width="1" height="1" fill="#001768"/><rect x="6" y="4" width="1" height="1" fill="#ffb65d"/><rect x="7" y="4" width="1" height="1" fill="#001768"/><rect x="0" y="5" width="1" height="1" fill="#001768"/><rect x="1" y="5" width="1" height="1" fill="#001768"/><rect x="2" y="5" width="1" height="1" fill="#001768"/><rect x="5" y="5" width="1" height="1" fill="#001768"/><rect x="6" y="5" width="1" height="1" fill="#001768"/><rect x="7" y="5" width="1" height="1" fill="#001768"/><rect x="3" y="6" width="1" height="1" fill="#001768"/><rect x="4" y="6" width="1" height="1" fill="#001768"/></svg><span>MIRROR</span></button>
+              <span class="tool-sep" aria-hidden="true"></span>
+              <div class="palette-grid" role="group" aria-label="Colors"><button class="sw on" data-color="#FFB65D" style="--c:#FFB65D" aria-label="Paint in peach" aria-pressed="true"></button><button class="sw" data-color="#E08A2E" style="--c:#E08A2E" aria-label="Paint in amber" aria-pressed="false"></button><button class="sw" data-color="#BE3621" style="--c:#BE3621" aria-label="Paint in red" aria-pressed="false"></button><button class="sw" data-color="#8F2B29" style="--c:#8F2B29" aria-label="Paint in brick" aria-pressed="false"></button><button class="sw" data-color="#001768" style="--c:#001768" aria-label="Paint in navy" aria-pressed="false"></button><button class="sw" data-color="#FFF0D6" style="--c:#FFF0D6" aria-label="Paint in cream" aria-pressed="false"></button></div>
+            </div>
+            <div class="studio-canvas">
+              <div
+                id="pixel-grid"
+                role="grid"
+                aria-label="Interactive 16 by 16 pixel art canvas"
+              ></div>
+            </div>
+            <aside class="studio-side" aria-label="Preview and file">
+              <span class="side-label">LIVE STICKER PREVIEW</span>
+              <div class="sticker-stage">
+                <canvas id="art-preview" width="16" height="16" aria-hidden="true"></canvas>
+              </div>
+              <div class="side-row">
+                <button class="mini-btn" id="undo-art" aria-label="Undo (Ctrl+Z)"><svg class="ti" viewBox="0 0 8 8" shape-rendering="crispEdges" aria-hidden="true" focusable="false"><rect x="2" y="0" width="1" height="1" fill="#001768"/><rect x="1" y="1" width="1" height="1" fill="#001768"/><rect x="2" y="1" width="1" height="1" fill="#001768"/><rect x="0" y="2" width="1" height="1" fill="#001768"/><rect x="1" y="2" width="1" height="1" fill="#001768"/><rect x="2" y="2" width="1" height="1" fill="#001768"/><rect x="3" y="2" width="1" height="1" fill="#001768"/><rect x="4" y="2" width="1" height="1" fill="#001768"/><rect x="5" y="2" width="1" height="1" fill="#001768"/><rect x="1" y="3" width="1" height="1" fill="#001768"/><rect x="2" y="3" width="1" height="1" fill="#001768"/><rect x="6" y="3" width="1" height="1" fill="#001768"/><rect x="2" y="4" width="1" height="1" fill="#001768"/><rect x="7" y="4" width="1" height="1" fill="#001768"/><rect x="7" y="5" width="1" height="1" fill="#001768"/><rect x="6" y="6" width="1" height="1" fill="#001768"/><rect x="2" y="7" width="1" height="1" fill="#001768"/><rect x="3" y="7" width="1" height="1" fill="#001768"/><rect x="4" y="7" width="1" height="1" fill="#001768"/><rect x="5" y="7" width="1" height="1" fill="#001768"/></svg></button>
+                <button class="mini-btn" id="redo-art" aria-label="Redo (Ctrl+Y)"><svg class="ti" viewBox="0 0 8 8" shape-rendering="crispEdges" aria-hidden="true" focusable="false"><rect x="5" y="0" width="1" height="1" fill="#001768"/><rect x="5" y="1" width="1" height="1" fill="#001768"/><rect x="6" y="1" width="1" height="1" fill="#001768"/><rect x="2" y="2" width="1" height="1" fill="#001768"/><rect x="3" y="2" width="1" height="1" fill="#001768"/><rect x="4" y="2" width="1" height="1" fill="#001768"/><rect x="5" y="2" width="1" height="1" fill="#001768"/><rect x="6" y="2" width="1" height="1" fill="#001768"/><rect x="7" y="2" width="1" height="1" fill="#001768"/><rect x="1" y="3" width="1" height="1" fill="#001768"/><rect x="5" y="3" width="1" height="1" fill="#001768"/><rect x="6" y="3" width="1" height="1" fill="#001768"/><rect x="0" y="4" width="1" height="1" fill="#001768"/><rect x="5" y="4" width="1" height="1" fill="#001768"/><rect x="0" y="5" width="1" height="1" fill="#001768"/><rect x="1" y="6" width="1" height="1" fill="#001768"/><rect x="2" y="7" width="1" height="1" fill="#001768"/><rect x="3" y="7" width="1" height="1" fill="#001768"/><rect x="4" y="7" width="1" height="1" fill="#001768"/><rect x="5" y="7" width="1" height="1" fill="#001768"/></svg></button>
+                <button class="mini-btn wide" id="clear-art">CLEAR</button>
+              </div>
+              <span class="side-label">STARTERS</span>
+              <div class="starter-row">
+                <button class="starter" data-template="bot">BOT</button
+                ><button class="starter" data-template="heart">HEART</button
+                ><button class="starter" data-template="p">P MARK</button
+                ><button class="starter" data-template="w">W</button>
+              </div>
+              <button class="button button-peach save-btn" id="save-art">
+                SAVE STICKER <span aria-hidden="true">&darr;</span>
+              </button>
+            </aside>
+          </div>
+          <div class="studio-status" aria-live="polite">
+            <span id="st-tool">TOOL: PENCIL</span><span id="st-color">COLOR: PEACH</span
+            ><span id="st-mirror">MIRROR: OFF</span><span id="st-count">PIXELS: 000</span
+            ><span class="st-tip">B pencil &middot; E eraser &middot; G fill &middot; M mirror &middot; Ctrl+Z undo &middot; arrows + Space</span>
           </div>
         </div>
       </section>
@@ -729,38 +1177,63 @@
         aria-labelledby="campaigns-heading"
       >
         <div class="section-label">
-          <span>04 / OUT IN THE WORLD</span><span>THE PXL FEED</span>
+          <span>WORLD 1-5 / OUT IN THE WORLD</span><span>THE PXL FEED</span>
         </div>
         <div class="section-heading">
           <h2 id="campaigns-heading">Good things.<br />Coming in pixels.</h2>
           <p>A first hello.<br />And an invitation to the next level.</p>
         </div>
-        <div class="campaign-row">
+        <div class="feed-row">
+          <div class="phone" aria-label="The first PXL brand post, shown in a feed">
+            <div class="phone-notch" aria-hidden="true"></div>
+            <div class="phone-status" aria-hidden="true"><span>9:41</span><b>PXL FEED</b><span>&#9632;&#9632;&#9632; 100%</span></div>
+            <div class="post-head">
+              <img src="assets/logo-primary.png" alt="" width="1147" height="1147" />
+              <span><b>pxl</b><small>Cabanatuan City, PH</small></span>
+              <span class="post-new">NEW</span>
+            </div>
           <button
-            class="asset-button"
-            data-open="post-details"
-            aria-label="View full-size first brand post"
-          >
-            <img
-              class="campaign-artwork"
-              src="assets/brand-post.png"
-              alt="PXL first brand post: a colorful pixel arcade cabinet displaying Pix L’s into W’s, with game controllers and PXL marks"
-              width="2415"
-              height="2415"
-              loading="lazy"
-            />
-          </button>
-          <div class="campaign-details">
-            <span class="eyebrow">CT#2 / FIRST EVER BRAND POST</span>
-            <h3>A new player<br />has entered.</h3>
-            <p class="tiny-label">SUGGESTED CAPTION</p>
-            <blockquote>
-              Hello, world. We’re P<sup>XL</sup>—where small pixels unlock
+              class="asset-button feed-media"
+              data-open="post-details"
+              aria-label="View full-size first brand post"
+            >
+              <span class="achievement" aria-hidden="true"><svg class="trophy" viewBox="0 0 9 8" shape-rendering="crispEdges" aria-hidden="true" focusable="false"><rect x="0" y="0" width="1" height="1" fill="#ffb65d"/><rect x="1" y="0" width="1" height="1" fill="#ffb65d"/><rect x="2" y="0" width="1" height="1" fill="#ffb65d"/><rect x="3" y="0" width="1" height="1" fill="#ffb65d"/><rect x="4" y="0" width="1" height="1" fill="#ffb65d"/><rect x="5" y="0" width="1" height="1" fill="#ffb65d"/><rect x="6" y="0" width="1" height="1" fill="#ffb65d"/><rect x="7" y="0" width="1" height="1" fill="#ffb65d"/><rect x="8" y="0" width="1" height="1" fill="#ffb65d"/><rect x="0" y="1" width="1" height="1" fill="#ffb65d"/><rect x="2" y="1" width="1" height="1" fill="#ffb65d"/><rect x="3" y="1" width="1" height="1" fill="#ffb65d"/><rect x="4" y="1" width="1" height="1" fill="#ffb65d"/><rect x="5" y="1" width="1" height="1" fill="#ffb65d"/><rect x="6" y="1" width="1" height="1" fill="#ffb65d"/><rect x="8" y="1" width="1" height="1" fill="#ffb65d"/><rect x="0" y="2" width="1" height="1" fill="#ffb65d"/><rect x="2" y="2" width="1" height="1" fill="#ffb65d"/><rect x="3" y="2" width="1" height="1" fill="#ffb65d"/><rect x="4" y="2" width="1" height="1" fill="#fff0d6"/><rect x="5" y="2" width="1" height="1" fill="#ffb65d"/><rect x="6" y="2" width="1" height="1" fill="#ffb65d"/><rect x="8" y="2" width="1" height="1" fill="#ffb65d"/><rect x="1" y="3" width="1" height="1" fill="#ffb65d"/><rect x="2" y="3" width="1" height="1" fill="#ffb65d"/><rect x="3" y="3" width="1" height="1" fill="#ffb65d"/><rect x="4" y="3" width="1" height="1" fill="#ffb65d"/><rect x="5" y="3" width="1" height="1" fill="#ffb65d"/><rect x="6" y="3" width="1" height="1" fill="#ffb65d"/><rect x="7" y="3" width="1" height="1" fill="#ffb65d"/><rect x="2" y="4" width="1" height="1" fill="#ffb65d"/><rect x="3" y="4" width="1" height="1" fill="#ffb65d"/><rect x="4" y="4" width="1" height="1" fill="#ffb65d"/><rect x="5" y="4" width="1" height="1" fill="#ffb65d"/><rect x="6" y="4" width="1" height="1" fill="#ffb65d"/><rect x="3" y="5" width="1" height="1" fill="#ffb65d"/><rect x="4" y="5" width="1" height="1" fill="#ffb65d"/><rect x="5" y="5" width="1" height="1" fill="#ffb65d"/><rect x="4" y="6" width="1" height="1" fill="#ffb65d"/><rect x="2" y="7" width="1" height="1" fill="#be3621"/><rect x="3" y="7" width="1" height="1" fill="#be3621"/><rect x="4" y="7" width="1" height="1" fill="#be3621"/><rect x="5" y="7" width="1" height="1" fill="#be3621"/><rect x="6" y="7" width="1" height="1" fill="#be3621"/></svg><span><small>ACHIEVEMENT UNLOCKED</small><b>FIRST EVER POST</b></span></span>
+              <img
+                class="campaign-artwork" data-pxl-reveal
+                src="assets/brand-post.png"
+                alt="PXL first brand post: a colorful pixel arcade cabinet displaying Pix L’s into W’s, with game controllers and PXL marks"
+                width="2415"
+                height="2415"
+                loading="lazy"
+              />
+            </button>
+            <div class="post-actions">
+              <button class="w-btn" id="w-btn" aria-pressed="false">
+                <span class="w-icon" aria-hidden="true">W</span><span class="sr-only">Give this post a W</span>
+              </button>
+              <span class="pa-icon" aria-hidden="true"><svg class="fi" viewBox="0 0 8 8" shape-rendering="crispEdges" aria-hidden="true" focusable="false"><rect x="0" y="0" width="1" height="1" fill="#001768"/><rect x="1" y="0" width="1" height="1" fill="#001768"/><rect x="2" y="0" width="1" height="1" fill="#001768"/><rect x="3" y="0" width="1" height="1" fill="#001768"/><rect x="4" y="0" width="1" height="1" fill="#001768"/><rect x="5" y="0" width="1" height="1" fill="#001768"/><rect x="6" y="0" width="1" height="1" fill="#001768"/><rect x="7" y="0" width="1" height="1" fill="#001768"/><rect x="0" y="1" width="1" height="1" fill="#001768"/><rect x="1" y="1" width="1" height="1" fill="#fff0d6"/><rect x="2" y="1" width="1" height="1" fill="#fff0d6"/><rect x="3" y="1" width="1" height="1" fill="#fff0d6"/><rect x="4" y="1" width="1" height="1" fill="#fff0d6"/><rect x="5" y="1" width="1" height="1" fill="#fff0d6"/><rect x="6" y="1" width="1" height="1" fill="#fff0d6"/><rect x="7" y="1" width="1" height="1" fill="#001768"/><rect x="0" y="2" width="1" height="1" fill="#001768"/><rect x="1" y="2" width="1" height="1" fill="#fff0d6"/><rect x="2" y="2" width="1" height="1" fill="#001768"/><rect x="3" y="2" width="1" height="1" fill="#fff0d6"/><rect x="4" y="2" width="1" height="1" fill="#001768"/><rect x="5" y="2" width="1" height="1" fill="#fff0d6"/><rect x="6" y="2" width="1" height="1" fill="#fff0d6"/><rect x="7" y="2" width="1" height="1" fill="#001768"/><rect x="0" y="3" width="1" height="1" fill="#001768"/><rect x="1" y="3" width="1" height="1" fill="#fff0d6"/><rect x="2" y="3" width="1" height="1" fill="#fff0d6"/><rect x="3" y="3" width="1" height="1" fill="#fff0d6"/><rect x="4" y="3" width="1" height="1" fill="#fff0d6"/><rect x="5" y="3" width="1" height="1" fill="#fff0d6"/><rect x="6" y="3" width="1" height="1" fill="#fff0d6"/><rect x="7" y="3" width="1" height="1" fill="#001768"/><rect x="0" y="4" width="1" height="1" fill="#001768"/><rect x="1" y="4" width="1" height="1" fill="#001768"/><rect x="2" y="4" width="1" height="1" fill="#001768"/><rect x="3" y="4" width="1" height="1" fill="#fff0d6"/><rect x="4" y="4" width="1" height="1" fill="#001768"/><rect x="5" y="4" width="1" height="1" fill="#001768"/><rect x="6" y="4" width="1" height="1" fill="#001768"/><rect x="7" y="4" width="1" height="1" fill="#001768"/><rect x="2" y="5" width="1" height="1" fill="#001768"/><rect x="3" y="5" width="1" height="1" fill="#001768"/><rect x="1" y="6" width="1" height="1" fill="#001768"/></svg></span>
+              <button class="pa-icon" id="share-caption" aria-label="Copy caption to share"><svg class="fi" viewBox="0 0 8 8" shape-rendering="crispEdges" aria-hidden="true" focusable="false"><rect x="6" y="0" width="1" height="1" fill="#001768"/><rect x="7" y="0" width="1" height="1" fill="#001768"/><rect x="5" y="1" width="1" height="1" fill="#001768"/><rect x="6" y="1" width="1" height="1" fill="#fff0d6"/><rect x="7" y="1" width="1" height="1" fill="#001768"/><rect x="0" y="2" width="1" height="1" fill="#001768"/><rect x="1" y="2" width="1" height="1" fill="#001768"/><rect x="2" y="2" width="1" height="1" fill="#001768"/><rect x="3" y="2" width="1" height="1" fill="#001768"/><rect x="4" y="2" width="1" height="1" fill="#001768"/><rect x="5" y="2" width="1" height="1" fill="#fff0d6"/><rect x="6" y="2" width="1" height="1" fill="#001768"/><rect x="0" y="3" width="1" height="1" fill="#001768"/><rect x="1" y="3" width="1" height="1" fill="#fff0d6"/><rect x="2" y="3" width="1" height="1" fill="#fff0d6"/><rect x="3" y="3" width="1" height="1" fill="#fff0d6"/><rect x="4" y="3" width="1" height="1" fill="#fff0d6"/><rect x="5" y="3" width="1" height="1" fill="#001768"/><rect x="0" y="4" width="1" height="1" fill="#001768"/><rect x="1" y="4" width="1" height="1" fill="#fff0d6"/><rect x="2" y="4" width="1" height="1" fill="#fff0d6"/><rect x="3" y="4" width="1" height="1" fill="#fff0d6"/><rect x="4" y="4" width="1" height="1" fill="#fff0d6"/><rect x="5" y="4" width="1" height="1" fill="#001768"/><rect x="0" y="5" width="1" height="1" fill="#001768"/><rect x="1" y="5" width="1" height="1" fill="#001768"/><rect x="2" y="5" width="1" height="1" fill="#001768"/><rect x="3" y="5" width="1" height="1" fill="#001768"/><rect x="4" y="5" width="1" height="1" fill="#001768"/><rect x="5" y="5" width="1" height="1" fill="#fff0d6"/><rect x="6" y="5" width="1" height="1" fill="#001768"/><rect x="5" y="6" width="1" height="1" fill="#001768"/><rect x="6" y="6" width="1" height="1" fill="#fff0d6"/><rect x="7" y="6" width="1" height="1" fill="#001768"/><rect x="6" y="7" width="1" height="1" fill="#001768"/><rect x="7" y="7" width="1" height="1" fill="#001768"/></svg></button>
+              <span class="pa-icon pa-save" aria-hidden="true"><svg class="fi" viewBox="0 0 6 6" shape-rendering="crispEdges" aria-hidden="true" focusable="false"><rect x="0" y="0" width="1" height="1" fill="#001768"/><rect x="1" y="0" width="1" height="1" fill="#001768"/><rect x="2" y="0" width="1" height="1" fill="#001768"/><rect x="3" y="0" width="1" height="1" fill="#001768"/><rect x="4" y="0" width="1" height="1" fill="#001768"/><rect x="5" y="0" width="1" height="1" fill="#001768"/><rect x="0" y="1" width="1" height="1" fill="#001768"/><rect x="1" y="1" width="1" height="1" fill="#fff0d6"/><rect x="2" y="1" width="1" height="1" fill="#fff0d6"/><rect x="3" y="1" width="1" height="1" fill="#fff0d6"/><rect x="4" y="1" width="1" height="1" fill="#fff0d6"/><rect x="5" y="1" width="1" height="1" fill="#001768"/><rect x="0" y="2" width="1" height="1" fill="#001768"/><rect x="1" y="2" width="1" height="1" fill="#fff0d6"/><rect x="2" y="2" width="1" height="1" fill="#fff0d6"/><rect x="3" y="2" width="1" height="1" fill="#fff0d6"/><rect x="4" y="2" width="1" height="1" fill="#fff0d6"/><rect x="5" y="2" width="1" height="1" fill="#001768"/><rect x="0" y="3" width="1" height="1" fill="#001768"/><rect x="1" y="3" width="1" height="1" fill="#fff0d6"/><rect x="2" y="3" width="1" height="1" fill="#fff0d6"/><rect x="3" y="3" width="1" height="1" fill="#fff0d6"/><rect x="4" y="3" width="1" height="1" fill="#fff0d6"/><rect x="5" y="3" width="1" height="1" fill="#001768"/><rect x="0" y="4" width="1" height="1" fill="#001768"/><rect x="1" y="4" width="1" height="1" fill="#fff0d6"/><rect x="2" y="4" width="1" height="1" fill="#001768"/><rect x="3" y="4" width="1" height="1" fill="#001768"/><rect x="4" y="4" width="1" height="1" fill="#fff0d6"/><rect x="5" y="4" width="1" height="1" fill="#001768"/><rect x="0" y="5" width="1" height="1" fill="#001768"/><rect x="1" y="5" width="1" height="1" fill="#001768"/><rect x="4" y="5" width="1" height="1" fill="#001768"/><rect x="5" y="5" width="1" height="1" fill="#001768"/></svg></span>
+            </div>
+            <p class="w-count" id="w-count" aria-live="polite">Be the first to give it a W</p>
+            <p class="post-caption" id="post-caption">
+              <b>pxl</b> Hello, world. We’re PXL, where small pixels unlock
               extra-large possibilities. From 8-bit adventures to art you can
               keep, we’re bringing a little old-school magic to what’s next.
-              Ready to Pix L’s into W’s?<br /><br />#PXL #PixLsIntoWs #PixelArt
-              #HelloWorld
-            </blockquote>
+              Ready to Pix L’s into W’s?
+              <span class="tags">#PXL #PixLsIntoWs #PixelArt #HelloWorld</span>
+            </p>
+          </div>
+          <div class="feed-details">
+            <span class="feed-tag">POST 01 / CT#2 / FIRST EVER BRAND POST</span>
+            <h3>A new player<br />has entered.</h3>
+            <p>
+              Our hello to the world: a pixel arcade cabinet flashing our
+              tagline, built to stop the scroll and say who we are in one look.
+            </p>
+            <ul class="spec-chips">
+              <li>FEED POST</li><li>1:1 SQUARE</li><li>2415 &times; 2415</li><li>LAUNCH DAY</li>
+            </ul>
             <div class="campaign-meta">
               <div>
                 <span class="tiny-label">ARTWORK PALETTE / SAMPLED</span>
@@ -773,53 +1246,124 @@
               </div>
               <div>
                 <span class="tiny-label">TYPOGRAPHY</span>
-                <p>Tiny5 + Jersey 10<br />Brand typefaces</p>
+                <p>Tiny5 + Jersey 10 / Brand typefaces</p>
               </div>
             </div>
-            <button class="text-button" data-open="post-details">
-              View larger <span>↗</span>
-            </button>
+            <div class="feed-actions">
+              <button class="button button-peach" id="copy-caption">
+                COPY CAPTION <span aria-hidden="true">&#10697;</span>
+              </button>
+              <button class="text-button" data-open="post-details">
+                View larger <span>↗</span>
+              </button>
+            </div>
           </div>
         </div>
-        <div class="campaign-row event-row">
+
+        <div class="event-block">
+          <div class="event-top">
+            <div class="standee">
           <button
-            class="asset-button"
-            data-open="event-details"
-            aria-label="View full-size PXL World promotional poster"
-          >
-            <img
-              class="campaign-artwork"
-              src="assets/event-poster.png"
-              alt="PXL World promotional event poster. November 5, 2026, Event Center, SM City Cabanatuan. Booths, cosplay, exhibition, and new releases."
-              width="2000"
-              height="2500"
-              loading="lazy"
-            />
-          </button>
-          <div class="campaign-details">
-            <span class="eyebrow">CT#3 / PROMOTIONAL EVENT POSTER</span>
-            <h3>PXL World.<br />Play beyond the screen.</h3>
-            <p class="event-date">
-              05 NOV 2026<br />Event Center · SM City Cabanatuan
-            </p>
-            <div class="campaign-meta">
-              <div>
-                <span class="tiny-label">ARTWORK PALETTE / SAMPLED</span>
-                <div class="mini-palette">
-                  <span style="--c: #eaf6fe">#EAF6FE</span
-                  ><span style="--c: #85a0ff">#85A0FF</span
-                  ><span style="--c: #8a3c9b">#8A3C9B</span
-                  ><span style="--c: #d9a8df">#D9A8DF</span>
+                class="asset-button standee-media"
+                data-open="event-details"
+                aria-label="View full-size PXL World promotional poster"
+              >
+                <span class="achievement" aria-hidden="true"><svg class="trophy" viewBox="0 0 9 8" shape-rendering="crispEdges" aria-hidden="true" focusable="false"><rect x="0" y="0" width="1" height="1" fill="#ffb65d"/><rect x="1" y="0" width="1" height="1" fill="#ffb65d"/><rect x="2" y="0" width="1" height="1" fill="#ffb65d"/><rect x="3" y="0" width="1" height="1" fill="#ffb65d"/><rect x="4" y="0" width="1" height="1" fill="#ffb65d"/><rect x="5" y="0" width="1" height="1" fill="#ffb65d"/><rect x="6" y="0" width="1" height="1" fill="#ffb65d"/><rect x="7" y="0" width="1" height="1" fill="#ffb65d"/><rect x="8" y="0" width="1" height="1" fill="#ffb65d"/><rect x="0" y="1" width="1" height="1" fill="#ffb65d"/><rect x="2" y="1" width="1" height="1" fill="#ffb65d"/><rect x="3" y="1" width="1" height="1" fill="#ffb65d"/><rect x="4" y="1" width="1" height="1" fill="#ffb65d"/><rect x="5" y="1" width="1" height="1" fill="#ffb65d"/><rect x="6" y="1" width="1" height="1" fill="#ffb65d"/><rect x="8" y="1" width="1" height="1" fill="#ffb65d"/><rect x="0" y="2" width="1" height="1" fill="#ffb65d"/><rect x="2" y="2" width="1" height="1" fill="#ffb65d"/><rect x="3" y="2" width="1" height="1" fill="#ffb65d"/><rect x="4" y="2" width="1" height="1" fill="#fff0d6"/><rect x="5" y="2" width="1" height="1" fill="#ffb65d"/><rect x="6" y="2" width="1" height="1" fill="#ffb65d"/><rect x="8" y="2" width="1" height="1" fill="#ffb65d"/><rect x="1" y="3" width="1" height="1" fill="#ffb65d"/><rect x="2" y="3" width="1" height="1" fill="#ffb65d"/><rect x="3" y="3" width="1" height="1" fill="#ffb65d"/><rect x="4" y="3" width="1" height="1" fill="#ffb65d"/><rect x="5" y="3" width="1" height="1" fill="#ffb65d"/><rect x="6" y="3" width="1" height="1" fill="#ffb65d"/><rect x="7" y="3" width="1" height="1" fill="#ffb65d"/><rect x="2" y="4" width="1" height="1" fill="#ffb65d"/><rect x="3" y="4" width="1" height="1" fill="#ffb65d"/><rect x="4" y="4" width="1" height="1" fill="#ffb65d"/><rect x="5" y="4" width="1" height="1" fill="#ffb65d"/><rect x="6" y="4" width="1" height="1" fill="#ffb65d"/><rect x="3" y="5" width="1" height="1" fill="#ffb65d"/><rect x="4" y="5" width="1" height="1" fill="#ffb65d"/><rect x="5" y="5" width="1" height="1" fill="#ffb65d"/><rect x="4" y="6" width="1" height="1" fill="#ffb65d"/><rect x="2" y="7" width="1" height="1" fill="#be3621"/><rect x="3" y="7" width="1" height="1" fill="#be3621"/><rect x="4" y="7" width="1" height="1" fill="#be3621"/><rect x="5" y="7" width="1" height="1" fill="#be3621"/><rect x="6" y="7" width="1" height="1" fill="#be3621"/></svg><span><small>ACHIEVEMENT UNLOCKED</small><b>EVENT ANNOUNCED</b></span></span>
+                <img
+                  class="campaign-artwork" data-pxl-reveal
+                  src="assets/event-poster.png"
+                  alt="PXL World promotional event poster. November 5, 2026, Event Center, SM City Cabanatuan. Booths, cosplay, exhibition, and new releases."
+                  width="2000"
+                  height="2500"
+                  loading="lazy"
+                />
+              </button>
+              <span class="standee-legs" aria-hidden="true"><i></i><i></i></span>
+            </div>
+            <div class="ticket-side">
+              <span class="feed-tag">EVENT / CT#3 / PROMOTIONAL EVENT POSTER</span>
+              <h3>PXL World.<br />Play beyond the screen.</h3>
+              <div class="ticket" id="ticket">
+                <div class="ticket-main">
+                  <span class="t-kicker">ADMIT ONE &middot; ALL AGES</span>
+                  <b class="t-title">PXL WORLD</b>
+                  <div class="t-info">
+                    <span><small>DATE</small>05 NOV 2026</span>
+                    <span><small>VENUE</small>Event Center</span>
+                    <span><small>CITY</small>SM City Cabanatuan</span>
+                  </div>
+                  <ul class="t-perks">
+                    <li>BOOTHS</li><li>COSPLAY</li><li>EXHIBITION</li><li>NEW RELEASES</li>
+                  </ul>
+                </div>
+                <button class="ticket-stub" id="ticket-stub" aria-label="Tear off your ticket stub">
+                  <span class="stub-label">TEAR<br />HERE</span>
+                  <span class="barcode" aria-hidden="true"><i style="--w:3px"></i><i style="--w:1px"></i><i style="--w:2px"></i><i style="--w:1px"></i><i style="--w:3px"></i><i style="--w:2px"></i><i style="--w:1px"></i><i style="--w:1px"></i><i style="--w:3px"></i><i style="--w:1px"></i><i style="--w:2px"></i><i style="--w:3px"></i><i style="--w:1px"></i><i style="--w:2px"></i><i style="--w:1px"></i><i style="--w:3px"></i><i style="--w:1px"></i><i style="--w:2px"></i></span>
+                  <span class="stub-no">No. 000001</span>
+                </button>
+              </div>
+              <div class="campaign-meta">
+                <div>
+                  <span class="tiny-label">EVENT EDITION PALETTE / SAMPLED</span>
+                  <div class="mini-palette">
+                    <span style="--c: #eaf6fe">#EAF6FE</span
+                    ><span style="--c: #85a0ff">#85A0FF</span
+                    ><span style="--c: #8a3c9b">#8A3C9B</span
+                    ><span style="--c: #d9a8df">#D9A8DF</span>
+                  </div>
+                </div>
+                <div>
+                  <span class="tiny-label">CORE BRAND ACCENTS</span>
+                  <div class="mini-palette">
+                    <span style="--c: #ffb65d">#FFB65D</span
+                    ><span style="--c: #be3621">#BE3621</span>
+                  </div>
                 </div>
               </div>
-              <div>
-                <span class="tiny-label">TYPOGRAPHY</span>
-                <p>Tiny5 + Jersey 10<br />Brand typefaces</p>
-              </div>
+              <button class="text-button" data-open="event-details">
+                View larger <span>↗</span>
+              </button>
             </div>
-            <button class="text-button" data-open="event-details">
-              View larger <span>↗</span>
-            </button>
+          </div>
+          <div class="dev-notes">
+            <span class="feed-tag">BEHIND THE POSTER / DEV NOTES</span>
+            <ol>
+              <li class="dev-note">
+                <svg class="ni" viewBox="0 0 6 5" shape-rendering="crispEdges" aria-hidden="true" focusable="false"><rect x="0" y="0" width="1" height="1" fill="#ffb65d"/><rect x="1" y="0" width="1" height="1" fill="#ffb65d"/><rect x="4" y="0" width="1" height="1" fill="#ffb65d"/><rect x="5" y="0" width="1" height="1" fill="#ffb65d"/><rect x="0" y="1" width="1" height="1" fill="#ffb65d"/><rect x="1" y="1" width="1" height="1" fill="#ffb65d"/><rect x="4" y="1" width="1" height="1" fill="#ffb65d"/><rect x="5" y="1" width="1" height="1" fill="#ffb65d"/><rect x="0" y="3" width="1" height="1" fill="#ffb65d"/><rect x="1" y="3" width="1" height="1" fill="#ffb65d"/><rect x="4" y="3" width="1" height="1" fill="#ffb65d"/><rect x="5" y="3" width="1" height="1" fill="#ffb65d"/><rect x="0" y="4" width="1" height="1" fill="#ffb65d"/><rect x="1" y="4" width="1" height="1" fill="#ffb65d"/><rect x="4" y="4" width="1" height="1" fill="#ffb65d"/><rect x="5" y="4" width="1" height="1" fill="#ffb65d"/></svg>
+                <span class="dn-no">NOTE 01</span>
+                <b>Why an expo</b>
+                <p>PXL is games, art, collectibles, and animation. An expo with
+                  booths, cosplay, an exhibition, and new releases lets people
+                  try all of it in one trip, and lets fans show up as their
+                  favorite characters.</p>
+              </li>
+              <li class="dev-note">
+                <svg class="ni" viewBox="0 0 6 6" shape-rendering="crispEdges" aria-hidden="true" focusable="false"><rect x="2" y="0" width="1" height="1" fill="#be3621"/><rect x="3" y="0" width="1" height="1" fill="#be3621"/><rect x="1" y="1" width="1" height="1" fill="#be3621"/><rect x="2" y="1" width="1" height="1" fill="#ffb65d"/><rect x="3" y="1" width="1" height="1" fill="#ffb65d"/><rect x="4" y="1" width="1" height="1" fill="#be3621"/><rect x="1" y="2" width="1" height="1" fill="#be3621"/><rect x="2" y="2" width="1" height="1" fill="#ffb65d"/><rect x="3" y="2" width="1" height="1" fill="#ffb65d"/><rect x="4" y="2" width="1" height="1" fill="#be3621"/><rect x="2" y="3" width="1" height="1" fill="#be3621"/><rect x="3" y="3" width="1" height="1" fill="#be3621"/><rect x="2" y="4" width="1" height="1" fill="#be3621"/><rect x="2" y="5" width="1" height="1" fill="#be3621"/></svg>
+                <span class="dn-no">NOTE 02</span>
+                <b>Why SM City Cabanatuan</b>
+                <p>It’s a central, family-friendly mall in Nueva Ecija that kids,
+                  students, and parents already visit, so it fits our all-ages
+                  audience and is easy to reach.</p>
+              </li>
+              <li class="dev-note">
+                <svg class="ni" viewBox="0 0 6 5" shape-rendering="crispEdges" aria-hidden="true" focusable="false"><rect x="0" y="0" width="1" height="1" fill="#001768"/><rect x="1" y="0" width="1" height="1" fill="#001768"/><rect x="2" y="0" width="1" height="1" fill="#001768"/><rect x="3" y="0" width="1" height="1" fill="#001768"/><rect x="4" y="0" width="1" height="1" fill="#001768"/><rect x="5" y="0" width="1" height="1" fill="#001768"/><rect x="0" y="1" width="1" height="1" fill="#001768"/><rect x="1" y="1" width="1" height="1" fill="#ffb65d"/><rect x="2" y="1" width="1" height="1" fill="#ffb65d"/><rect x="3" y="1" width="1" height="1" fill="#ffb65d"/><rect x="4" y="1" width="1" height="1" fill="#ffb65d"/><rect x="5" y="1" width="1" height="1" fill="#001768"/><rect x="0" y="2" width="1" height="1" fill="#001768"/><rect x="1" y="2" width="1" height="1" fill="#ffb65d"/><rect x="2" y="2" width="1" height="1" fill="#001768"/><rect x="3" y="2" width="1" height="1" fill="#001768"/><rect x="4" y="2" width="1" height="1" fill="#ffb65d"/><rect x="5" y="2" width="1" height="1" fill="#001768"/><rect x="0" y="3" width="1" height="1" fill="#001768"/><rect x="1" y="3" width="1" height="1" fill="#ffb65d"/><rect x="2" y="3" width="1" height="1" fill="#ffb65d"/><rect x="3" y="3" width="1" height="1" fill="#ffb65d"/><rect x="4" y="3" width="1" height="1" fill="#ffb65d"/><rect x="5" y="3" width="1" height="1" fill="#001768"/><rect x="0" y="4" width="1" height="1" fill="#001768"/><rect x="1" y="4" width="1" height="1" fill="#001768"/><rect x="2" y="4" width="1" height="1" fill="#001768"/><rect x="3" y="4" width="1" height="1" fill="#001768"/><rect x="4" y="4" width="1" height="1" fill="#001768"/><rect x="5" y="4" width="1" height="1" fill="#001768"/></svg>
+                <span class="dn-no">NOTE 03</span>
+                <b>Why this look</b>
+                <p>“PIX L’S INTO W’S” runs huge in the background, a chunky 3D
+                  controller is the hero, and floating voxel blocks make it feel
+                  like stepping inside a game. The date and venue sit in the
+                  corners in Tiny5, so they’re the first thing you read.</p>
+              </li>
+              <li class="dev-note">
+                <svg class="ni" viewBox="0 0 6 3" shape-rendering="crispEdges" aria-hidden="true" focusable="false"><rect x="0" y="0" width="1" height="1" fill="#ffb65d"/><rect x="1" y="0" width="1" height="1" fill="#ffb65d"/><rect x="2" y="0" width="1" height="1" fill="#be3621"/><rect x="3" y="0" width="1" height="1" fill="#be3621"/><rect x="4" y="0" width="1" height="1" fill="#001768"/><rect x="5" y="0" width="1" height="1" fill="#001768"/><rect x="0" y="1" width="1" height="1" fill="#ffb65d"/><rect x="1" y="1" width="1" height="1" fill="#ffb65d"/><rect x="2" y="1" width="1" height="1" fill="#be3621"/><rect x="3" y="1" width="1" height="1" fill="#be3621"/><rect x="4" y="1" width="1" height="1" fill="#001768"/><rect x="5" y="1" width="1" height="1" fill="#001768"/><rect x="0" y="2" width="1" height="1" fill="#ffb65d"/><rect x="1" y="2" width="1" height="1" fill="#ffb65d"/><rect x="2" y="2" width="1" height="1" fill="#be3621"/><rect x="3" y="2" width="1" height="1" fill="#be3621"/><rect x="4" y="2" width="1" height="1" fill="#001768"/><rect x="5" y="2" width="1" height="1" fill="#001768"/></svg>
+                <span class="dn-no">NOTE 04</span>
+                <b>Why the new colors</b>
+                <p>PXL World gets its own special-edition look. Daylight blues and
+                  arcade purples make the event feel like a limited drop, while
+                  our peach and red still show up on the D-pad and the blocks to
+                  tie it back to the core brand.</p>
+              </li>
+            </ol>
           </div>
         </div>
       </section>
@@ -832,41 +1376,347 @@
           <span>05 / THE PEOPLE BEHIND THE PIXELS</span
           ><span>PLAYER SELECT</span>
         </div>
-        <div class="team-layout">
-          <div>
-            <h2 id="team-heading">Every world<br />needs its makers.</h2>
-            <p>The owners’ names, roles, and real photos belong here.</p>
-            <p class="asset-disclaimer">
-              Owner information hasn’t been supplied yet. Add your actual group
-              members before submission.
-            </p>
-          </div>
-          <div class="team-placeholder">
-            <div class="portrait-placeholder" aria-hidden="true">
-              <span></span>
+        <div class="team-intro">
+          <h2 id="team-heading">Every world<br />needs its makers.</h2>
+          <p>
+            Four players, one shared save file. Meet the founders building PXL
+            one pixel at a time, then tap a player to meet their spirit animal.
+          </p>
+        </div>
+        <ul class="team-grid">
+          <li class="player-card">
+            <button
+              class="player-stage"
+              data-battle="lan"
+              aria-label="Encounter Lan Angeles’s spirit animal"
+            >
+              <span class="player-tag">P1</span>
+              <img
+                class="player-photo"
+                src="assets/team/lan-angeles.webp"
+                alt="Portrait of Lan Angeles"
+                width="480"
+                height="466"
+                loading="lazy"
+              /><span class="player-party" aria-hidden="true"
+                ><img
+                  class="player-animal"
+                  src="assets/team/hedgehog.png"
+                  alt=""
+                  width="368"
+                  height="336"
+                  loading="lazy"
+                /><img
+                  class="player-sprite"
+                  src="assets/team/lan-angeles-sprite.png"
+                  alt=""
+                  width="240"
+                  height="595"
+                  loading="lazy"
+              /></span
+              >
+              <span class="encounter-chip" aria-hidden="true">! ENCOUNTER</span>
+            </button>
+            <div class="player-info">
+              <h3>Lan Angeles</h3>
+              <p>Main Artist</p>
+              <button class="know-me" data-profile="lan" aria-haspopup="true">TOUCH ME TO <br />KNOW ME!</button>
             </div>
-            <span class="tiny-label">OWNER PHOTO + NAME</span>
-            <p>Waiting for your team.</p>
+          </li>
+          <li class="player-card">
+            <button
+              class="player-stage"
+              data-battle="jonrey"
+              aria-label="Encounter Aljon Rey Apan’s spirit animal"
+            >
+              <span class="player-tag">P2</span>
+              <img
+                class="player-photo"
+                src="assets/team/jonrey-apan.webp"
+                alt="Portrait of Aljon Rey Apan"
+                width="576"
+                height="640"
+                loading="lazy"
+              /><span class="player-party" aria-hidden="true"
+                ><img
+                  class="player-animal"
+                  src="assets/team/platypus.png"
+                  alt=""
+                  width="352"
+                  height="288"
+                  loading="lazy"
+                /><img
+                  class="player-sprite"
+                  src="assets/team/jonrey-apan-sprite.png"
+                  alt=""
+                  width="200"
+                  height="640"
+                  loading="lazy"
+              /></span
+              >
+              <span class="encounter-chip" aria-hidden="true">! ENCOUNTER</span>
+            </button>
+            <div class="player-info">
+              <h3>Aljon Rey Apan</h3>
+              <p>Caption Writer</p>
+              <button class="know-me" data-profile="jonrey" aria-haspopup="true">TOUCH ME TO <br />KNOW ME!</button>
+            </div>
+          </li>
+          <li class="player-card">
+            <button
+              class="player-stage"
+              data-battle="alric"
+              aria-label="Encounter Alric Macalinao’s spirit animal"
+            >
+              <span class="player-tag">P3</span>
+              <img
+                class="player-photo"
+                src="assets/team/alric-macalinao.webp"
+                alt="Portrait of Alric Macalinao"
+                width="640"
+                height="640"
+                loading="lazy"
+              /><span class="player-party" aria-hidden="true"
+                ><img
+                  class="player-animal"
+                  src="assets/team/snake.png"
+                  alt=""
+                  width="304"
+                  height="304"
+                  loading="lazy"
+                /><img
+                  class="player-sprite"
+                  src="assets/team/alric-macalinao-sprite.png"
+                  alt=""
+                  width="385"
+                  height="600"
+                  loading="lazy"
+              /></span
+              >
+              <span class="encounter-chip" aria-hidden="true">! ENCOUNTER</span>
+            </button>
+            <div class="player-info">
+              <h3>Alric Macalinao</h3>
+              <p>Art Director</p>
+              <button class="know-me" data-profile="alric" aria-haspopup="true">TOUCH ME TO <br />KNOW ME!</button>
+            </div>
+          </li>
+          <li class="player-card">
+            <button
+              class="player-stage"
+              data-battle="jan"
+              aria-label="Encounter Jan Fortun Sapin’s spirit animal"
+            >
+              <span class="player-tag">P4</span>
+              <img
+                class="player-photo"
+                src="assets/team/jan-sapin.webp"
+                alt="Portrait of Jan Fortun Sapin"
+                width="640"
+                height="595"
+                loading="lazy"
+              /><span class="player-party" aria-hidden="true"
+                ><img
+                  class="player-animal"
+                  src="assets/team/chameleon.png"
+                  alt=""
+                  width="352"
+                  height="224"
+                  loading="lazy"
+                /><img
+                  class="player-sprite"
+                  src="assets/team/jan-sapin-sprite.png"
+                  alt=""
+                  width="165"
+                  height="570"
+                  loading="lazy"
+              /></span
+              >
+              <span class="encounter-chip" aria-hidden="true">! ENCOUNTER</span>
+            </button>
+            <div class="player-info">
+              <h3>Jan Fortun Sapin</h3>
+              <p>Web Developer</p>
+              <button class="know-me" data-profile="jan" aria-haspopup="true">TOUCH ME TO <br />KNOW ME!</button>
+            </div>
+          </li>
+        </ul>
+        <div
+          class="profile"
+          id="profile"
+          role="region"
+          aria-labelledby="profile-name"
+          tabindex="-1"
+          hidden
+        >
+          <span class="profile-watermark" id="profile-watermark" aria-hidden="true">P1</span>
+          <div class="profile-bar">
+            <button class="profile-nav" id="profile-prev" aria-label="Previous player">
+              <span aria-hidden="true">&#9664;</span> <b id="profile-prev-label">P4</b>
+            </button>
+            <span class="profile-count" id="profile-count">PLAYER 1 / 4</span>
+            <button class="profile-nav" id="profile-next" aria-label="Next player">
+              <b id="profile-next-label">P2</b> <span aria-hidden="true">&#9654;</span>
+            </button>
+            <button class="profile-close" id="profile-close" aria-label="Close profile">
+              &#10005; <span>BACK</span>
+            </button>
+          </div>
+          <div class="profile-grid">
+            <div class="profile-card profile-in">
+              <div class="pc-top">
+                <span class="pc-num" id="profile-tag">P1</span>
+                <span class="pc-role" id="profile-card-role">ROLE</span>
+              </div>
+              <div class="profile-stage">
+                <img class="profile-photo" id="profile-photo" src="" alt="" />
+                <img class="profile-sprite" id="profile-sprite" src="" alt="" />
+                <img class="profile-animal" id="profile-animal" src="" alt="" />
+                <span class="pc-shine" aria-hidden="true"></span>
+              </div>
+              <div class="pc-plate">
+                <b id="profile-card-name">NAME</b>
+                <div class="pc-types" id="profile-types"></div>
+              </div>
+            </div>
+            <div class="profile-body">
+              <p class="profile-kicker profile-in">
+                <span class="pk-chip" id="profile-role">ROLE</span>
+                <span class="pk-spirit">SPIRIT ANIMAL: <b id="profile-spirit">ANIMAL</b></span>
+              </p>
+              <h2 class="profile-name profile-in" id="profile-name">NAME</h2>
+              <div class="profile-status profile-in">
+                <div class="ps-row">
+                  <svg class="ps-icon" viewBox="0 0 8 8" shape-rendering="crispEdges" aria-hidden="true" focusable="false"><rect x="0" y="0" width="1" height="1" fill="#be3621"/><rect x="1" y="0" width="1" height="1" fill="#be3621"/><rect x="2" y="0" width="1" height="1" fill="#be3621"/><rect x="3" y="0" width="1" height="1" fill="#be3621"/><rect x="4" y="0" width="1" height="1" fill="#be3621"/><rect x="5" y="0" width="1" height="1" fill="#be3621"/><rect x="6" y="0" width="1" height="1" fill="#be3621"/><rect x="0" y="1" width="1" height="1" fill="#be3621"/><rect x="1" y="1" width="1" height="1" fill="#fff0d6"/><rect x="2" y="1" width="1" height="1" fill="#fff0d6"/><rect x="3" y="1" width="1" height="1" fill="#fff0d6"/><rect x="4" y="1" width="1" height="1" fill="#fff0d6"/><rect x="5" y="1" width="1" height="1" fill="#fff0d6"/><rect x="6" y="1" width="1" height="1" fill="#be3621"/><rect x="7" y="1" width="1" height="1" fill="#ffb65d"/><rect x="0" y="2" width="1" height="1" fill="#be3621"/><rect x="1" y="2" width="1" height="1" fill="#fff0d6"/><rect x="2" y="2" width="1" height="1" fill="#001768"/><rect x="3" y="2" width="1" height="1" fill="#001768"/><rect x="4" y="2" width="1" height="1" fill="#001768"/><rect x="5" y="2" width="1" height="1" fill="#fff0d6"/><rect x="6" y="2" width="1" height="1" fill="#be3621"/><rect x="7" y="2" width="1" height="1" fill="#ffb65d"/><rect x="0" y="3" width="1" height="1" fill="#be3621"/><rect x="1" y="3" width="1" height="1" fill="#fff0d6"/><rect x="2" y="3" width="1" height="1" fill="#fff0d6"/><rect x="3" y="3" width="1" height="1" fill="#fff0d6"/><rect x="4" y="3" width="1" height="1" fill="#fff0d6"/><rect x="5" y="3" width="1" height="1" fill="#fff0d6"/><rect x="6" y="3" width="1" height="1" fill="#be3621"/><rect x="7" y="3" width="1" height="1" fill="#ffb65d"/><rect x="0" y="4" width="1" height="1" fill="#be3621"/><rect x="1" y="4" width="1" height="1" fill="#fff0d6"/><rect x="2" y="4" width="1" height="1" fill="#001768"/><rect x="3" y="4" width="1" height="1" fill="#001768"/><rect x="4" y="4" width="1" height="1" fill="#001768"/><rect x="5" y="4" width="1" height="1" fill="#fff0d6"/><rect x="6" y="4" width="1" height="1" fill="#be3621"/><rect x="7" y="4" width="1" height="1" fill="#ffb65d"/><rect x="0" y="5" width="1" height="1" fill="#be3621"/><rect x="1" y="5" width="1" height="1" fill="#fff0d6"/><rect x="2" y="5" width="1" height="1" fill="#fff0d6"/><rect x="3" y="5" width="1" height="1" fill="#fff0d6"/><rect x="4" y="5" width="1" height="1" fill="#fff0d6"/><rect x="5" y="5" width="1" height="1" fill="#fff0d6"/><rect x="6" y="5" width="1" height="1" fill="#be3621"/><rect x="7" y="5" width="1" height="1" fill="#ffb65d"/><rect x="0" y="6" width="1" height="1" fill="#be3621"/><rect x="1" y="6" width="1" height="1" fill="#be3621"/><rect x="2" y="6" width="1" height="1" fill="#be3621"/><rect x="3" y="6" width="1" height="1" fill="#be3621"/><rect x="4" y="6" width="1" height="1" fill="#be3621"/><rect x="5" y="6" width="1" height="1" fill="#be3621"/><rect x="6" y="6" width="1" height="1" fill="#be3621"/><rect x="7" y="6" width="1" height="1" fill="#ffb65d"/><rect x="1" y="7" width="1" height="1" fill="#ffb65d"/><rect x="2" y="7" width="1" height="1" fill="#ffb65d"/><rect x="3" y="7" width="1" height="1" fill="#ffb65d"/><rect x="4" y="7" width="1" height="1" fill="#ffb65d"/><rect x="5" y="7" width="1" height="1" fill="#ffb65d"/><rect x="6" y="7" width="1" height="1" fill="#ffb65d"/><rect x="7" y="7" width="1" height="1" fill="#ffb65d"/></svg><span class="ps-label">COURSE / YEAR</span><b id="profile-course"></b>
+                </div>
+                <div class="ps-row">
+                  <svg class="ps-icon" viewBox="0 0 11 5" shape-rendering="crispEdges" aria-hidden="true" focusable="false"><rect x="1" y="0" width="1" height="1" fill="#ffb65d"/><rect x="2" y="0" width="1" height="1" fill="#ffb65d"/><rect x="3" y="0" width="1" height="1" fill="#ffb65d"/><rect x="4" y="0" width="1" height="1" fill="#ffb65d"/><rect x="5" y="0" width="1" height="1" fill="#ffb65d"/><rect x="6" y="0" width="1" height="1" fill="#ffb65d"/><rect x="7" y="0" width="1" height="1" fill="#ffb65d"/><rect x="8" y="0" width="1" height="1" fill="#ffb65d"/><rect x="9" y="0" width="1" height="1" fill="#ffb65d"/><rect x="0" y="1" width="1" height="1" fill="#ffb65d"/><rect x="1" y="1" width="1" height="1" fill="#ffb65d"/><rect x="2" y="1" width="1" height="1" fill="#001768"/><rect x="3" y="1" width="1" height="1" fill="#ffb65d"/><rect x="4" y="1" width="1" height="1" fill="#ffb65d"/><rect x="5" y="1" width="1" height="1" fill="#ffb65d"/><rect x="6" y="1" width="1" height="1" fill="#ffb65d"/><rect x="7" y="1" width="1" height="1" fill="#ffb65d"/><rect x="8" y="1" width="1" height="1" fill="#be3621"/><rect x="9" y="1" width="1" height="1" fill="#ffb65d"/><rect x="10" y="1" width="1" height="1" fill="#ffb65d"/><rect x="0" y="2" width="1" height="1" fill="#ffb65d"/><rect x="1" y="2" width="1" height="1" fill="#001768"/><rect x="2" y="2" width="1" height="1" fill="#001768"/><rect x="3" y="2" width="1" height="1" fill="#001768"/><rect x="4" y="2" width="1" height="1" fill="#ffb65d"/><rect x="5" y="2" width="1" height="1" fill="#ffb65d"/><rect x="6" y="2" width="1" height="1" fill="#ffb65d"/><rect x="7" y="2" width="1" height="1" fill="#be3621"/><rect x="8" y="2" width="1" height="1" fill="#ffb65d"/><rect x="9" y="2" width="1" height="1" fill="#be3621"/><rect x="10" y="2" width="1" height="1" fill="#ffb65d"/><rect x="0" y="3" width="1" height="1" fill="#ffb65d"/><rect x="1" y="3" width="1" height="1" fill="#ffb65d"/><rect x="2" y="3" width="1" height="1" fill="#001768"/><rect x="3" y="3" width="1" height="1" fill="#ffb65d"/><rect x="4" y="3" width="1" height="1" fill="#ffb65d"/><rect x="5" y="3" width="1" height="1" fill="#ffb65d"/><rect x="6" y="3" width="1" height="1" fill="#ffb65d"/><rect x="7" y="3" width="1" height="1" fill="#ffb65d"/><rect x="8" y="3" width="1" height="1" fill="#be3621"/><rect x="9" y="3" width="1" height="1" fill="#ffb65d"/><rect x="10" y="3" width="1" height="1" fill="#ffb65d"/><rect x="1" y="4" width="1" height="1" fill="#ffb65d"/><rect x="2" y="4" width="1" height="1" fill="#ffb65d"/><rect x="3" y="4" width="1" height="1" fill="#ffb65d"/><rect x="7" y="4" width="1" height="1" fill="#ffb65d"/><rect x="8" y="4" width="1" height="1" fill="#ffb65d"/><rect x="9" y="4" width="1" height="1" fill="#ffb65d"/></svg><span class="ps-label">FAVORITE GAME</span><b id="profile-game"></b>
+                </div>
+              </div>
+              <div class="profile-block profile-in">
+                <span class="profile-label">INVENTORY / WHAT I DO FOR PXL</span>
+                <ul class="profile-inventory" id="profile-made"></ul>
+              </div>
+              <div class="profile-quote profile-in">
+                <img class="pq-portrait" id="profile-portrait" src="" alt="" />
+                <div>
+                  <span class="profile-label" id="profile-quote-name">SAYS</span>
+                  <p id="profile-quote"></p>
+                </div>
+                <span class="pq-next" aria-hidden="true">&#9660;</span>
+              </div>
+              <div class="profile-actions profile-in">
+                <span class="profile-contact">
+                  <span class="pcn-label">SEND A MESSAGE</span>
+                  <b id="profile-contact"></b>
+                </span>
+                <button class="button button-peach" id="profile-encounter">
+                  <img class="pe-icon" id="profile-encounter-icon" src="" alt="" />
+                  ENCOUNTER <span aria-hidden="true">&#9654;</span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </section>
-      <footer class="footer section-pad">
-        <div class="section-label">
-          <span>END OF PAGE. START OF SOMETHING XL.</span
-          ><a href="#home">BACK TO TOP ↑</a>
+      <footer class="footer section-pad" id="end">
+        <div class="ending" aria-labelledby="ending-title">
+          <canvas class="ending-sky" aria-hidden="true"></canvas>
+          <img
+            class="ending-bot"
+            src="assets/robot.svg"
+            alt=""
+            width="240"
+            height="264"
+            loading="lazy"
+          />
+          <div class="ending-inner">
+            <p class="ending-kicker">GAME CLEAR</p>
+            <h2 id="ending-title" class="ending-title">
+              Thanks for<br />playing.
+            </h2>
+            <ul class="credits">
+              <li class="credits-head">A PXL PRODUCTION</li>
+              <li><span>MAIN ARTIST</span><b>LAN ANGELES</b></li>
+              <li><span>CAPTION WRITER</span><b>ALJON REY APAN</b></li>
+              <li><span>ART DIRECTOR</span><b>ALRIC MACALINAO</b></li>
+              <li><span>WEB DEVELOPER</span><b>JAN FORTUN SAPIN</b></li>
+              <li class="credits-head">PIX L’S INTO W’S &middot; 2026</li>
+            </ul>
+            <div class="tally" aria-live="polite">
+              <span>PIXELS COLLECTED</span>
+              <b id="tally-count">00/09</b>
+              <em id="tally-rank">Keep exploring to find them all.</em>
+            </div>
+            <div class="trophy-case">
+              <span class="trophy-head"
+                >TROPHY CASE <b id="trophy-count">0/10</b></span
+              >
+              <ul id="trophy-list"></ul>
+            </div>
+            <a class="button button-peach continue" href="#home"
+              >CONTINUE? <span aria-hidden="true">&#9654;</span></a
+            >
+          </div>
         </div>
-        <img
-          class="actual-footer-logo"
-          src="assets/logo-primary.png"
-          alt="PXL primary logo"
-          width="1147"
-          height="1147"
-          loading="lazy"
-        />
+        <div class="save-point">
+          <div class="sp-copy">
+            <span class="sp-tag"><i aria-hidden="true"></i> SAVE POINT REACHED</span>
+            <p class="sp-title">End of page.<br /><span>Start of something XL.</span></p>
+            <p class="sp-text">
+              Small pixels, extra-large possibilities. Thanks for exploring the
+              PXL world. Your progress is saved below.
+            </p>
+            <a class="button button-peach" href="#home"
+              >CONTINUE? <span aria-hidden="true">&#9654;</span></a
+            >
+          </div>
+          <div class="poke-logo">
+            <canvas id="poke-logo" role="img" aria-label="PXL primary logo built from pixels"></canvas>
+            <img
+              class="actual-footer-logo poke-fallback"
+              src="assets/logo-primary.png"
+              alt="PXL primary logo"
+              width="1147"
+              height="1147"
+              loading="lazy"
+            />
+            <span class="poke-hint" aria-hidden="true">&#9670; POKE THE PIXELS</span>
+          </div>
+        </div>
+        <div class="footer-grid">
+          <nav class="fg-col" aria-label="Footer world map">
+            <span class="fg-head">WORLD MAP</span>
+            <ul class="fg-worlds"><li><a href="#home"><i aria-hidden="true"></i>START</a></li><li><a href="#story"><i aria-hidden="true"></i>1-1 ORIGIN</a></li><li><a href="#players"><i aria-hidden="true"></i>1-2 PLAYERS</a></li><li><a href="#universe"><i aria-hidden="true"></i>1-3 UNIVERSE</a></li><li><a href="#shop"><i aria-hidden="true"></i>ITEM SHOP</a></li><li><a href="#rivals"><i aria-hidden="true"></i>BOSS RUSH</a></li><li><a href="#bonus"><i aria-hidden="true"></i>BONUS STAGE</a></li><li><a href="#identity"><i aria-hidden="true"></i>1-4 IDENTITY</a></li><li><a href="#campaigns"><i aria-hidden="true"></i>1-5 THE FEED</a></li><li><a href="#team"><i aria-hidden="true"></i>PLAYER SELECT</a></li></ul>
+          </nav>
+          <div class="fg-col">
+            <span class="fg-head">BRAND KIT</span>
+            <div class="fg-colors">
+              <button data-color="#FFB65D" style="--c:#ffb65d" aria-label="Copy peach FFB65D"><i></i>PEACH<b>#FFB65D</b></button>
+              <button data-color="#BE3621" style="--c:#be3621" aria-label="Copy red BE3621"><i></i>RED<b>#BE3621</b></button>
+              <button data-color="#001768" style="--c:#001768" aria-label="Copy navy 001768"><i></i>NAVY<b>#001768</b></button>
+            </div>
+            <p class="fg-type"><span class="jersey">Jersey 10</span> + <span class="tiny">Tiny5</span></p>
+          </div>
+          <div class="fg-col">
+            <span class="fg-head">THE PARTY</span>
+            <ul class="fg-party"><li><img src="assets/team/hedgehog.png" alt="" width="40" height="32" loading="lazy" /><span><b>LAN ANGELES</b><small>MAIN ARTIST</small></span></li><li><img src="assets/team/platypus.png" alt="" width="40" height="32" loading="lazy" /><span><b>ALJON REY APAN</b><small>CAPTION WRITER</small></span></li><li><img src="assets/team/snake.png" alt="" width="40" height="32" loading="lazy" /><span><b>ALRIC MACALINAO</b><small>ART DIRECTOR</small></span></li><li><img src="assets/team/chameleon.png" alt="" width="40" height="32" loading="lazy" /><span><b>JAN FORTUN SAPIN</b><small>WEB DEVELOPER</small></span></li></ul>
+          </div>
+          <div class="fg-col save-file">
+            <span class="fg-head">YOUR SAVE FILE</span>
+            <dl>
+              <div><dt>PIXELS</dt><dd id="sf-pixels">00/09</dd></div>
+              <div><dt>TROPHIES</dt><dd id="sf-trophies">00/14</dd></div>
+            </dl>
+            <div class="sf-bar" aria-hidden="true"><i id="sf-bar"></i></div>
+            <p class="sf-rank" id="sf-rank">RANK: ROOKIE</p>
+          </div>
+        </div>
         <div class="footer-bottom">
-          <span>PIX L’S INTO W’S</span
-          ><span>INDEPENDENT PIXEL ENTERTAINMENT</span><span>© PXL 2026</span>
+          <span>&copy; PXL 2026</span><span>INDEPENDENT PIXEL ENTERTAINMENT</span
+          ><a href="#home" class="elevator">BACK TO TOP <span aria-hidden="true">&uarr;</span></a>
         </div>
+        <p class="giant-tag" aria-hidden="true">PIX L&rsquo;S INTO W&rsquo;S</p>
       </footer>
     </main>
     <dialog id="detail-dialog" aria-labelledby="dialog-title">
@@ -876,6 +1726,141 @@
       </div>
       <div id="dialog-content"></div>
     </dialog>
+    <dialog id="item-dialog" class="item-dialog" aria-labelledby="id-name">
+      <div class="id-wrap">
+        <div class="id-bar">
+          <span class="id-crumb">ITEM SHOP / <b id="id-no">01</b> OF <span id="id-total">12</span></span>
+          <span class="id-keys" aria-hidden="true">&larr; &rarr; ITEMS &middot; &uarr; &darr; PHOTOS</span>
+          <div class="id-nav">
+            <button type="button" id="id-prev" aria-label="Previous item">&#9664; PREV</button>
+            <button type="button" id="id-next" aria-label="Next item">NEXT &#9654;</button>
+          </div>
+          <button type="button" id="id-close" class="id-close" aria-label="Close item">CLOSE &times;</button>
+        </div>
+        <div class="id-body">
+          <div class="id-viewer">
+            <figure class="id-stage" id="id-stage">
+              <img id="id-photo" alt="" width="1200" height="1200" />
+              <i class="id-corner tl"></i><i class="id-corner tr"></i><i class="id-corner bl"></i><i class="id-corner br"></i>
+              <figcaption id="id-cap"></figcaption>
+            </figure>
+            <div class="id-thumbs" id="id-thumbs" role="tablist" aria-label="Product views"></div>
+          </div>
+          <div class="id-card">
+            <div class="id-tags"><span class="si-cat" id="id-cat"></span><span class="rarity" id="id-rarity"></span></div>
+            <h3 id="id-name">Item</h3>
+            <p class="id-flavor" id="id-flavor"></p>
+            <p class="id-desc" id="id-desc"></p>
+            <dl class="id-stats" id="id-stats"></dl>
+            <dl class="id-specs" id="id-specs"></dl>
+            <div class="id-buy">
+              <div class="id-price"><span>COST</span><b id="id-price"></b></div>
+              <button type="button" class="id-wish" id="id-wish" aria-pressed="false">&#9825; ADD TO WISHLIST</button>
+            </div>
+            <p class="id-note">Concept products. Photos are free stock shots (Unsplash) with our designs placed on them; others are 3D renders. Prices are in pixels, our in-game coin.</p>
+          </div>
+        </div>
+      </div>
+    </dialog>
+    <dialog id="battle" class="battle" aria-label="Spirit animal encounter">
+      <div class="battle-flash" aria-hidden="true"></div>
+      <div class="battle-wipe" aria-hidden="true">
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+      </div>
+      <button class="battle-exit" id="battle-exit" aria-label="Leave encounter">
+        Exit ×
+      </button>
+      <div class="battle-screen" id="battle-screen">
+        <div class="battle-field">
+          <div class="field-bg" aria-hidden="true"></div>
+          <div class="battle-stage">
+          <div class="hud foe-hud">
+            <div class="hud-top">
+              <span id="foe-name">CHAMELEON</span><span>Lv26</span>
+            </div>
+            <div class="hp"><span>HP</span><b><i></i></b></div>
+          </div>
+          <div class="foe-side">
+            <img class="battle-platform" src="assets/team/platform.png" alt="" />
+            <img class="battle-foe" id="battle-foe" src="" alt="" />
+          </div>
+          <div class="ally-side">
+            <img class="battle-platform" src="assets/team/platform.png" alt="" />
+            <img class="battle-trainer" id="battle-trainer" src="" alt="" />
+          </div>
+          <div class="hud ally-hud">
+            <div class="hud-top">
+              <span id="ally-name">JAN</span><span>Lv26</span>
+            </div>
+            <div class="hp"><span>HP</span><b><i></i></b></div>
+            <small id="ally-role">WEB DEVELOPER</small>
+          </div>
+          <div class="pxl-cube" id="pxl-cube" aria-hidden="true"></div>
+          <div class="catch-stars" id="catch-stars" aria-hidden="true">
+            <i>✦</i><i>✦</i><i>✦</i>
+          </div>
+          </div>
+        </div>
+        <div class="battle-text">
+          <p id="battle-msg" aria-live="polite"></p>
+          <span class="advance" id="battle-advance" aria-hidden="true">▼</span>
+          <div class="battle-menu" id="battle-menu" hidden>
+            <button id="battle-catch">
+              <i class="mi mi-cube" aria-hidden="true"></i>CATCH
+            </button
+            ><button id="battle-run">
+              <i class="mi mi-run" aria-hidden="true">&raquo;</i>RUN
+            </button>
+            <span class="menu-hint" aria-hidden="true"
+              >&larr; &rarr; CHOOSE &middot; ENTER CONFIRM</span
+            >
+          </div>
+        </div>
+        <article class="dex" id="battle-dex" hidden>
+          <div class="dex-inner">
+            <div class="dex-top dex-in">
+              <span>PXL DEX / NEW ENTRY</span><span id="dex-no">No. 001</span>
+            </div>
+            <div class="dex-body">
+              <div class="dex-art dex-in">
+                <span class="dex-scan" aria-hidden="true"></span>
+                <img id="dex-img" src="" alt="" />
+                <span class="dex-art-no" id="dex-art-no" aria-hidden="true"
+                  >001</span
+                >
+              </div>
+              <div class="dex-info">
+                <h3 id="dex-name" class="dex-in">CHAMELEON</h3>
+                <p class="dex-kind dex-in" id="dex-kind">The Shape-Shifter</p>
+                <p class="dex-owner dex-in">
+                  SPIRIT OF <b id="dex-owner">JAN FORTUN SAPIN</b>
+                </p>
+                <div class="dex-types dex-in" id="dex-types"></div>
+                <p class="dex-entry dex-in" id="dex-entry"></p>
+                <p class="dex-why dex-in">
+                  <b>WHY IT FITS</b> <span id="dex-why"></span>
+                </p>
+                <button class="button button-peach dex-in" id="dex-close">
+                  Back to the team <span aria-hidden="true">→</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+      <div class="dex-wipe" id="dex-wipe" aria-hidden="true"></div>
+    </dialog>
+    <div class="achievement-pop" id="achievement-pop" role="status" hidden>
+      <svg class="trophy" viewBox="0 0 9 8" shape-rendering="crispEdges" aria-hidden="true">
+        <path fill="#ffb65d" d="M0 0h9v1H0zM0 1h1v2H0zM8 1h1v2H8zM2 1h5v2H2zM1 3h7v1H1zM2 4h5v1H2zM3 5h3v1H3zM4 6h1v1H4z" />
+        <path fill="#be3621" d="M2 7h5v1H2z" />
+      </svg>
+      <div>
+        <small>ACHIEVEMENT UNLOCKED <em id="achievement-pop-count">1/10</em></small>
+        <b id="achievement-pop-name">PRESS START</b>
+        <span id="achievement-pop-detail">Started the adventure.</span>
+      </div>
+    </div>
     <div id="toast" role="status" class="toast"></div>
     <div class="scroll-progress" aria-hidden="true"></div>
   </body>
