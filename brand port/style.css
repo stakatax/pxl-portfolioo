@@ -9850,3 +9850,85 @@ html {
   font-size: 1.435em;
   line-height: 0.98;
 }
+
+/* ===== Flip sticker on the profile trading card ===== */
+.pc-flip {
+  position: absolute;
+  z-index: 6;
+  left: -18px;
+  top: 58%;
+  display: grid;
+  place-items: center;
+  gap: 2px;
+  width: 74px;
+  aspect-ratio: 1;
+  padding: 0;
+  font-family: var(--pixel);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--cream);
+  background: var(--red);
+  border: 3px solid var(--cream);
+  border-radius: 50%;
+  outline: 3px solid var(--navy);
+  box-shadow: 4px 5px 0 #00104b99;
+  rotate: -14deg;
+  cursor: pointer;
+  /* peeled corner */
+  clip-path: polygon(0 0, 100% 0, 100% 74%, 74% 100%, 0 100%);
+  transition:
+    rotate 0.2s steps(3),
+    scale 0.2s steps(3);
+  animation: flip-wobble 2.6s steps(2) infinite;
+}
+.pc-flip::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 26%;
+  height: 26%;
+  background: linear-gradient(135deg, transparent 50%, #ffd9a3 50% 62%, var(--peach) 62%);
+}
+.pc-flip svg {
+  width: 22px;
+  height: 22px;
+  margin-top: 6px;
+}
+.pc-flip span {
+  margin-bottom: 8px;
+}
+.pc-flip:hover,
+.pc-flip:focus-visible {
+  rotate: 4deg;
+  scale: 1.1;
+  animation: none;
+}
+.pc-flip:active {
+  scale: 0.94;
+}
+.profile-card.is-flipped .pc-flip {
+  background: var(--navy);
+  color: var(--peach);
+}
+.profile-card.is-flipped .pc-flip svg {
+  scale: -1 1;
+}
+@keyframes flip-wobble {
+  0%, 80% { rotate: -14deg; }
+  90% { rotate: -6deg; }
+}
+.reduce-motion .pc-flip {
+  animation: none;
+}
+@media (max-width: 640px) {
+  .pc-flip {
+    left: -8px;
+    width: 60px;
+    font-size: 9px;
+  }
+  .pc-flip svg {
+    width: 18px;
+    height: 18px;
+  }
+}

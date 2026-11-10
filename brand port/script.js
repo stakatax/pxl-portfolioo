@@ -2796,6 +2796,7 @@ const PROFILES = {
     contact: "alricseanmacalinao.neust@gmail.com",
   },
   jan: {
+    alt: { src: "assets/team/jan-sapin-alt.webp", alt: "Jan Fortun Sapin wearing a bandana" },
     course: "BSIT 4D",
     game: "Mobile Legends: Bang Bang",
     made: ["This entire website"],
@@ -2878,6 +2879,14 @@ const pxlProfiles = (() => {
     );
     $("#profile-photo").src = photo.src;
     $("#profile-photo").alt = photo.alt;
+    flipFront = { src: photo.src, alt: photo.alt };
+    flipBack = profile.alt || null;
+    flipped = false;
+    flipButton.hidden = !flipBack;
+    flipButton.setAttribute("aria-pressed", "false");
+    $("#profile-flip-label").textContent = "FLIP!";
+    $(".profile-card", panel).classList.remove("is-flipped");
+    if (flipBack) new Image().src = flipBack.src;
     $("#profile-sprite").src = spirit.trainer;
     $("#profile-animal").src = spirit.img;
     $("#profile-portrait").src = spirit.trainer;
@@ -3037,6 +3046,44 @@ const pxlProfiles = (() => {
       open(button.dataset.profile, button);
     }),
   );
+  // Flip sticker: turns the trading card over to an alternate photo.
+  function flipCard() {
+    if (!flipBack || flipping) return;
+    const card = $(".profile-card", panel);
+    const img = $("#profile-photo");
+    const swap = () => {
+      flipped = !flipped;
+      const face = flipped ? flipBack : flipFront;
+      img.src = face.src;
+      img.alt = face.alt;
+      card.classList.toggle("is-flipped", flipped);
+      flipButton.setAttribute("aria-pressed", String(flipped));
+      $("#profile-flip-label").textContent = flipped ? "BACK!" : "FLIP!";
+    };
+    chime([
+      [392, 0, 0.04],
+      [587, 70, 0.04],
+      [880, 150, 0.08],
+    ]);
+    if (!hasGsap || motionOff) return swap();
+    flipping = true;
+    gsap
+      .timeline({ onComplete: () => (flipping = false) })
+      .to(card, { rotationY: 90, scale: 0.96, transformPerspective: 1100, duration: 0.24, ease: "power2.in" })
+      .add(swap)
+      .set(card, { rotationY: -90 })
+      .to(card, { rotationY: 0, scale: 1, duration: 0.42, ease: "back.out(1.7)", clearProps: "transform" })
+      .fromTo("#profile-animal", { y: -36, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "bounce.out", clearProps: "transform,opacity" }, "-=0.3");
+  }
+  const flipButton = $("#profile-flip");
+  let flipFront = null;
+  let flipBack = null;
+  let flipped = false;
+  let flipping = false;
+  flipButton.addEventListener("click", (event) => {
+    event.stopPropagation();
+    flipCard();
+  });
   $("#profile-close").addEventListener("click", () => close());
   $("#profile-prev").addEventListener("click", () => switchTo(-1));
   $("#profile-next").addEventListener("click", () => switchTo(1));
