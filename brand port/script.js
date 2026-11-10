@@ -2796,7 +2796,7 @@ const PROFILES = {
     contact: "alricseanmacalinao.neust@gmail.com",
   },
   jan: {
-    alt: { src: "assets/team/jan-sapin-alt.webp", alt: "Jan Fortun Sapin wearing a bandana" },
+    alt: { src: "assets/team/jan-sapin-alt.webp", alt: "Jeo Dorant, Jan's bandana alter ego", name: "Jeo Dorant" },
     course: "BSIT 4D",
     game: "Mobile Legends: Bang Bang",
     made: ["This entire website"],
@@ -2879,7 +2879,7 @@ const pxlProfiles = (() => {
     );
     $("#profile-photo").src = photo.src;
     $("#profile-photo").alt = photo.alt;
-    flipFront = { src: photo.src, alt: photo.alt };
+    flipFront = { src: photo.src, alt: photo.alt, name: spirit.full };
     flipBack = profile.alt || null;
     flipped = false;
     flipButton.hidden = !flipBack;
@@ -3056,6 +3056,7 @@ const pxlProfiles = (() => {
       const face = flipped ? flipBack : flipFront;
       img.src = face.src;
       img.alt = face.alt;
+      if (face.name) $("#profile-card-name").textContent = face.name;
       card.classList.toggle("is-flipped", flipped);
       flipButton.setAttribute("aria-pressed", String(flipped));
       $("#profile-flip-label").textContent = flipped ? "BACK!" : "FLIP!";
