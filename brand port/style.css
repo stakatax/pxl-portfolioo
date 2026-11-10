@@ -9845,3 +9845,8 @@ html {
     0 2px 0 var(--navy), 0 -2px 0 var(--navy),
     4px 4px 0 var(--navy);
 }
+.story h2 .tagline {
+  display: inline-block;
+  font-size: 1.435em;
+  line-height: 0.98;
+}
