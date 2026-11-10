@@ -2792,7 +2792,7 @@ const PROFILES = {
     course: "BSIT 4D",
     game: "Genshin Impact",
     made: ["The brand", "Tagline and logo", "Poster design idea"],
-    quote: "Puke ng baboy",
+    quote: "Everything is a gamble, kaya all in.",
     contact: "alricseanmacalinao.neust@gmail.com",
   },
   jan: {

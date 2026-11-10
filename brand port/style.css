@@ -9833,3 +9833,15 @@ html {
   animation: none;
   height: 14px;
 }
+
+/* ===== Story tagline: Pix L's into W's ===== */
+.story h2 .tag-l {
+  color: var(--red);
+}
+.story h2 .tag-w {
+  color: var(--peach);
+  text-shadow:
+    2px 0 0 var(--navy), -2px 0 0 var(--navy),
+    0 2px 0 var(--navy), 0 -2px 0 var(--navy),
+    4px 4px 0 var(--navy);
+}
