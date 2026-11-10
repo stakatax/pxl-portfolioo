@@ -9851,84 +9851,128 @@ html {
   line-height: 0.98;
 }
 
-/* ===== Flip sticker on the profile trading card ===== */
+/* ===== Flip sticker v2: stepped pixel badge with a peeled corner ===== */
 .pc-flip {
+  --face: var(--red);
+  --ink: var(--cream);
+  --accent: var(--peach);
   position: absolute;
   z-index: 6;
-  left: -18px;
-  top: 58%;
-  display: grid;
-  place-items: center;
-  gap: 2px;
-  width: 74px;
+  left: -22px;
+  top: 56%;
+  width: 84px;
   aspect-ratio: 1;
   padding: 0;
-  font-family: var(--pixel);
-  font-size: 11px;
-  letter-spacing: 0.06em;
-  color: var(--cream);
-  background: var(--red);
-  border: 3px solid var(--cream);
-  border-radius: 50%;
-  outline: 3px solid var(--navy);
-  box-shadow: 4px 5px 0 #00104b99;
-  rotate: -14deg;
+  background: none;
+  border: 0;
   cursor: pointer;
-  /* peeled corner */
-  clip-path: polygon(0 0, 100% 0, 100% 74%, 74% 100%, 0 100%);
+  rotate: -12deg;
   transition:
     rotate 0.2s steps(3),
     scale 0.2s steps(3);
-  animation: flip-wobble 2.6s steps(2) infinite;
+  animation: flip-wobble 2.8s steps(2) infinite;
 }
-.pc-flip::after {
-  content: "";
+.pf-shadow,
+.pf-edge {
   position: absolute;
-  right: 0;
-  bottom: 0;
-  width: 26%;
-  height: 26%;
-  background: linear-gradient(135deg, transparent 50%, #ffd9a3 50% 62%, var(--peach) 62%);
+  inset: -3px;
+  background: var(--navy);
+  clip-path: polygon(30% 0, 70% 0, 70% 6%, 82% 6%, 82% 12%, 88% 12%, 88% 18%, 94% 18%, 94% 30%, 100% 30%, 100% 72%, 72% 100%, 30% 100%, 30% 94%, 18% 94%, 18% 88%, 12% 88%, 12% 82%, 6% 82%, 6% 70%, 0 70%, 0 30%, 6% 30%, 6% 18%, 12% 18%, 12% 12%, 18% 12%, 18% 6%, 30% 6%);
 }
-.pc-flip svg {
+.pf-shadow {
+  translate: 4px 5px;
+  background: #00104b8c;
+}
+.pf-ring {
+  position: absolute;
+  inset: 0;
+  background: var(--cream);
+  clip-path: polygon(30% 0, 70% 0, 70% 6%, 82% 6%, 82% 12%, 88% 12%, 88% 18%, 94% 18%, 94% 30%, 100% 30%, 100% 72%, 72% 100%, 30% 100%, 30% 94%, 18% 94%, 18% 88%, 12% 88%, 12% 82%, 6% 82%, 6% 70%, 0 70%, 0 30%, 6% 30%, 6% 18%, 12% 18%, 12% 12%, 18% 12%, 18% 6%, 30% 6%);
+}
+.pf-face {
+  position: absolute;
+  inset: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding-bottom: 8px;
+  color: var(--ink);
+  background: var(--face);
+  box-shadow: inset 0 -6px 0 #00000026;
+  clip-path: polygon(30% 0, 70% 0, 70% 6%, 82% 6%, 82% 12%, 88% 12%, 88% 18%, 94% 18%, 94% 30%, 100% 30%, 100% 72%, 72% 100%, 30% 100%, 30% 94%, 18% 94%, 18% 88%, 12% 88%, 12% 82%, 6% 82%, 6% 70%, 0 70%, 0 30%, 6% 30%, 6% 18%, 12% 18%, 12% 12%, 18% 12%, 18% 6%, 30% 6%);
+}
+.pf-icon {
   width: 22px;
   height: 22px;
-  margin-top: 6px;
+  color: var(--accent);
+  transition: rotate 0.35s steps(4);
 }
-.pc-flip span {
-  margin-bottom: 8px;
+.pf-label {
+  font-family: var(--display);
+  font-size: 17px;
+  line-height: 0.9;
+  letter-spacing: 0.02em;
+  text-shadow: 2px 2px 0 #00104b80;
+}
+.pf-side {
+  font-family: var(--pixel);
+  font-size: 7px;
+  letter-spacing: 0.16em;
+  color: var(--accent);
+}
+/* folded-back corner: the sticker's paper backing */
+.pf-peel {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #e8cfa6 0 40%, var(--cream) 70%);
+  clip-path: polygon(100% 72%, 72% 100%, 77% 77%);
+  transition: clip-path 0.2s steps(3);
 }
 .pc-flip:hover,
 .pc-flip:focus-visible {
-  rotate: 4deg;
-  scale: 1.1;
+  rotate: 3deg;
+  scale: 1.08;
   animation: none;
+}
+.pc-flip:hover .pf-peel,
+.pc-flip:focus-visible .pf-peel {
+  clip-path: polygon(100% 72%, 72% 100%, 70% 70%);
+}
+.pc-flip:hover .pf-icon,
+.pc-flip:focus-visible .pf-icon {
+  rotate: 180deg;
+}
+.pc-flip:focus-visible {
+  outline: 3px dashed var(--peach);
+  outline-offset: 6px;
 }
 .pc-flip:active {
   scale: 0.94;
 }
 .profile-card.is-flipped .pc-flip {
-  background: var(--navy);
-  color: var(--peach);
+  --face: var(--navy);
+  --ink: var(--peach);
+  --accent: var(--cream);
 }
-.profile-card.is-flipped .pc-flip svg {
+.profile-card.is-flipped .pc-flip .pf-icon {
   scale: -1 1;
 }
 @keyframes flip-wobble {
-  0%, 80% { rotate: -14deg; }
-  90% { rotate: -6deg; }
+  0%, 82% { rotate: -12deg; }
+  91% { rotate: -4deg; }
 }
 .reduce-motion .pc-flip {
   animation: none;
 }
 @media (max-width: 640px) {
   .pc-flip {
-    left: -8px;
-    width: 60px;
-    font-size: 9px;
+    left: -10px;
+    width: 66px;
   }
-  .pc-flip svg {
-    width: 18px;
-    height: 18px;
-  }
+  .pf-face { inset: 4px; gap: 2px; }
+  .pf-icon { width: 17px; height: 17px; }
+  .pf-label { font-size: 13px; }
+  .pf-side { font-size: 6px; }
 }

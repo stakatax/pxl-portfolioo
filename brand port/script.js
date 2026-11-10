@@ -2885,6 +2885,7 @@ const pxlProfiles = (() => {
     flipButton.hidden = !flipBack;
     flipButton.setAttribute("aria-pressed", "false");
     $("#profile-flip-label").textContent = "FLIP!";
+    $(".pf-side", flipButton).textContent = "SIDE A";
     $(".profile-card", panel).classList.remove("is-flipped");
     if (flipBack) new Image().src = flipBack.src;
     $("#profile-sprite").src = spirit.trainer;
@@ -3060,6 +3061,7 @@ const pxlProfiles = (() => {
       card.classList.toggle("is-flipped", flipped);
       flipButton.setAttribute("aria-pressed", String(flipped));
       $("#profile-flip-label").textContent = flipped ? "BACK!" : "FLIP!";
+      $(".pf-side", flipButton).textContent = flipped ? "SIDE B" : "SIDE A";
     };
     chime([
       [392, 0, 0.04],
